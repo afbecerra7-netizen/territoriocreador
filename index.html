@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Presentación del proyecto Territorio Creador: laboratorio de producción cultural rural.">
+  <title>Territorio Creador | Laboratorio de Producción Cultural Rural</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f6f2e8;
+      --paper-strong: #efe6d5;
+      --ink: #12211e;
+      --ink-soft: #2d4640;
+      --forest: #2c6b58;
+      --moss: #698d48;
+      --earth: #bf6d42;
+      --sun: #e2b34a;
+      --academic: #27516f;
+      --sky: #d6e7ee;
+      --white: #ffffff;
+      --radius-xl: 30px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-soft: 0 12px 40px rgba(12, 24, 22, 0.2);
+      --shadow-card: 0 8px 22px rgba(14, 25, 25, 0.18);
+      --anim: 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Work Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 20% 20%, #ffffff 0%, #eff2f2 35%, #dde4e3 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+      transition: opacity var(--anim), transform var(--anim);
+      overflow: hidden;
+      --panel-bg: rgba(246, 242, 232, 0.9);
+      --panel-ink: #12211e;
+      --panel-muted: rgba(18, 33, 30, 0.76);
+      --kicker: #244f6c;
+      --chip-bg: rgba(226, 179, 74, 0.22);
+      --chip-border: rgba(226, 179, 74, 0.5);
+      --chip-ink: #3f2f12;
+      --line-accent: #2c6b58;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(60rem 35rem at 110% -20%, rgba(255, 255, 255, 0.28), transparent 65%),
+        radial-gradient(48rem 36rem at -15% 105%, rgba(0, 0, 0, 0.14), transparent 70%);
+      pointer-events: none;
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.is-exit-left {
+      opacity: 0;
+      transform: translateX(-64px);
+      pointer-events: none;
+    }
+
+    .slide.is-exit-right {
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+    }
+
+    .slide.from-right {
+      transform: translateX(64px);
+    }
+
+    .slide.from-left {
+      transform: translateX(-64px);
+    }
+
+    .slide-inner {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      padding: clamp(2.6rem, 4vh, 3.8rem) clamp(3.6rem, 5vw, 5.8rem) clamp(4.4rem, 7vh, 5.8rem);
+      display: grid;
+      grid-template-columns: minmax(340px, 1.15fr) minmax(280px, 0.9fr);
+      gap: clamp(1.4rem, 3vw, 3.2rem);
+      align-items: center;
+    }
+
+    .content-card {
+      position: relative;
+      display: grid;
+      gap: clamp(0.72rem, 1.6vh, 1.1rem);
+      background: var(--panel-bg);
+      color: var(--panel-ink);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.3rem, 2.8vw, 2.1rem);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(8px);
+    }
+
+    .content-card::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 70px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--line-accent);
+      opacity: 0.85;
+    }
+
+    .kicker {
+      font-size: 0.75rem;
+      line-height: 1;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--kicker);
+      font-weight: 700;
+    }
+
+    .slide-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.95rem, 4vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--panel-ink);
+    }
+
+    .slide-lead {
+      font-size: clamp(1.01rem, 1.8vw, 1.18rem);
+      line-height: 1.55;
+      color: var(--panel-muted);
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.58rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--chip-border);
+      background: var(--chip-bg);
+      color: var(--chip-ink);
+      font-weight: 600;
+      font-size: 0.84rem;
+    }
+
+    .quote {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.08rem, 2.1vw, 1.3rem);
+      line-height: 1.45;
+      color: var(--panel-ink);
+      padding-left: 0.9rem;
+      border-left: 3px solid var(--line-accent);
+    }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 0.62rem;
+    }
+
+    .list li {
+      background: rgba(255, 255, 255, 0.56);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius-md);
+      padding: 0.74rem 0.84rem;
+      color: var(--panel-ink);
+      font-size: clamp(0.92rem, 1.4vw, 1.01rem);
+      line-height: 1.42;
+      box-shadow: var(--shadow-card);
+    }
+
+    .list strong {
+      color: var(--line-accent);
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.68rem;
+    }
+
+    .grid-cards .card {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 0.8rem 0.85rem;
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--panel-ink);
+      font-size: 0.92rem;
+      line-height: 1.38;
+    }
+
+    .steps {
+      list-style: none;
+      display: grid;
+      gap: 0.72rem;
+      counter-reset: steps;
+    }
+
+    .steps li {
+      counter-increment: steps;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.74rem 0.84rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      background: rgba(255, 255, 255, 0.47);
+      box-shadow: var(--shadow-card);
+      font-weight: 600;
+      color: var(--panel-ink);
+    }
+
+    .steps li::before {
+      content: counter(steps, decimal-leading-zero);
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.1rem;
+      color: var(--line-accent);
+      width: 2.1rem;
+      text-align: center;
+    }
+
+    .art-wrap {
+      position: relative;
+      border-radius: var(--radius-xl);
+      border: 2px solid rgba(18, 33, 30, 0.14);
+      background: #f8f3e7;
+      box-shadow: 0 8px 0 rgba(18, 33, 30, 0.12);
+      padding: clamp(0.72rem, 1.4vw, 1rem);
+    }
+
+    .art {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      border-radius: calc(var(--radius-xl) - 8px);
+      overflow: hidden;
+      background: #f8f3e7;
+    }
+
+    #s1 {
+      background: linear-gradient(135deg, #183c35 0%, #326658 56%, #6f8f4f 100%);
+      --panel-bg: rgba(247, 242, 233, 0.92);
+      --panel-ink: #152925;
+      --panel-muted: rgba(21, 41, 37, 0.8);
+      --kicker: #27516f;
+      --line-accent: #2c6b58;
+      --chip-bg: rgba(39, 81, 111, 0.15);
+      --chip-border: rgba(39, 81, 111, 0.45);
+      --chip-ink: #1f425a;
+    }
+
+    #s2 {
+      background: linear-gradient(125deg, #eee2c8 0%, #f5eddc 52%, #e0dcc8 100%);
+      --panel-bg: rgba(255, 255, 255, 0.64);
+      --panel-ink: #213431;
+      --panel-muted: rgba(33, 52, 49, 0.76);
+      --kicker: #7c4c2d;
+      --line-accent: #bf6d42;
+      --chip-bg: rgba(191, 109, 66, 0.13);
+      --chip-border: rgba(191, 109, 66, 0.45);
+      --chip-ink: #7c4c2d;
+    }
+
+    #s3 {
+      background: linear-gradient(140deg, #123538 0%, #1f4d54 48%, #2d6d63 100%);
+      --panel-bg: rgba(10, 31, 35, 0.7);
+      --panel-ink: #f3efe5;
+      --panel-muted: rgba(243, 239, 229, 0.82);
+      --kicker: #f0c86a;
+      --line-accent: #e2b34a;
+      --chip-bg: rgba(226, 179, 74, 0.17);
+      --chip-border: rgba(226, 179, 74, 0.42);
+      --chip-ink: #f6e7c5;
+    }
+
+    #s3 .list li,
+    #s6 .list li,
+    #s7 .list li {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: none;
+      color: #f7f2e9;
+    }
+
+    #s3 .grid-cards .card,
+    #s6 .grid-cards .card,
+    #s7 .grid-cards .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: #f6f2e8;
+    }
+
+    #s4 {
+      background: linear-gradient(128deg, #f4d49a 0%, #e8c171 45%, #c18f4a 100%);
+      --panel-bg: rgba(24, 39, 42, 0.68);
+      --panel-ink: #f5f0e6;
+      --panel-muted: rgba(245, 240, 230, 0.82);
+      --kicker: #f2d498;
+      --line-accent: #f4c56c;
+      --chip-bg: rgba(244, 197, 108, 0.16);
+      --chip-border: rgba(244, 197, 108, 0.42);
+      --chip-ink: #f4dfb7;
+    }
+
+    #s5 {
+      background: linear-gradient(130deg, #dce8ec 0%, #e8efed 50%, #cadfda 100%);
+      --panel-bg: rgba(248, 251, 250, 0.78);
+      --panel-ink: #1c3131;
+      --panel-muted: rgba(28, 49, 49, 0.77);
+      --kicker: #2f6a59;
+      --line-accent: #2f6a59;
+      --chip-bg: rgba(47, 106, 89, 0.13);
+      --chip-border: rgba(47, 106, 89, 0.34);
+      --chip-ink: #245143;
+    }
+
+    #s6 {
+      background: linear-gradient(138deg, #213958 0%, #2c5775 48%, #4a7884 100%);
+      --panel-bg: rgba(12, 27, 46, 0.67);
+      --panel-ink: #eef4f7;
+      --panel-muted: rgba(238, 244, 247, 0.84);
+      --kicker: #f5cb78;
+      --line-accent: #f5cb78;
+      --chip-bg: rgba(245, 203, 120, 0.15);
+      --chip-border: rgba(245, 203, 120, 0.4);
+      --chip-ink: #f7dfb0;
+    }
+
+    #s7 {
+      background: linear-gradient(140deg, #20342e 0%, #35544a 52%, #4a6856 100%);
+      --panel-bg: rgba(15, 30, 25, 0.7);
+      --panel-ink: #f5f2e9;
+      --panel-muted: rgba(245, 242, 233, 0.84);
+      --kicker: #f0ca82;
+      --line-accent: #f0ca82;
+      --chip-bg: rgba(240, 202, 130, 0.14);
+      --chip-border: rgba(240, 202, 130, 0.36);
+      --chip-ink: #f4dfb6;
+    }
+
+    #s8 {
+      background: linear-gradient(132deg, #7f3e34 0%, #a04e41 52%, #bf6d42 100%);
+      --panel-bg: rgba(255, 248, 240, 0.92);
+      --panel-ink: #3b211c;
+      --panel-muted: rgba(59, 33, 28, 0.77);
+      --kicker: #8f4f35;
+      --line-accent: #9d4f3c;
+      --chip-bg: rgba(157, 79, 60, 0.12);
+      --chip-border: rgba(157, 79, 60, 0.42);
+      --chip-ink: #7e3d2e;
+    }
+
+    #s9 {
+      background: linear-gradient(135deg, #315d52 0%, #3e7962 55%, #567f59 100%);
+      --panel-bg: rgba(245, 248, 240, 0.94);
+      --panel-ink: #20342e;
+      --panel-muted: rgba(32, 52, 46, 0.78);
+      --kicker: #305f53;
+      --line-accent: #2f6b58;
+      --chip-bg: rgba(47, 107, 88, 0.15);
+      --chip-border: rgba(47, 107, 88, 0.38);
+      --chip-ink: #275347;
+    }
+
+    .slide.is-active .content-card > * {
+      animation: reveal-up 600ms ease both;
+    }
+
+    .slide.is-active .content-card > *:nth-child(1) { animation-delay: 90ms; }
+    .slide.is-active .content-card > *:nth-child(2) { animation-delay: 160ms; }
+    .slide.is-active .content-card > *:nth-child(3) { animation-delay: 230ms; }
+    .slide.is-active .content-card > *:nth-child(4) { animation-delay: 300ms; }
+    .slide.is-active .content-card > *:nth-child(5) { animation-delay: 370ms; }
+    .slide.is-active .art-wrap { animation: reveal-scale 700ms ease both 140ms; }
+
+    @keyframes reveal-up {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes reveal-scale {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 120;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    #progress-fill {
+      display: block;
+      width: 11%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--sun), var(--earth));
+      transition: width 280ms ease;
+    }
+
+    #counter {
+      position: fixed;
+      top: 14px;
+      right: 18px;
+      z-index: 120;
+      padding: 0.42rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(18, 33, 30, 0.82);
+      background: rgba(246, 242, 232, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      backdrop-filter: blur(8px);
+    }
+
+    #hint {
+      position: fixed;
+      bottom: 54px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 120;
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.72);
+      background: rgba(21, 39, 32, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      padding: 0.38rem 0.78rem;
+      backdrop-filter: blur(6px);
+      pointer-events: none;
+      animation: fade-hint 0.9s ease 1.5s both;
+    }
+
+    @keyframes fade-hint {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    #nav-prev,
+    #nav-next {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      background: rgba(246, 242, 232, 0.78);
+      color: #17322d;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 120;
+      transition: transform 180ms ease, opacity 180ms ease, background 180ms ease;
+      backdrop-filter: blur(10px);
+    }
+
+    #nav-prev { left: 14px; }
+    #nav-next { right: 14px; }
+
+    #nav-prev:hover,
+    #nav-next:hover {
+      background: rgba(255, 255, 255, 0.93);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    #nav-prev:disabled,
+    #nav-next:disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #nav-prev:focus-visible,
+    #nav-next:focus-visible,
+    .dot:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.95);
+      outline-offset: 2px;
+    }
+
+    #dots {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.52rem;
+      z-index: 120;
+      padding: 0.46rem 0.62rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      backdrop-filter: blur(6px);
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      background: rgba(255, 255, 255, 0.36);
+      cursor: pointer;
+      transition: width 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .dot.active {
+      width: 28px;
+      background: #fff;
+      border-color: #fff;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    @media (max-width: 1040px) {
+      .slide-inner {
+        grid-template-columns: 1fr;
+        align-content: center;
+      }
+
+      .art-wrap {
+        max-width: min(100%, 540px);
+      }
+
+      #hint {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .slide-inner {
+        padding: 1.3rem 1rem 4.3rem;
+        gap: 0.84rem;
+      }
+
+      .content-card {
+        border-radius: 22px;
+        padding: 1rem;
+      }
+
+      .grid-cards {
+        grid-template-columns: 1fr;
+      }
+
+      #counter {
+        top: 10px;
+        right: 12px;
+      }
+
+      #nav-prev,
+      #nav-next {
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
+      }
+
+      #nav-prev { left: 8px; }
+      #nav-next { right: 8px; }
+
+      #dots {
+        bottom: 10px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+      }
+
+      .dot.active {
+        width: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress" aria-hidden="true"><span id="progress-fill"></span></div>
+  <button id="nav-prev" aria-label="Diapositiva anterior">←</button>
+  <button id="nav-next" aria-label="Diapositiva siguiente">→</button>
+  <div id="counter" aria-live="polite">01 / 09</div>
+  <div id="dots" role="navigation" aria-label="Navegación de diapositivas"></div>
+  <div id="hint">← → para navegar · clic para avanzar · arrastra para deslizar</div>
+  <p class="sr-only" id="nav-help">Usa flechas izquierda y derecha para mover entre diapositivas.</p>
+
+  <div class="deck" id="deck" aria-describedby="nav-help">
+    <section class="slide is-active" id="s1">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Territorio Creador</p>
+          <h1 class="slide-title">Si el Estado debe garantizar la cultura, ¿por qué no todos somos creadores?</h1>
+          <p class="slide-lead">Propuesta pedagógica y cultural para activar capacidades creativas en contexto rural, con enfoque de derecho, identidad y producción simbólica local.</p>
+          <p class="meta-chip">Vereda El Carmen · Duitama · I.E.A. Francisco Medrano</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración de paisaje rural con escuela, montañas y cultivos">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#D8EEE9"/>
+            <circle cx="392" cy="74" r="34" fill="#F6C65B"/>
+            <circle cx="381" cy="70" r="3" fill="#965E1D"/>
+            <circle cx="403" cy="70" r="3" fill="#965E1D"/>
+            <path d="M380 84C386 92 398 92 404 84" stroke="#965E1D" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M0 210L82 166L164 196L252 148L340 188L480 150V360H0Z" fill="#71A97C"/>
+            <path d="M0 246L102 208L198 238L292 202L382 232L480 206V360H0Z" fill="#4F8E64"/>
+            <rect x="164" y="192" width="150" height="92" rx="14" fill="#FFF4E3" stroke="#2B5146" stroke-width="3"/>
+            <polygon points="154,198 240,146 326,198" fill="#D78057"/>
+            <rect x="222" y="224" width="34" height="60" rx="4" fill="#2B5146"/>
+            <rect x="184" y="214" width="28" height="22" rx="4" fill="#A9D0DC"/>
+            <rect x="268" y="214" width="28" height="22" rx="4" fill="#A9D0DC"/>
+            <rect x="52" y="232" width="10" height="46" rx="3" fill="#78543F"/>
+            <circle cx="57" cy="218" r="23" fill="#4F8E64"/>
+            <rect x="364" y="238" width="10" height="42" rx="3" fill="#78543F"/>
+            <circle cx="369" cy="224" r="21" fill="#4F8E64"/>
+            <path d="M118 298C164 278 206 278 252 298C298 318 340 318 388 298" stroke="#EED9AF" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <path d="M130 324H356" stroke="#F4E6C8" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s2">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Diagnóstico</p>
+          <h2 class="slide-title">Modelo urbano dominante</h2>
+          <p class="slide-lead">La activación cultural suele medirse con lógicas metropolitanas que no dialogan con los tiempos, oficios y formas de encuentro rural.</p>
+          <ul class="list">
+            <li><strong>Concentración:</strong> agentes, recursos e infraestructura en centros urbanos.</li>
+            <li><strong>Enfoque de mercado:</strong> la cultura se prioriza por su retorno económico inmediato.</li>
+            <li><strong>Institucionalismo rígido:</strong> baja adaptación a dinámicas comunitarias rurales.</li>
+            <li><strong>Identidad extractiva:</strong> el territorio se usa como marca, no como voz activa.</li>
+          </ul>
+          <p class="meta-chip">Resultado: exclusión estructural de prácticas culturales rurales.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración comparativa entre ciudad y territorio rural conectados">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#F2ECDF"/>
+            <rect x="26" y="64" width="186" height="252" rx="24" fill="#DCE7F2" stroke="#4A7292" stroke-width="3"/>
+            <rect x="52" y="146" width="34" height="136" rx="6" fill="#4A7292"/>
+            <rect x="94" y="112" width="38" height="170" rx="6" fill="#5D86A7"/>
+            <rect x="140" y="168" width="28" height="114" rx="6" fill="#6E9CBC"/>
+            <rect x="174" y="136" width="26" height="146" rx="6" fill="#7BA9C7"/>
+            <rect x="60" y="162" width="10" height="10" rx="2" fill="#DCE7F2"/>
+            <rect x="104" y="126" width="10" height="10" rx="2" fill="#DCE7F2"/>
+            <rect x="148" y="182" width="10" height="10" rx="2" fill="#DCE7F2"/>
+            <path d="M226 186H252" stroke="#C87A55" stroke-width="8" stroke-linecap="round"/>
+            <polygon points="252,186 238,176 238,196" fill="#C87A55"/>
+            <rect x="268" y="64" width="186" height="252" rx="24" fill="#DFEAD8" stroke="#4E7F5E" stroke-width="3"/>
+            <path d="M268 250L322 212L386 244L454 196V316H268Z" fill="#77A15A"/>
+            <path d="M268 282L324 248L388 274L454 236V316H268Z" fill="#5D8C58"/>
+            <rect x="324" y="206" width="76" height="56" rx="10" fill="#FFF4E3" stroke="#3D6A54" stroke-width="3"/>
+            <polygon points="316,210 362,178 408,210" fill="#D78358"/>
+            <rect x="356" y="230" width="14" height="32" rx="3" fill="#3D6A54"/>
+            <circle cx="330" cy="106" r="22" fill="#F4C65D"/>
+            <path d="M330 126V144" stroke="#F4C65D" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s3">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Contexto local</p>
+          <h2 class="slide-title">¿Y en un territorio rural productivo?</h2>
+          <p class="slide-lead">La escuela forma para la productividad agrícola, pero la creación artística queda reducida a eventos puntuales. El reto es volverla práctica cotidiana.</p>
+          <div class="grid-cards">
+            <div class="card">Colegio agroindustrial con aprox. 110 estudiantes.</div>
+            <div class="card">Currículo centrado en eficiencia y rendimiento productivo.</div>
+            <div class="card">Cultura vista como celebración anual, no como proceso.</div>
+            <div class="card">Conectividad baja y acceso limitado a circuitos creativos.</div>
+          </div>
+          <p class="quote">La cultura debe pasar de evento esporádico a hábito de creación comunitaria.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración de colegio rural con señal de conectividad baja">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#CBE4DF"/>
+            <path d="M0 228L84 186L162 216L244 170L342 206L480 164V360H0Z" fill="#6BA177"/>
+            <path d="M0 270L90 230L168 258L252 220L348 252L480 214V360H0Z" fill="#4E885F"/>
+            <rect x="146" y="176" width="186" height="106" rx="14" fill="#FFF4E4" stroke="#2F5C4E" stroke-width="3"/>
+            <polygon points="136,182 239,126 342,182" fill="#CF7C54"/>
+            <rect x="224" y="220" width="30" height="62" rx="4" fill="#2F5C4E"/>
+            <rect x="176" y="206" width="30" height="24" rx="4" fill="#AED2DE"/>
+            <rect x="272" y="206" width="30" height="24" rx="4" fill="#AED2DE"/>
+            <circle cx="96" cy="270" r="20" fill="#3F6F53"/>
+            <rect x="92" y="270" width="8" height="26" rx="2" fill="#7A553F"/>
+            <circle cx="392" cy="262" r="22" fill="#3F6F53"/>
+            <rect x="388" y="262" width="8" height="28" rx="2" fill="#7A553F"/>
+            <path d="M376 112C390 96 416 96 430 112" stroke="#F2F8FA" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <path d="M366 90C388 66 426 66 448 90" stroke="#F2F8FA" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <circle cx="358" cy="124" r="8" fill="#F2F8FA"/>
+            <path d="M346 112L368 136" stroke="#D76A61" stroke-width="7" stroke-linecap="round"/>
+            <path d="M346 136L368 112" stroke="#D76A61" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s4">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Propuesta</p>
+          <h2 class="slide-title">Territorio Creador</h2>
+          <p class="slide-lead">Laboratorio de producción cultural rural que integra artes interdisciplinarias, diseño y memoria territorial para convertir a niñas, niños y jóvenes en autores de su propio relato.</p>
+          <ul class="list">
+            <li>Articula escuela, familias y comunidad como ecosistema creativo.</li>
+            <li>Traduce experiencias rurales en lenguaje artístico contemporáneo.</li>
+            <li>Fortalece identidad local con enfoque pedagógico y de derechos.</li>
+          </ul>
+          <p class="meta-chip">De consumidores culturales a sujetos creadores.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración de bombillo con mapa y elementos creativos">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#E9C27B"/>
+            <rect x="0" y="280" width="480" height="80" fill="#B67A45"/>
+            <circle cx="240" cy="156" r="88" fill="#F8D88E"/>
+            <path d="M194 212H286V248C286 266 272 280 254 280H226C208 280 194 266 194 248Z" fill="#F6EBD8"/>
+            <rect x="206" y="246" width="68" height="10" rx="5" fill="#345347"/>
+            <rect x="212" y="262" width="56" height="9" rx="4.5" fill="#345347"/>
+            <path d="M188 158C188 126 212 100 244 100C276 100 300 126 300 158C300 182 288 200 274 212H214C200 200 188 182 188 158Z" fill="#FFF7E7" stroke="#345347" stroke-width="4"/>
+            <circle cx="228" cy="152" r="4" fill="#345347"/>
+            <circle cx="258" cy="152" r="4" fill="#345347"/>
+            <path d="M228 170C236 178 250 178 258 170" stroke="#345347" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M242 74V92" stroke="#FFF1CC" stroke-width="8" stroke-linecap="round"/>
+            <path d="M170 106L184 120" stroke="#FFF1CC" stroke-width="8" stroke-linecap="round"/>
+            <path d="M314 106L300 120" stroke="#FFF1CC" stroke-width="8" stroke-linecap="round"/>
+            <path d="M152 194H172" stroke="#FFF1CC" stroke-width="8" stroke-linecap="round"/>
+            <path d="M312 194H332" stroke="#FFF1CC" stroke-width="8" stroke-linecap="round"/>
+            <rect x="86" y="242" width="74" height="58" rx="12" fill="#F6EBD8" stroke="#9A5F39" stroke-width="3"/>
+            <path d="M98 280H148" stroke="#9A5F39" stroke-width="4" stroke-linecap="round"/>
+            <path d="M108 264L122 250L138 266" stroke="#4E875D" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="322" y="238" width="74" height="62" rx="12" fill="#F6EBD8" stroke="#9A5F39" stroke-width="3"/>
+            <rect x="336" y="252" width="18" height="32" rx="3" fill="#4A7498"/>
+            <polygon points="354,252 376,242 376,284 354,284" fill="#D97D57"/>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s5">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Cambio de enfoque</p>
+          <h2 class="slide-title">Del territorio productivo al territorio narrado</h2>
+          <p class="slide-lead">La producción agrícola sigue siendo base económica, pero se expande con producción simbólica, memoria y sentido colectivo.</p>
+          <ul class="list">
+            <li><strong>Producción agrícola:</strong> saber técnico, trabajo y sostenibilidad local.</li>
+            <li><strong>Producción simbólica:</strong> relatos, estéticas y lenguajes propios.</li>
+            <li><strong>Identidad activa:</strong> comunidad que interpreta y transforma su territorio.</li>
+          </ul>
+          <p class="quote">Democratizar la creación, no solo el acceso a oferta cultural.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración de transición de producción agrícola hacia narración cultural">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#D6E9E6"/>
+            <rect x="26" y="74" width="150" height="218" rx="20" fill="#F3FAF7" stroke="#4A7D66" stroke-width="3"/>
+            <rect x="48" y="98" width="106" height="32" rx="9" fill="#8DBB6D"/>
+            <path d="M58 252C66 222 78 204 100 178C122 204 134 222 142 252" fill="#71A95E"/>
+            <path d="M84 252V148" stroke="#4E7F3F" stroke-width="4"/>
+            <path d="M102 252V144" stroke="#4E7F3F" stroke-width="4"/>
+            <path d="M120 252V152" stroke="#4E7F3F" stroke-width="4"/>
+            <circle cx="238" cy="184" r="50" fill="#F7E5C2"/>
+            <path d="M206 184H178" stroke="#347061" stroke-width="8" stroke-linecap="round"/>
+            <polygon points="178,184 192,174 192,194" fill="#347061"/>
+            <path d="M270 184H298" stroke="#347061" stroke-width="8" stroke-linecap="round"/>
+            <polygon points="298,184 284,174 284,194" fill="#347061"/>
+            <path d="M220 200C228 182 246 176 260 188C270 196 274 210 270 222C260 236 236 236 224 224" fill="none" stroke="#C97855" stroke-width="6" stroke-linecap="round"/>
+            <rect x="306" y="74" width="148" height="218" rx="20" fill="#FFF6EA" stroke="#4A7192" stroke-width="3"/>
+            <rect x="330" y="104" width="100" height="156" rx="10" fill="#FFFFFF" stroke="#4A7192" stroke-width="3"/>
+            <line x1="346" y1="132" x2="414" y2="132" stroke="#86A9BF" stroke-width="4" stroke-linecap="round"/>
+            <line x1="346" y1="156" x2="414" y2="156" stroke="#86A9BF" stroke-width="4" stroke-linecap="round"/>
+            <line x1="346" y1="180" x2="398" y2="180" stroke="#86A9BF" stroke-width="4" stroke-linecap="round"/>
+            <path d="M346 224L366 206L384 218L408 194" stroke="#C97855" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="366" cy="206" r="4" fill="#C97855"/>
+            <circle cx="384" cy="218" r="4" fill="#C97855"/>
+            <circle cx="408" cy="194" r="4" fill="#C97855"/>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s6">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Metodología</p>
+          <h2 class="slide-title">Diseño cultural participativo</h2>
+          <p class="slide-lead">Adaptación del Design Thinking al entorno rural: ciclos cortos, participación comunitaria, validación pedagógica y producción visible.</p>
+          <div class="grid-cards">
+            <div class="card">Escuchar: mapa sensible del territorio.</div>
+            <div class="card">Co-crear: laboratorio de ideas con estudiantes.</div>
+            <div class="card">Prototipar: piezas narrativas de bajo costo.</div>
+            <div class="card">Mostrar: socialización pública y retroalimentación.</div>
+          </div>
+          <p class="meta-chip">Iterar con la comunidad, no solo para la comunidad.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración circular de cinco fases metodológicas">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#D7E7F1"/>
+            <line x1="240" y1="180" x2="240" y2="76" stroke="#5F8EAB" stroke-width="5"/>
+            <line x1="240" y1="180" x2="336" y2="132" stroke="#5F8EAB" stroke-width="5"/>
+            <line x1="240" y1="180" x2="304" y2="276" stroke="#5F8EAB" stroke-width="5"/>
+            <line x1="240" y1="180" x2="176" y2="276" stroke="#5F8EAB" stroke-width="5"/>
+            <line x1="240" y1="180" x2="144" y2="132" stroke="#5F8EAB" stroke-width="5"/>
+            <circle cx="240" cy="180" r="54" fill="#FFFFFF" stroke="#4E7A96" stroke-width="4"/>
+            <text x="240" y="174" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="15" fill="#2E536B" font-weight="700">CREAR</text>
+            <text x="240" y="196" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="11" fill="#4B7088">en colectivo</text>
+            <circle cx="240" cy="74" r="34" fill="#F6CB77"/>
+            <circle cx="336" cy="132" r="34" fill="#8FC7A3"/>
+            <circle cx="304" cy="278" r="34" fill="#E2A086"/>
+            <circle cx="176" cy="278" r="34" fill="#B6D3E4"/>
+            <circle cx="144" cy="132" r="34" fill="#EEDFA9"/>
+            <text x="240" y="78" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" fill="#6C4D19" font-weight="700">ESCUCHAR</text>
+            <text x="336" y="136" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" fill="#2F6044" font-weight="700">CO-CREAR</text>
+            <text x="304" y="282" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" fill="#7E4232" font-weight="700">PROTOTIPO</text>
+            <text x="176" y="282" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" fill="#3D6176" font-weight="700">PROBAR</text>
+            <text x="144" y="136" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" fill="#786625" font-weight="700">MOSTRAR</text>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s7">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Arquitectura del laboratorio</p>
+          <h2 class="slide-title">Componentes creativos</h2>
+          <p class="slide-lead">Cuatro lenguajes para traducir territorio en obra: visual, literario, escénico y audiovisual, con integración curricular y producto final comunitario.</p>
+          <ul class="list">
+            <li><strong>Artes plásticas:</strong> cartografías afectivas y paisaje narrado.</li>
+            <li><strong>Literatura:</strong> relatos campesinos contemporáneos.</li>
+            <li><strong>Artes escénicas:</strong> corporalidad, oficio y memoria viva.</li>
+            <li><strong>Audiovisual:</strong> micro relatos documentales de bajo recurso.</li>
+          </ul>
+          <p class="meta-chip">Interdisciplinariedad para sostener procesos, no solo productos.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración con cuatro módulos artísticos conectados">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#D7E8DF"/>
+            <line x1="240" y1="180" x2="146" y2="108" stroke="#5C8A72" stroke-width="6" stroke-linecap="round"/>
+            <line x1="240" y1="180" x2="334" y2="108" stroke="#5C8A72" stroke-width="6" stroke-linecap="round"/>
+            <line x1="240" y1="180" x2="146" y2="250" stroke="#5C8A72" stroke-width="6" stroke-linecap="round"/>
+            <line x1="240" y1="180" x2="334" y2="250" stroke="#5C8A72" stroke-width="6" stroke-linecap="round"/>
+            <rect x="72" y="54" width="148" height="108" rx="18" fill="#F5D7A5" stroke="#7F6136" stroke-width="3"/>
+            <rect x="260" y="54" width="148" height="108" rx="18" fill="#BFD8E9" stroke="#4D708A" stroke-width="3"/>
+            <rect x="72" y="198" width="148" height="108" rx="18" fill="#E7B29E" stroke="#8A5146" stroke-width="3"/>
+            <rect x="260" y="198" width="148" height="108" rx="18" fill="#B9D4A6" stroke="#5A7A4A" stroke-width="3"/>
+            <circle cx="240" cy="180" r="36" fill="#FFFFFF" stroke="#5C8A72" stroke-width="4"/>
+            <text x="240" y="175" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="12" fill="#315947" font-weight="700">LAB</text>
+            <text x="240" y="191" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" fill="#547868">CREATIVO</text>
+            <circle cx="146" cy="108" r="22" fill="#CF7B57"/>
+            <path d="M132 120C138 108 154 104 160 116" stroke="#F6EBD8" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <rect x="296" y="88" width="76" height="40" rx="8" fill="#4F7A99"/>
+            <line x1="308" y1="102" x2="360" y2="102" stroke="#D8E7F0" stroke-width="3"/>
+            <line x1="308" y1="116" x2="350" y2="116" stroke="#D8E7F0" stroke-width="3"/>
+            <path d="M102 254H190" stroke="#4E7F5A" stroke-width="7" stroke-linecap="round"/>
+            <path d="M102 270H176" stroke="#4E7F5A" stroke-width="7" stroke-linecap="round"/>
+            <rect x="296" y="230" width="78" height="44" rx="8" fill="#37554C"/>
+            <polygon points="332,244 332,260 348,252" fill="#E8E0C3"/>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s8">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Valor diferencial</p>
+          <h2 class="slide-title">Aporte frente a distritos creativos</h2>
+          <p class="slide-lead">El proyecto propone una lógica de base: primero desarrollar sujetos creadores; después escalar hacia dinámicas económicas o de clúster.</p>
+          <ul class="list">
+            <li>Activa la creación antes que la transacción.</li>
+            <li>Amplía la economía cultural al ámbito rural.</li>
+            <li>Fortalece ciudadanía cultural y agencia local.</li>
+            <li>Integra derecho cultural con práctica pedagógica.</li>
+          </ul>
+          <p class="quote">Antes de crear un distrito creativo, hay que crear sujetos creadores.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración de comunidad sosteniendo semillas creativas">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#E5B09B"/>
+            <rect y="266" width="480" height="94" fill="#C97A57"/>
+            <circle cx="240" cy="152" r="66" fill="#F7E7D5"/>
+            <path d="M182 250C194 214 216 196 240 196C264 196 286 214 298 250" fill="#F7E7D5"/>
+            <circle cx="226" cy="138" r="5" fill="#3C604F"/>
+            <circle cx="254" cy="138" r="5" fill="#3C604F"/>
+            <path d="M226 160C234 168 246 168 254 160" stroke="#3C604F" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M240 146V186" stroke="#3C604F" stroke-width="5" stroke-linecap="round"/>
+            <path d="M240 160C228 150 220 138 218 122C234 122 244 128 252 140" fill="#86AE6C"/>
+            <path d="M240 160C252 150 260 138 262 122C246 122 236 128 228 140" fill="#86AE6C"/>
+            <circle cx="114" cy="258" r="30" fill="#F2C39E"/>
+            <circle cx="366" cy="258" r="30" fill="#F2C39E"/>
+            <rect x="92" y="286" width="44" height="34" rx="14" fill="#C45F4E"/>
+            <rect x="344" y="286" width="44" height="34" rx="14" fill="#C45F4E"/>
+            <circle cx="106" cy="254" r="3" fill="#74453C"/>
+            <circle cx="122" cy="254" r="3" fill="#74453C"/>
+            <circle cx="358" cy="254" r="3" fill="#74453C"/>
+            <circle cx="374" cy="254" r="3" fill="#74453C"/>
+            <path d="M106 266C110 270 118 270 122 266" stroke="#74453C" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M358 266C362 270 370 270 374 266" stroke="#74453C" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <rect x="186" y="284" width="108" height="28" rx="14" fill="#F7E7D5"/>
+            <text x="240" y="303" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="12" font-weight="700" fill="#884A38">CREAR JUNTOS</text>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s9">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Implementación</p>
+          <h2 class="slide-title">Próximos pasos</h2>
+          <p class="slide-lead">Ruta operativa para pasar de propuesta a programa institucional escalable, medible y sostenible en el territorio.</p>
+          <ol class="steps">
+            <li>Formulación técnica en clave MIPG y planeación institucional.</li>
+            <li>Definición de indicadores de creación, participación e impacto.</li>
+            <li>Diseño metodológico detallado por ciclos y módulos.</li>
+            <li>Gestión de aliados académicos, culturales y comunitarios.</li>
+          </ol>
+          <p class="meta-chip">Inicio sugerido: piloto semestral con evaluación de continuidad.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Ilustración de hoja de ruta con hitos y banderas">
+          <svg class="art" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="480" height="360" fill="#CFE6DB"/>
+            <path d="M34 304C96 274 150 272 202 288C254 304 316 302 444 220" stroke="#F5E8CE" stroke-width="16" fill="none" stroke-linecap="round"/>
+            <circle cx="90" cy="284" r="18" fill="#F5E8CE"/>
+            <circle cx="164" cy="284" r="18" fill="#F5E8CE"/>
+            <circle cx="238" cy="292" r="18" fill="#F5E8CE"/>
+            <circle cx="322" cy="284" r="18" fill="#F5E8CE"/>
+            <circle cx="426" cy="230" r="18" fill="#F5E8CE"/>
+            <rect x="84" y="232" width="6" height="38" fill="#F5E8CE"/>
+            <polygon points="90,232 120,242 90,252" fill="#CF7D57"/>
+            <rect x="316" y="226" width="6" height="40" fill="#F5E8CE"/>
+            <polygon points="322,226 352,236 322,246" fill="#F0BE63"/>
+            <rect x="420" y="176" width="6" height="40" fill="#F5E8CE"/>
+            <polygon points="426,176 456,186 426,196" fill="#4B7898"/>
+            <path d="M56 132L114 102L176 120L246 90L318 114L404 78" stroke="#7FB299" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <circle cx="114" cy="102" r="7" fill="#7FB299"/>
+            <circle cx="246" cy="90" r="7" fill="#7FB299"/>
+            <circle cx="404" cy="78" r="7" fill="#7FB299"/>
+            <text x="84" y="288" font-family="Work Sans, sans-serif" font-size="10" fill="#567B67" font-weight="700">01</text>
+            <text x="158" y="288" font-family="Work Sans, sans-serif" font-size="10" fill="#567B67" font-weight="700">02</text>
+            <text x="232" y="296" font-family="Work Sans, sans-serif" font-size="10" fill="#567B67" font-weight="700">03</text>
+            <text x="316" y="288" font-family="Work Sans, sans-serif" font-size="10" fill="#567B67" font-weight="700">04</text>
+            <text x="420" y="234" font-family="Work Sans, sans-serif" font-size="10" fill="#567B67" font-weight="700">05</text>
+          </svg>
+        </figure>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsHost = document.getElementById("dots");
+      const counter = document.getElementById("counter");
+      const prevButton = document.getElementById("nav-prev");
+      const nextButton = document.getElementById("nav-next");
+      const progressFill = document.getElementById("progress-fill");
+      const deck = document.getElementById("deck");
+      const total = slides.length;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const transitionMs = reducedMotion ? 0 : 620;
+      let current = 0;
+      let animating = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      const dotButtons = [];
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function setSlideAccessibility(activeIndex) {
+        slides.forEach((slide, index) => {
+          const isActive = index === activeIndex;
+          slide.setAttribute("aria-hidden", String(!isActive));
+          if (isActive) {
+            slide.removeAttribute("inert");
+          } else {
+            slide.setAttribute("inert", "");
+          }
+        });
+      }
+
+      function updateUi() {
+        counter.textContent = `${pad(current + 1)} / ${pad(total)}`;
+        progressFill.style.width = `${((current + 1) / total) * 100}%`;
+        prevButton.disabled = current === 0;
+        nextButton.disabled = current === total - 1;
+        dotButtons.forEach((dot, index) => {
+          const active = index === current;
+          dot.classList.toggle("active", active);
+          dot.setAttribute("aria-current", String(active));
+        });
+      }
+
+      function goTo(nextIndex) {
+        if (animating || nextIndex === current || nextIndex < 0 || nextIndex >= total) {
+          return;
+        }
+
+        animating = true;
+        const previousIndex = current;
+        const direction = nextIndex > current ? 1 : -1;
+        const previousSlide = slides[previousIndex];
+        const nextSlide = slides[nextIndex];
+
+        previousSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+        nextSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+
+        previousSlide.classList.remove("is-active");
+        previousSlide.classList.add(direction > 0 ? "is-exit-left" : "is-exit-right");
+
+        nextSlide.classList.add("is-active", direction > 0 ? "from-right" : "from-left");
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            nextSlide.classList.remove("from-right", "from-left");
+          });
+        });
+
+        current = nextIndex;
+        setSlideAccessibility(current);
+        updateUi();
+
+        window.setTimeout(() => {
+          previousSlide.classList.remove("is-exit-left", "is-exit-right");
+          animating = false;
+        }, transitionMs + 32);
+      }
+
+      slides.forEach((slide, index) => {
+        slide.setAttribute("role", "group");
+        slide.setAttribute("aria-roledescription", "diapositiva");
+        slide.setAttribute("aria-label", `${index + 1} de ${total}`);
+        if (index !== 0) {
+          slide.classList.remove("is-active");
+        }
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = index === 0 ? "dot active" : "dot";
+        dot.setAttribute("aria-label", `Ir a diapositiva ${index + 1}`);
+        dot.setAttribute("aria-current", String(index === 0));
+        dot.addEventListener("click", (event) => {
+          event.stopPropagation();
+          goTo(index);
+        });
+        dotsHost.appendChild(dot);
+        dotButtons.push(dot);
+      });
+
+      setSlideAccessibility(0);
+      updateUi();
+
+      prevButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current - 1);
+      });
+
+      nextButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current + 1);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const tag = event.target && event.target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || event.target.isContentEditable) {
+          return;
+        }
+
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          goTo(current + 1);
+          return;
+        }
+
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          goTo(current - 1);
+          return;
+        }
+
+        if (event.key === "Home") {
+          event.preventDefault();
+          goTo(0);
+          return;
+        }
+
+        if (event.key === "End") {
+          event.preventDefault();
+          goTo(total - 1);
+        }
+      });
+
+      deck.addEventListener("click", (event) => {
+        if (event.target.closest("button") || event.target.closest("[data-stop-nav]")) {
+          return;
+        }
+
+        const ratio = event.clientX / window.innerWidth;
+        if (ratio < 0.2) {
+          goTo(current - 1);
+          return;
+        }
+        goTo(current + 1);
+      });
+
+      deck.addEventListener("touchstart", (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      }, { passive: true });
+
+      deck.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        if (Math.abs(dx) < 45 || Math.abs(dy) > 70) {
+          return;
+        }
+        goTo(dx < 0 ? current + 1 : current - 1);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
