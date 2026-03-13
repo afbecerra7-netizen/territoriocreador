@@ -213,6 +213,23 @@
       color: var(--line-accent);
     }
 
+    .refs {
+      list-style: none;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .refs li {
+      border-radius: var(--radius-md);
+      padding: 0.68rem 0.78rem;
+      background: rgba(255, 255, 255, 0.52);
+      border: 1px solid rgba(255, 255, 255, 0.68);
+      color: var(--panel-ink);
+      font-size: clamp(0.8rem, 1.15vw, 0.88rem);
+      line-height: 1.35;
+      box-shadow: var(--shadow-card);
+    }
+
     .grid-cards {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -405,6 +422,13 @@
       --chip-ink: #f7dfb0;
     }
 
+    #s6 .slide-title,
+    #s9 .slide-title,
+    #s10 .slide-title {
+      font-size: clamp(1.68rem, 3.1vw, 2.9rem);
+      line-height: 1.08;
+    }
+
     #s7 {
       background: linear-gradient(140deg, #20342e 0%, #35544a 52%, #4a6856 100%);
       --panel-bg: rgba(15, 30, 25, 0.7);
@@ -439,6 +463,18 @@
       --chip-bg: rgba(47, 107, 88, 0.15);
       --chip-border: rgba(47, 107, 88, 0.38);
       --chip-ink: #275347;
+    }
+
+    #s10 {
+      background: linear-gradient(132deg, #f0e5cf 0%, #efe8d9 55%, #d8e0db 100%);
+      --panel-bg: rgba(255, 255, 255, 0.72);
+      --panel-ink: #233636;
+      --panel-muted: rgba(35, 54, 54, 0.78);
+      --kicker: #2d6a59;
+      --line-accent: #2d6a59;
+      --chip-bg: rgba(45, 106, 89, 0.12);
+      --chip-border: rgba(45, 106, 89, 0.35);
+      --chip-ink: #295446;
     }
 
     .slide.is-active .content-card > * {
@@ -715,10 +751,10 @@
   </style>
 </head>
 <body>
-  <div id="progress" aria-hidden="true"><span id="progress-fill"></span></div>
+  <div id="progress" aria-hidden="true"><span id="progress-fill" style="width: 10%;"></span></div>
   <button id="nav-prev" aria-label="Diapositiva anterior">←</button>
   <button id="nav-next" aria-label="Diapositiva siguiente">→</button>
-  <div id="counter" aria-live="polite">01 / 09</div>
+  <div id="counter" aria-live="polite">01 / 10</div>
   <div id="dots" role="navigation" aria-label="Navegación de diapositivas"></div>
   <div id="hint">← → para navegar · clic para avanzar · arrastra para deslizar</div>
   <p class="sr-only" id="nav-help">Usa flechas izquierda y derecha para mover entre diapositivas.</p>
@@ -727,12 +763,17 @@
     <section class="slide is-active" id="s1">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Proyecto</p>
-          <h1 class="slide-title">Territorio Creador: laboratorio de producción cultural rural</h1>
-          <p class="slide-lead">¿Qué lograríamos si, en lugar de replicar mercados culturales urbanos, nos enfocamos en formar sujetos creadores en el campo?</p>
-          <p class="meta-chip">Vereda El Carmen · Duitama, Boyacá · Propuesta de Andrés Felipe Becerra Pedraza</p>
+          <p class="kicker">Visita de reconocimiento</p>
+          <h1 class="slide-title">La escuela funciona como nodo territorial de la vereda</h1>
+          <p class="slide-lead">Durante la visita a El Carmen observé que la I.E.A. Agroindustrial Francisco Medrano no es solo un colegio: organiza tiempos, recorridos y formas de encuentro entre jóvenes de distintas veredas rurales cercanas a Duitama.</p>
+          <ul class="list">
+            <li><strong>Escala real:</strong> cerca de 132 estudiantes y 10 docentes.</li>
+            <li><strong>Movilidad compartida:</strong> docentes y estudiantes usan las mismas rutas escolares desde Duitama.</li>
+            <li><strong>Centralidad cotidiana:</strong> desayuno, almuerzo y jornada hasta las 3:30 p. m.</li>
+          </ul>
+          <p class="meta-chip">Primer hallazgo: cualquier propuesta debe entrar por la vida escolar concreta del territorio.</p>
         </article>
-        <figure class="art-wrap" role="img" aria-label="Fotografía panorámica del territorio rural donde se desarrollará el proyecto">
+        <figure class="art-wrap" role="img" aria-label="Fotografía de la institución educativa ubicada en la vereda El Carmen">
           <img class="art" src="./assets/fotos/slides/slide-01.jpg" alt="" loading="eager" decoding="async"/>
         </figure>
       </div>
@@ -741,19 +782,17 @@
     <section class="slide" id="s2">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Justificación</p>
-          <h2 class="slide-title">Derecho cultural y brecha urbano-rural</h2>
-          <p class="slide-lead">Aunque la cultura es un derecho fundamental, en la práctica rural suele reducirse a eventos aislados sin continuidad.</p>
+          <p class="kicker">Hallazgos de campo</p>
+          <h2 class="slide-title">La formación técnica convive con un territorio vivo</h2>
+          <p class="slide-lead">La experiencia educativa está marcada por la vocación agroindustrial, pero también por una relación constante con el entorno natural y los procesos ambientales de la vereda.</p>
           <ul class="list">
-            <li><strong>Marco legal:</strong> la Constitución reconoce la cultura como derecho, pero su garantía es desigual.</li>
-            <li><strong>Referencia urbana:</strong> modelos como Distritos Creativos (Bogotá 2019-2038) dependen de infraestructura urbana.</li>
-            <li><strong>Realidad local:</strong> en El Carmen hay baja tecnología y conectividad limitada.</li>
-            <li><strong>Riesgo:</strong> la cultura se mantiene como conmemoración anual y no como práctica cotidiana.</li>
+            <li><strong>Énfasis técnico:</strong> la formación se concentra en procesos agroindustriales, sobre todo lácteos y cárnicos.</li>
+            <li><strong>Entorno activo:</strong> hay avistamiento de aves, senderismo y siembra de frailejones con Parques de Colombia.</li>
+            <li><strong>Aprendizaje situado:</strong> la naturaleza ya hace parte de la experiencia pedagógica.</li>
           </ul>
-          <p class="meta-chip">Giro propuesto: pasar de una visión mercantil a la formación de sujetos creadores.</p>
+          <p class="meta-chip">Segundo hallazgo: el territorio ya enseña, solo falta abrir otra forma de leerlo.</p>
         </article>
-        <!-- S2: Ciudad con recursos culturales vs campo excluido — desequilibrio urbano-rural -->
-        <figure class="art-wrap" role="img" aria-label="Fotografía de valle rural bajo nubosidad">
+        <figure class="art-wrap" role="img" aria-label="Fotografía del paisaje rural que rodea la vereda El Carmen">
           <img class="art" src="./assets/fotos/slides/slide-02.jpg" alt="" loading="lazy" decoding="async"/>
         </figure>
       </div>
@@ -762,19 +801,18 @@
     <section class="slide" id="s3">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Problema</p>
-          <h2 class="slide-title">El silencio impuesto y la no creación cotidiana</h2>
-          <p class="slide-lead">En la vereda El Carmen la cultura no se habita como práctica viva. Eso limita la expresión juvenil y la producción simbólica local.</p>
+          <p class="kicker">Oportunidad detectada</p>
+          <h2 class="slide-title">Hay disposición institucional, pero faltan mediaciones creativas</h2>
+          <p class="slide-lead">El colegio tiene salón comunal, ferias, eventos y algunos murales, pero las artes formales siguen siendo limitadas y concentradas en ejercicios básicos.</p>
           <div class="grid-cards">
-            <div class="card">La cultura aparece como actividad eventual, no como proceso sostenido.</div>
-            <div class="card">Existe desconexión entre identidad territorial y aspiraciones juveniles.</div>
-            <div class="card">Predomina el “deber ser” heredado del trabajo productivo tradicional.</div>
-            <div class="card">Se reducen los lenguajes para narrar la propia realidad rural.</div>
+            <div class="card">El docente de educación física asume también las actividades de artes.</div>
+            <div class="card">Predominan mandalas, tarjetas y ejercicios iniciales de color.</div>
+            <div class="card">Docentes y estudiantes mostraron apertura frente a procesos creativos nuevos.</div>
+            <div class="card">La vereda ofrece un escenario favorable para investigación-creación situada.</div>
           </div>
-          <p class="quote">El reto es pasar de la predestinación productiva a la creación cotidiana con sentido propio.</p>
+          <p class="quote">El problema no es la ausencia de cultura, sino la falta de espacios para traducirla en creación propia.</p>
         </article>
-        <!-- S3: Escuela agroindustrial — edificio rural, cultivos, WiFi sin señal, calendario con un solo evento -->
-        <figure class="art-wrap" role="img" aria-label="Fotografía de frailejones en el páramo">
+        <figure class="art-wrap" role="img" aria-label="Fotografía de frailejones en el entorno natural cercano a la vereda">
           <img class="art" src="./assets/fotos/slides/slide-03.jpg" alt="" loading="lazy" decoding="async"/>
         </figure>
       </div>
@@ -783,19 +821,19 @@
     <section class="slide" id="s4">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Propuesta y Objetivos</p>
-          <h2 class="slide-title">Del espectador al autor del territorio</h2>
-          <p class="slide-lead">El objetivo principal es fortalecer capacidades creativas en estudiantes de la I.E.A. Francisco Medrano mediante diseño participativo.</p>
+          <p class="kicker">Actores del territorio</p>
+          <h2 class="slide-title">La propuesta depende de una red que ya existe</h2>
+          <p class="slide-lead">El laboratorio no parte de cero: puede sostenerse si articula actores escolares, comunitarios e institucionales con funciones claras.</p>
           <ul class="list">
-            <li>Poner en marcha un laboratorio interdisciplinario de creación.</li>
-            <li>Adaptar Design Thinking a la sensibilidad y los tiempos del campo.</li>
-            <li>Construir nuevas narrativas territoriales desde la óptica juvenil.</li>
-            <li>Abrir espacios de encuentro comunitario con el arte como puente de diálogo.</li>
+            <li><strong>Rectoría:</strong> habilita PEI, tiempos, espacios y legitimidad institucional.</li>
+            <li><strong>Docentes:</strong> median pedagógicamente y ayudan a leer el contexto escolar.</li>
+            <li><strong>Estudiantes:</strong> son el núcleo activo del proceso, no receptores pasivos.</li>
+            <li><strong>JAC y familias:</strong> aportan memorias, relatos, saberes y vínculo veredal.</li>
+            <li><strong>CULTURAMA:</strong> puede proyectar continuidad y articulación municipal.</li>
           </ul>
-          <p class="meta-chip">Meta: que el joven rural pase de espectador de su tradición a autor de su territorio.</p>
+          <p class="meta-chip">Fortaleza del proyecto: la comunidad puede participar como coproductora del proceso.</p>
         </article>
-        <!-- S4: Laboratorio creativo — frasco con elementos artísticos, niños en torno -->
-        <figure class="art-wrap" role="img" aria-label="Fotografía de laguna de páramo entre montañas">
+        <figure class="art-wrap" role="img" aria-label="Fotografía de laguna de páramo del territorio rural">
           <img class="art" src="./assets/fotos/slides/slide-04.jpg" alt="" loading="lazy" decoding="async"/>
         </figure>
       </div>
@@ -804,19 +842,18 @@
     <section class="slide" id="s5">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Marco de Referencia</p>
-          <h2 class="slide-title">Permanencia del proceso</h2>
-          <p class="slide-lead">El proyecto se alinea con el Modelo Integrado de Planeación y Gestión para convertir la gestión cultural en valor público con resultados sociales tangibles.</p>
-          <ul class="list">
-            <li><strong>Gestión del conocimiento:</strong> conecta cultura, innovación e institucionalidad rural.</li>
-            <li><strong>Adaptación estratégica:</strong> traslada aprendizajes de distritos creativos hacia innovación social educativa.</li>
-            <li><strong>Integración escolar:</strong> se articula con el PEI del colegio y políticas culturales locales.</li>
-            <li><strong>Sostenibilidad:</strong> busca evitar que la propuesta recaiga en eventos aislados.</li>
-          </ul>
-          <p class="quote">No es una iniciativa suelta: es un proceso institucional para permanecer en el tiempo.</p>
+          <p class="kicker">Problema y pregunta</p>
+          <h2 class="slide-title">La cultura está viva, pero no se vuelve relato</h2>
+          <p class="slide-lead">En El Carmen la cultura aparece en el trabajo rural, la oralidad, la memoria y la vida comunitaria, pero no siempre encuentra espacios donde los jóvenes puedan narrarla desde su propia experiencia.</p>
+          <div class="grid-cards">
+            <div class="card">No hay ausencia de cultura: hay escasez de mediaciones artísticas.</div>
+            <div class="card">La experiencia cotidiana del territorio rara vez se vuelve imagen, relato o acción propia.</div>
+            <div class="card">El arte rural suele valorarse por su efecto económico, no por su producción de sentido.</div>
+            <div class="card">Pregunta guía: ¿cómo ayudar a que los jóvenes expresen y narren la cultura viva de su territorio?</div>
+          </div>
+          <p class="quote">El reto es que los jóvenes no solo habiten el territorio, sino que también puedan narrarlo.</p>
         </article>
-        <!-- S5: Del territorio productivo al narrado — dos paneles con flecha de transformación -->
-        <figure class="art-wrap" role="img" aria-label="Fotografía de laguna alta con nubes densas">
+        <figure class="art-wrap" role="img" aria-label="Fotografía de laguna alta y paisaje andino">
           <img class="art" src="./assets/fotos/slides/slide-05.jpg" alt="" loading="lazy" decoding="async"/>
         </figure>
       </div>
@@ -825,19 +862,17 @@
     <section class="slide" id="s6">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Metodología</p>
-          <h2 class="slide-title">Diseño cultural participativo</h2>
-          <p class="slide-lead">El diseño se asume como semilla: no impone soluciones, co-crea con la comunidad en cinco etapas adaptadas al contexto rural.</p>
-          <div class="grid-cards">
-            <div class="card"><strong>Empatizar:</strong> caminatas territoriales y mapeos emocionales.</div>
-            <div class="card"><strong>Definir:</strong> historias posibles y tensiones de la vereda.</div>
-            <div class="card"><strong>Idear:</strong> juego interdisciplinario y construcción colectiva de sentido.</div>
-            <div class="card"><strong>Prototipar:</strong> maquetas, bocetos, ensayos y talleres de bajo costo.</div>
-            <div class="card"><strong>Socializar:</strong> devolución comunitaria para continuidad real.</div>
-          </div>
-          <p class="meta-chip">Diseñar con la comunidad, no para la comunidad.</p>
+          <p class="kicker">Propuesta</p>
+          <h2 class="slide-title">Un laboratorio de expresión cultural rural</h2>
+          <p class="slide-lead">La propuesta no busca llevar cultura desde afuera, sino generar mediaciones artísticas para que los estudiantes reconozcan, expresen y visibilicen la cultura viva que ya existe en la vereda.</p>
+          <ul class="list">
+            <li><strong>Enfoque:</strong> fortalecer capacidades creativas y expresivas en la media rural.</li>
+            <li><strong>Materia prima:</strong> vida cotidiana, memorias, trabajo, recorridos y relaciones comunitarias.</li>
+            <li><strong>Sentido:</strong> pasar del territorio entendido solo como producción al territorio como narración.</li>
+          </ul>
+          <p class="meta-chip">La creación se plantea como herramienta de exploración, memoria y elaboración simbólica.</p>
         </article>
-        <figure class="art-wrap" role="img" aria-label="Fotografía de campo de frailejones en neblina">
+        <figure class="art-wrap" role="img" aria-label="Fotografía de paisaje de páramo con neblina">
           <img class="art" src="./assets/fotos/slides/slide-06.jpg" alt="" loading="lazy" decoding="async"/>
         </figure>
       </div>
@@ -846,18 +881,19 @@
     <section class="slide" id="s7">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Ejes de creación artística</p>
-          <h2 class="slide-title">Cuatro lenguajes del laboratorio</h2>
-          <p class="slide-lead">El laboratorio se materializa en prácticas artísticas que nacen del territorio y de los recursos disponibles en la comunidad.</p>
-          <ul class="list">
-            <li><strong>Artes plásticas:</strong> cartografías que redescubran el mapa de la vereda.</li>
-            <li><strong>Literatura:</strong> relatos que rescaten el sentir del campesino de hoy.</li>
-            <li><strong>Artes escénicas:</strong> exploración de la corporalidad y el esfuerzo rural.</li>
-            <li><strong>Audiovisual:</strong> micro-relatos grabados con recursos a la mano.</li>
-          </ul>
-          <p class="meta-chip">Interdisciplinariedad con autoría local y memoria viva.</p>
+          <p class="kicker">Metodología</p>
+          <h2 class="slide-title">Cartografía territorial y prototipado social</h2>
+          <p class="slide-lead">La investigación-creación se organiza en dos momentos: primero leer el territorio; después convertir esa lectura en ensayos creativos compartidos.</p>
+          <ol class="steps">
+            <li>Exploración territorial mediante recorridos, observación, escucha y registro.</li>
+            <li>Identificación de narrativas, tensiones, memorias e imágenes del lugar.</li>
+            <li>Creación colectiva con estudiantes a partir de sus hallazgos e intereses.</li>
+            <li>Prototipado creativo con ejercicios de bajo costo y alto valor simbólico.</li>
+            <li>Socialización comunitaria para diálogo, retroalimentación y reconocimiento.</li>
+          </ol>
+          <p class="meta-chip">La cartografía no es solo diagnóstico: es el primer momento creativo del laboratorio.</p>
         </article>
-        <figure class="art-wrap" role="img" aria-label="Fotografía detalle de frailejón">
+        <figure class="art-wrap" role="img" aria-label="Fotografía de vegetación de páramo y frailejones">
           <img class="art" src="./assets/fotos/slides/slide-07.jpg" alt="" loading="lazy" decoding="async"/>
         </figure>
       </div>
@@ -866,16 +902,16 @@
     <section class="slide" id="s8">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Impacto y Diferencial</p>
-          <h2 class="slide-title">Primero formar sujetos creadores</h2>
-          <p class="slide-lead">Se esperan resultados artísticos, pero sobre todo un cambio en la forma en que estudiantes y comunidad perciben y narran su entorno.</p>
+          <p class="kicker">Lenguajes del laboratorio</p>
+          <h2 class="slide-title">Cuatro formas de narrar la vereda</h2>
+          <p class="slide-lead">Los ejes creativos no funcionan como áreas separadas, sino como rutas complementarias para explorar y contar el territorio rural desde distintas sensibilidades.</p>
           <ul class="list">
-            <li>Estudiantes con mayor iniciativa creativa e interés sostenido.</li>
-            <li>Participación comunitaria amplia en muestras y socializaciones.</li>
-            <li>Metodología replicable para otras zonas rurales (a largo plazo).</li>
-            <li>Prioriza formación del ser que crea sobre la rentabilidad inmediata.</li>
+            <li><strong>Artes plásticas:</strong> cartografías sensibles, dibujos e imágenes del entorno vivido.</li>
+            <li><strong>Literatura:</strong> relatos, memorias y voces sobre la vida rural contemporánea.</li>
+            <li><strong>Artes escénicas:</strong> cuerpo, trabajo, ritmos y gestos del campo llevados a escena.</li>
+            <li><strong>Audiovisual:</strong> microrelatos con imagen, sonido y recursos disponibles en la comunidad.</li>
           </ul>
-          <p class="quote">La vereda deja de ser solo territorio productivo para asumirse como territorio narrado.</p>
+          <p class="quote">El territorio también se construye con imágenes, palabras, corporalidades y registros.</p>
         </article>
         <figure class="art-wrap" role="img" aria-label="Fotografía de bosque altoandino y paisaje de páramo">
           <img class="art" src="./assets/fotos/slides/slide-08.jpg" alt="" loading="lazy" decoding="async"/>
@@ -886,18 +922,41 @@
     <section class="slide" id="s9">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">Referencias</p>
-          <h2 class="slide-title">Fuentes del proyecto</h2>
-          <p class="slide-lead">Marco bibliográfico y de política pública que sustenta la propuesta de Territorio Creador.</p>
+          <p class="kicker">Resultados y proyección</p>
+          <h2 class="slide-title">Cambiar la relación con el territorio</h2>
+          <p class="slide-lead">El proyecto espera resultados creativos concretos, pero sobre todo una transformación en la forma en que estudiantes y comunidad reconocen la vereda como espacio legítimo de expresión.</p>
           <ul class="list">
-            <li>Crawshaw, J., &amp; Gkartzios, M. (2015). <em>Getting to know the island: Artistic experiments in rural community development</em>. <em>Journal of Rural Studies, 43</em>, 134–144.</li>
-            <li>Instituto de Cultura y Bellas Artes de Duitama - Culturama. (2025). <em>Plan Decenal de Cultura de Duitama 2026–2035: Documento técnico</em>. Duitama, Colombia.</li>
-            <li>Secretaría de Cultura, Recreación y Deporte. (2025). <em>Plan de cultura de Bogotá: Una brújula hacia 2038</em>. Bogotá, Colombia.</li>
+            <li><strong>Resultados creativos:</strong> cartografías, relatos, acciones y registros nacidos de la experiencia cotidiana.</li>
+            <li><strong>Resultados sociales:</strong> jóvenes más activos, reflexivos y sensibles frente a su entorno.</li>
+            <li><strong>Socialización:</strong> espacios de encuentro con comunidad educativa y actores veredales.</li>
+            <li><strong>Proyección:</strong> una ruta metodológica situada, adaptable a otros contextos rurales.</li>
+            <li><strong>Permanencia:</strong> posibilidad de articulación futura con el PEI y con CULTURAMA.</li>
           </ul>
-          <p class="meta-chip">Formato de cita académica para soporte conceptual e institucional.</p>
+          <p class="quote">Antes de hablar de economía creativa rural, hay que fortalecer sujetos, relatos y comunidades creadoras.</p>
         </article>
         <figure class="art-wrap" role="img" aria-label="Fotografía de llanura de páramo con espejo de agua">
           <img class="art" src="./assets/fotos/slides/slide-09.jpg" alt="" loading="lazy" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s10">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Referencias</p>
+          <h2 class="slide-title">Soportes conceptuales e institucionales</h2>
+          <p class="slide-lead">El rediseño del proyecto se apoya en investigación-creación, territorio y política cultural situada.</p>
+          <ul class="refs">
+            <li>Cely, C. (2021). <em>Guía de investigación-creación</em>. Editorial Universidad de Nariño.</li>
+            <li>Cely, C., &amp; Ascuntar Rivera, M. C. (2021). <em>Investigación-creación a través del territorio</em>. Editorial Universidad de Nariño.</li>
+            <li>Crawshaw, J., &amp; Gkartzios, M. (2015). <em>Getting to know the island: Artistic experiments in rural community development</em>. <em>Journal of Rural Studies, 43</em>, 134–144.</li>
+            <li>Insuasty, G. A. (2020). <em>Valoración del patrimonio cultural asociado con el Barniz de Pasto-Mopa Mopa a partir de la participación ciudadana</em> [Tesis de maestría, Universidad de Nariño].</li>
+            <li>Instituto de Cultura y Bellas Artes de Duitama - Culturama. (2025). <em>Plan Decenal de Cultura de Duitama 2026–2035: Documento técnico</em>. Duitama, Colombia.</li>
+            <li>Secretaría de Cultura, Recreación y Deporte. (2025). <em>Plan de cultura de Bogotá: Una brújula hacia 2038</em>. Bogotá, Colombia.</li>
+          </ul>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Fotografía de paisaje rural de páramo como cierre visual de la presentación">
+          <img class="art" src="./assets/fotos/slides/slide-02.jpg" alt="" loading="lazy" decoding="async"/>
         </figure>
       </div>
     </section>
