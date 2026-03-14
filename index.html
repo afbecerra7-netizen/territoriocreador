@@ -544,6 +544,36 @@
       backdrop-filter: blur(8px);
     }
 
+    #fullscreen-toggle {
+      position: fixed;
+      top: 14px;
+      left: 18px;
+      z-index: 120;
+      min-width: 46px;
+      height: 40px;
+      padding: 0 0.78rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      background: rgba(246, 242, 232, 0.75);
+      color: rgba(18, 33, 30, 0.88);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    #fullscreen-toggle:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.93);
+    }
+
+    #fullscreen-toggle.is-active {
+      background: rgba(23, 50, 45, 0.9);
+      color: #fff;
+      border-color: rgba(23, 50, 45, 0.9);
+    }
+
     #hint {
       position: fixed;
       bottom: 54px;
@@ -609,6 +639,7 @@
 
     #nav-prev:focus-visible,
     #nav-next:focus-visible,
+    #fullscreen-toggle:focus-visible,
     .dot:focus-visible {
       outline: 3px solid rgba(255, 255, 255, 0.95);
       outline-offset: 2px;
@@ -716,6 +747,14 @@
         right: 12px;
       }
 
+      #fullscreen-toggle {
+        top: 10px;
+        left: 12px;
+        min-width: 42px;
+        height: 36px;
+        padding: 0 0.7rem;
+      }
+
       #nav-prev,
       #nav-next {
         width: 40px;
@@ -752,6 +791,7 @@
 </head>
 <body>
   <div id="progress" aria-hidden="true"><span id="progress-fill" style="width: 10%;"></span></div>
+  <button id="fullscreen-toggle" type="button" aria-label="Entrar en pantalla completa" title="Pantalla completa">⛶</button>
   <button id="nav-prev" aria-label="Diapositiva anterior">←</button>
   <button id="nav-next" aria-label="Diapositiva siguiente">→</button>
   <div id="counter" aria-live="polite">01 / 10</div>
@@ -968,6 +1008,7 @@
       const slides = Array.from(document.querySelectorAll(".slide"));
       const dotsHost = document.getElementById("dots");
       const counter = document.getElementById("counter");
+      const fullscreenButton = document.getElementById("fullscreen-toggle");
       const prevButton = document.getElementById("nav-prev");
       const nextButton = document.getElementById("nav-next");
       const progressFill = document.getElementById("progress-fill");
@@ -1016,6 +1057,39 @@
             dot.removeAttribute("aria-current");
           }
         });
+      }
+
+      function updateFullscreenUi() {
+        if (!fullscreenButton) {
+          return;
+        }
+
+        const active = Boolean(document.fullscreenElement);
+        fullscreenButton.classList.toggle("is-active", active);
+        fullscreenButton.setAttribute(
+          "aria-label",
+          active ? "Salir de pantalla completa" : "Entrar en pantalla completa"
+        );
+        fullscreenButton.setAttribute(
+          "title",
+          active ? "Salir de pantalla completa" : "Pantalla completa"
+        );
+      }
+
+      async function toggleFullscreen() {
+        if (!document.fullscreenEnabled) {
+          return;
+        }
+
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+        } catch (error) {
+          // Ignore browsers that block fullscreen without user gesture.
+        }
       }
 
       async function syncRemoteState(index) {
@@ -1146,8 +1220,19 @@
 
       setSlideAccessibility(0);
       updateUi();
+      updateFullscreenUi();
       syncRemoteState(0);
       startRemotePolling();
+
+      if (!document.fullscreenEnabled) {
+        fullscreenButton.hidden = true;
+      } else {
+        fullscreenButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          toggleFullscreen();
+        });
+        document.addEventListener("fullscreenchange", updateFullscreenUi);
+      }
 
       prevButton.addEventListener("click", (event) => {
         event.stopPropagation();
