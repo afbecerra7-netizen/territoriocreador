@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Control remoto para la presentación Territorio Creador.">
+  <title>Control remoto | Territorio Creador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sand: #f4eddf;
+      --paper: rgba(255, 255, 255, 0.82);
+      --ink: #17312d;
+      --ink-soft: rgba(23, 49, 45, 0.76);
+      --forest: #2f6b58;
+      --earth: #bf6d42;
+      --gold: #e2b34a;
+      --line: rgba(23, 49, 45, 0.1);
+      --shadow: 0 14px 40px rgba(18, 35, 32, 0.16);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      font-family: "Work Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.8), transparent 42%),
+        linear-gradient(155deg, #d7e7de 0%, #f0e8d8 52%, #e8d8c6 100%);
+    }
+
+    body {
+      padding: 1rem;
+    }
+
+    .shell {
+      max-width: 520px;
+      margin: 0 auto;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius-xl);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .eyebrow {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--forest);
+      font-weight: 700;
+      margin-bottom: 0.55rem;
+    }
+
+    h1 {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.7rem, 6vw, 2.4rem);
+      line-height: 1.03;
+      margin-bottom: 0.55rem;
+    }
+
+    .subtle {
+      color: var(--ink-soft);
+      line-height: 1.45;
+      font-size: 0.98rem;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-top: 0.9rem;
+    }
+
+    .status-box {
+      border-radius: var(--radius-lg);
+      padding: 0.85rem;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--line);
+    }
+
+    .status-label {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--forest);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .status-value {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.25rem;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    button {
+      border: 0;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      font: inherit;
+      transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .primary {
+      min-height: 90px;
+      padding: 1rem;
+      background: linear-gradient(145deg, #2d6a59 0%, #214d41 100%);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(33, 77, 65, 0.28);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .primary strong {
+      display: block;
+      font-size: 1.35rem;
+      margin-bottom: 0.18rem;
+    }
+
+    .secondary-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+    }
+
+    .secondary {
+      min-height: 58px;
+      padding: 0.9rem;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font-weight: 600;
+    }
+
+    .slides-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.9rem;
+    }
+
+    .slide-jump {
+      min-height: 50px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .slide-jump.active {
+      background: linear-gradient(145deg, #e2b34a 0%, #bf6d42 100%);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .footer-note {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 440px) {
+      .slides-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <p class="eyebrow">Control Remoto</p>
+      <h1>Territorio Creador</h1>
+      <p class="subtle">Usa esta URL en el celular para avanzar o devolver la presentación mientras la proyección corre en el portátil.</p>
+      <div class="status-grid">
+        <div class="status-box">
+          <span class="status-label">Sesión</span>
+          <span class="status-value" id="session-name">clase</span>
+        </div>
+        <div class="status-box">
+          <span class="status-label">Diapositiva</span>
+          <span class="status-value" id="current-slide">01 / 01</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="controls">
+        <button class="primary" id="prev-btn" type="button">
+          <strong>←</strong>
+          Anterior
+        </button>
+        <button class="primary" id="next-btn" type="button">
+          <strong>→</strong>
+          Siguiente
+        </button>
+      </div>
+
+      <div class="secondary-row">
+        <button class="secondary" id="first-btn" type="button">Ir al inicio</button>
+        <button class="secondary" id="last-btn" type="button">Ir al final</button>
+      </div>
+
+      <div class="slides-grid" id="slides-grid"></div>
+    </section>
+
+    <section class="panel">
+      <p class="footer-note">Abre la presentación con el mismo parámetro de sesión, por ejemplo: <code>?session=clase</code>. Si cambias la sesión en la URL, este control se vincula a otra presentación.</p>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const session = params.get("session") || "clase";
+      const sessionName = document.getElementById("session-name");
+      const currentSlide = document.getElementById("current-slide");
+      const slidesGrid = document.getElementById("slides-grid");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+      const firstBtn = document.getElementById("first-btn");
+      const lastBtn = document.getElementById("last-btn");
+
+      let state = { index: 0, total: 1 };
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function renderSlideButtons() {
+        slidesGrid.innerHTML = "";
+        for (let index = 0; index < state.total; index += 1) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "slide-jump";
+          if (index === state.index) {
+            button.classList.add("active");
+          }
+          button.textContent = pad(index + 1);
+          button.addEventListener("click", () => sendControl("set", index));
+          slidesGrid.appendChild(button);
+        }
+      }
+
+      function updateUi() {
+        sessionName.textContent = session;
+        currentSlide.textContent = `${pad(state.index + 1)} / ${pad(state.total)}`;
+        prevBtn.disabled = state.index === 0;
+        nextBtn.disabled = state.index === state.total - 1;
+        renderSlideButtons();
+      }
+
+      async function sendControl(action, index = null) {
+        try {
+          await fetch("/api/control", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              session,
+              action,
+              index,
+              total: state.total
+            })
+          });
+          await loadState();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      async function loadState() {
+        try {
+          const response = await fetch(`/api/state?session=${encodeURIComponent(session)}`, {
+            cache: "no-store"
+          });
+          if (!response.ok) {
+            return;
+          }
+          const nextState = await response.json();
+          state = {
+            index: typeof nextState.index === "number" ? nextState.index : 0,
+            total: typeof nextState.total === "number" && nextState.total > 0 ? nextState.total : 1
+          };
+          updateUi();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      prevBtn.addEventListener("click", () => sendControl("prev"));
+      nextBtn.addEventListener("click", () => sendControl("next"));
+      firstBtn.addEventListener("click", () => sendControl("set", 0));
+      lastBtn.addEventListener("click", () => sendControl("set", state.total - 1));
+
+      loadState();
+      window.setInterval(loadState, 450);
+    })();
+  </script>
+</body>
+</html>

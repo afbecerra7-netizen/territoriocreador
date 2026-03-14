@@ -964,6 +964,7 @@
 
   <script>
     (() => {
+      const params = new URLSearchParams(window.location.search);
       const slides = Array.from(document.querySelectorAll(".slide"));
       const dotsHost = document.getElementById("dots");
       const counter = document.getElementById("counter");
@@ -974,10 +975,15 @@
       const total = slides.length;
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const transitionMs = reducedMotion ? 0 : 620;
+      const remoteSession = params.get("session");
+      const remoteEnabled = Boolean(remoteSession) && window.location.protocol.startsWith("http");
       let current = 0;
       let animating = false;
       let touchStartX = 0;
       let touchStartY = 0;
+      let remotePollTimer = 0;
+      let remoteSyncInFlight = false;
+      let remoteQueuedIndex = null;
       const dotButtons = [];
 
       function pad(value) {
@@ -1012,7 +1018,73 @@
         });
       }
 
-      function goTo(nextIndex) {
+      async function syncRemoteState(index) {
+        if (!remoteEnabled) {
+          return;
+        }
+
+        remoteQueuedIndex = index;
+        if (remoteSyncInFlight) {
+          return;
+        }
+
+        while (remoteQueuedIndex !== null) {
+          const nextIndex = remoteQueuedIndex;
+          remoteQueuedIndex = null;
+          remoteSyncInFlight = true;
+          try {
+            await fetch("/api/control", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                session: remoteSession,
+                action: "set",
+                index: nextIndex,
+                total
+              })
+            });
+          } catch (error) {
+            // The deck still works offline even if remote sync is unavailable.
+          } finally {
+            remoteSyncInFlight = false;
+          }
+        }
+      }
+
+      async function pollRemoteState() {
+        if (!remoteEnabled) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/state?session=${encodeURIComponent(remoteSession)}`, {
+            cache: "no-store"
+          });
+          if (!response.ok) {
+            return;
+          }
+
+          const state = await response.json();
+          if (typeof state.index === "number" && state.index !== current && !animating) {
+            goTo(state.index, { skipRemoteSync: true });
+          }
+        } catch (error) {
+          // Ignore transient local network errors.
+        }
+      }
+
+      function startRemotePolling() {
+        if (!remoteEnabled) {
+          return;
+        }
+
+        window.clearInterval(remotePollTimer);
+        pollRemoteState();
+        remotePollTimer = window.setInterval(pollRemoteState, 450);
+      }
+
+      function goTo(nextIndex, options = {}) {
+        const { skipRemoteSync = false } = options;
         if (animating || nextIndex === current || nextIndex < 0 || nextIndex >= total) {
           return;
         }
@@ -1039,6 +1111,9 @@
         current = nextIndex;
         setSlideAccessibility(current);
         updateUi();
+        if (!skipRemoteSync) {
+          syncRemoteState(current);
+        }
 
         window.setTimeout(() => {
           previousSlide.classList.remove("is-exit-left", "is-exit-right");
@@ -1071,6 +1146,8 @@
 
       setSlideAccessibility(0);
       updateUi();
+      syncRemoteState(0);
+      startRemotePolling();
 
       prevButton.addEventListener("click", (event) => {
         event.stopPropagation();
