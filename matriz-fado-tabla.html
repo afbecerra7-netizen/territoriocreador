@@ -153,69 +153,18 @@
       letter-spacing: -0.03em;
     }
 
-    .hero-copy {
-      margin: 0.9rem 0 0;
-      max-width: 70ch;
-      font-size: clamp(1rem, 1.6vw, 1.1rem);
-      line-height: 1.6;
-      color: rgba(247, 242, 233, 0.88);
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin: 1rem 0;
-    }
-
-    .summary-card {
-      border-radius: var(--radius-lg);
-      padding: 1rem 1rem 0.95rem;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.52);
-      box-shadow: var(--shadow-card);
-    }
-
-    .summary-card strong {
-      display: block;
-      font-size: 0.78rem;
-      line-height: 1;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .summary-card span {
-      display: block;
-      font-family: "Fraunces", Georgia, serif;
-      font-size: 2rem;
-      line-height: 1;
-      margin-bottom: 0.45rem;
-    }
-
-    .summary-card p {
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 0.9rem;
-      line-height: 1.45;
-    }
-
-    .summary-card.is-o strong,
     .section-row.is-o .section-badge {
       color: var(--academic);
     }
 
-    .summary-card.is-a strong,
     .section-row.is-a .section-badge {
       color: #875042;
     }
 
-    .summary-card.is-f strong,
     .section-row.is-f .section-badge {
       color: var(--forest);
     }
 
-    .summary-card.is-d strong,
     .section-row.is-d .section-badge {
       color: #926226;
     }
@@ -231,26 +180,10 @@
 
     .table-header {
       display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 1rem;
+      justify-content: flex-end;
+      align-items: center;
       margin-bottom: 0.9rem;
       padding: 0 0.2rem;
-    }
-
-    .table-header h2 {
-      margin: 0;
-      font-family: "Fraunces", Georgia, serif;
-      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-      line-height: 1.05;
-      color: var(--ink);
-    }
-
-    .table-header p {
-      margin: 0.45rem 0 0;
-      color: var(--ink-soft);
-      line-height: 1.5;
-      max-width: 70ch;
     }
 
     .legend {
@@ -406,13 +339,8 @@
     }
 
     @media (max-width: 1120px) {
-      .summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
       .table-header {
-        flex-direction: column;
-        align-items: start;
+        justify-content: flex-start;
       }
 
       .legend {
@@ -432,10 +360,6 @@
 
       .brand-chip {
         display: none;
-      }
-
-      .summary-grid {
-        grid-template-columns: 1fr;
       }
 
       .hero,
@@ -478,38 +402,10 @@
     <header class="hero">
       <p class="kicker">Primera pestaña del archivo original</p>
       <h1 class="hero-title">Matriz de Factores del proyecto Territorio Creador</h1>
-      <p class="hero-copy">Esta versión mantiene la estructura tabular del Excel, pero traducida al lenguaje visual de la presentación: fondos suaves, contrastes más limpios, jerarquía tipográfica clara y secciones FADO fáciles de identificar durante una exposición o una revisión académica.</p>
     </header>
-
-    <section class="summary-grid" aria-label="Resumen de puntajes">
-      <article class="summary-card is-o">
-        <strong>Oportunidades</strong>
-        <span>1.975</span>
-        <p>Ventana institucional y territorial bastante favorable para activar el proyecto.</p>
-      </article>
-      <article class="summary-card is-a">
-        <strong>Amenazas</strong>
-        <span>1.340</span>
-        <p>Los riesgos principales están en movilidad, clima y continuidad de aliados.</p>
-      </article>
-      <article class="summary-card is-f">
-        <strong>Fortalezas</strong>
-        <span>2.075</span>
-        <p>La mayor solidez está en el enfoque metodológico y la pertinencia territorial.</p>
-      </article>
-      <article class="summary-card is-d">
-        <strong>Debilidades</strong>
-        <span>1.610</span>
-        <p>Falta validar más con comunidad y asegurar recursos y sostenibilidad.</p>
-      </article>
-    </section>
 
     <section class="table-shell">
       <div class="table-header">
-        <div>
-          <h2>Tabla completa</h2>
-          <p>Se conservan las columnas originales del Excel: factor, peso, calificación, calificación ponderada y comentarios. Las secciones y subtotales están respetados para que puedas leer la matriz tal cual.</p>
-        </div>
         <div class="legend" aria-label="Leyenda de secciones">
           <span class="legend-chip" style="color:#27516f;"><span class="legend-dot"></span>Oportunidades</span>
           <span class="legend-chip" style="color:#875042;"><span class="legend-dot"></span>Amenazas</span>
