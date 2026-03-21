@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Presentación visual de la primera pestaña de la Matriz FADO del proyecto Territorio Creador.">
+  <title>Territorio Creador | Matriz FADO</title>
+  <style>
+    :root {
+      --paper: #f5efe3;
+      --paper-soft: rgba(255, 250, 243, 0.78);
+      --ink: #182721;
+      --ink-soft: rgba(24, 39, 33, 0.78);
+      --forest: #27594b;
+      --forest-deep: #17322d;
+      --moss: #6e8b54;
+      --gold: #e0b55a;
+      --earth: #c6764d;
+      --sky: #6c8ba0;
+      --storm: #39525b;
+      --rose-soil: #8f5748;
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --shadow-frame: 0 18px 44px rgba(15, 27, 24, 0.24);
+      --shadow-card: 0 10px 24px rgba(15, 27, 24, 0.12);
+      --anim: 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Avenir Next", "Work Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #e7e1d4;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.34), transparent 28%),
+        radial-gradient(circle at 84% 16%, rgba(255, 255, 255, 0.18), transparent 22%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+      transition: opacity var(--anim), transform var(--anim);
+      overflow-y: auto;
+      overflow-x: hidden;
+      --bg-start: #17322d;
+      --bg-end: #355f52;
+      --panel: rgba(247, 242, 232, 0.88);
+      --panel-strong: rgba(255, 250, 242, 0.96);
+      --panel-border: rgba(255, 255, 255, 0.42);
+      --text: #1a2a25;
+      --muted: rgba(26, 42, 37, 0.78);
+      --accent: #27594b;
+      --accent-soft: rgba(39, 89, 75, 0.14);
+      --line: rgba(39, 89, 75, 0.2);
+      --badge-bg: rgba(39, 89, 75, 0.12);
+      --badge-text: #21483d;
+      background:
+        radial-gradient(58rem 34rem at 110% -20%, rgba(255, 255, 255, 0.18), transparent 64%),
+        radial-gradient(50rem 34rem at -10% 110%, rgba(0, 0, 0, 0.14), transparent 72%),
+        linear-gradient(135deg, var(--bg-start), var(--bg-end));
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.is-exit-left {
+      opacity: 0;
+      transform: translateX(-64px);
+      pointer-events: none;
+    }
+
+    .slide.is-exit-right {
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+    }
+
+    .slide.from-right {
+      transform: translateX(64px);
+    }
+
+    .slide.from-left {
+      transform: translateX(-64px);
+    }
+
+    .slide-shell {
+      position: relative;
+      min-height: 100%;
+      padding: clamp(2.2rem, 4vw, 3.4rem) clamp(3rem, 5vw, 5rem) clamp(4.8rem, 7vh, 5.8rem);
+      display: grid;
+      align-items: center;
+    }
+
+    .panel {
+      position: relative;
+      display: grid;
+      gap: 1.3rem;
+      max-width: 1320px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(1.4rem, 2.2vw, 2rem);
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow-frame);
+      backdrop-filter: blur(10px);
+      color: var(--text);
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      width: 82px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--accent);
+      opacity: 0.85;
+    }
+
+    .kicker {
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .title {
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+
+    .lead {
+      max-width: 72ch;
+      font-size: clamp(1rem, 1.7vw, 1.12rem);
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 1.05fr) minmax(280px, 0.95fr);
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .summary-card,
+    .signal-card,
+    .closing-card {
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-card);
+    }
+
+    .summary-card {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .score-block {
+      border-radius: 18px;
+      padding: 0.95rem 1rem;
+      background: rgba(255, 255, 255, 0.68);
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 0.36rem;
+    }
+
+    .score-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .score-value {
+      font-size: clamp(1.3rem, 2vw, 1.75rem);
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-note {
+      font-size: 0.88rem;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .signal-card {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 242, 233, 0.94)),
+        linear-gradient(145deg, rgba(39, 89, 75, 0.07), rgba(224, 181, 90, 0.04));
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.72rem;
+    }
+
+    .signal-pill {
+      display: grid;
+      gap: 0.3rem;
+      padding: 0.85rem 0.95rem;
+      border-radius: 18px;
+      color: #f8f2e7;
+      box-shadow: var(--shadow-card);
+    }
+
+    .signal-pill strong {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .signal-pill span {
+      font-size: 0.95rem;
+      line-height: 1.35;
+      opacity: 0.92;
+    }
+
+    .signal-pill.is-f {
+      background: linear-gradient(140deg, #21483d, #2d6958);
+    }
+
+    .signal-pill.is-o {
+      background: linear-gradient(140deg, #40677a, #648ca1);
+    }
+
+    .signal-pill.is-d {
+      background: linear-gradient(140deg, #9f6f31, #c58c41);
+    }
+
+    .signal-pill.is-a {
+      background: linear-gradient(140deg, #6f433b, #966054);
+    }
+
+    .balance {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .bar-row {
+      display: grid;
+      gap: 0.38rem;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.88rem;
+      line-height: 1.3;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(24, 39, 33, 0.08);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+    }
+
+    .slide-head {
+      display: grid;
+      gap: 0.65rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .slide-head-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .score-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      padding: 0.58rem 0.9rem;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      border: 1px solid var(--line);
+    }
+
+    .factors-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.95rem;
+    }
+
+    .factor-card {
+      display: grid;
+      gap: 0.72rem;
+      padding: 1rem 1rem 0.95rem;
+      border-radius: 20px;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-card);
+    }
+
+    .factor-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .factor-number {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .factor-title {
+      font-size: 0.96rem;
+      line-height: 1.4;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1 1 auto;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.42rem;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.34rem 0.58rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      color: var(--badge-text);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .factor-note {
+      font-size: 0.84rem;
+      line-height: 1.48;
+      color: var(--muted);
+    }
+
+    .closing-grid {
+      display: grid;
+      grid-template-columns: minmax(310px, 0.94fr) minmax(320px, 1.06fr);
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .priority-list {
+      list-style: none;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .priority-item {
+      display: grid;
+      gap: 0.32rem;
+      padding: 0.94rem 1rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-card);
+    }
+
+    .priority-item strong {
+      color: var(--accent);
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .priority-item span {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .quote-card {
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+      font-size: clamp(1.15rem, 2vw, 1.52rem);
+      line-height: 1.35;
+      padding-left: 1rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .source-note {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    #s1 {
+      --bg-start: #17322d;
+      --bg-end: #3f6955;
+      --panel: rgba(245, 239, 227, 0.92);
+      --panel-strong: rgba(255, 250, 243, 0.95);
+      --text: #182721;
+      --muted: rgba(24, 39, 33, 0.78);
+      --accent: #27594b;
+      --accent-soft: rgba(39, 89, 75, 0.12);
+      --line: rgba(39, 89, 75, 0.18);
+      --badge-bg: rgba(39, 89, 75, 0.11);
+      --badge-text: #21483d;
+    }
+
+    #s2 {
+      --bg-start: #204f61;
+      --bg-end: #7fa1b2;
+      --panel: rgba(247, 243, 236, 0.9);
+      --panel-strong: rgba(255, 251, 245, 0.95);
+      --text: #17303a;
+      --muted: rgba(23, 48, 58, 0.76);
+      --accent: #3c7284;
+      --accent-soft: rgba(60, 114, 132, 0.12);
+      --line: rgba(60, 114, 132, 0.17);
+      --badge-bg: rgba(60, 114, 132, 0.11);
+      --badge-text: #234f5e;
+    }
+
+    #s3 {
+      --bg-start: #17322d;
+      --bg-end: #56744e;
+      --panel: rgba(244, 239, 229, 0.9);
+      --panel-strong: rgba(255, 252, 246, 0.95);
+      --text: #182721;
+      --muted: rgba(24, 39, 33, 0.76);
+      --accent: #2f6b58;
+      --accent-soft: rgba(47, 107, 88, 0.12);
+      --line: rgba(47, 107, 88, 0.16);
+      --badge-bg: rgba(47, 107, 88, 0.11);
+      --badge-text: #214b3d;
+    }
+
+    #s4 {
+      --bg-start: #7c5626;
+      --bg-end: #cf9851;
+      --panel: rgba(251, 246, 235, 0.91);
+      --panel-strong: rgba(255, 251, 243, 0.96);
+      --text: #352516;
+      --muted: rgba(53, 37, 22, 0.76);
+      --accent: #a56d28;
+      --accent-soft: rgba(165, 109, 40, 0.13);
+      --line: rgba(165, 109, 40, 0.18);
+      --badge-bg: rgba(165, 109, 40, 0.1);
+      --badge-text: #7b531d;
+    }
+
+    #s5 {
+      --bg-start: #543834;
+      --bg-end: #8d5f53;
+      --panel: rgba(248, 241, 236, 0.91);
+      --panel-strong: rgba(255, 250, 246, 0.96);
+      --text: #341f1c;
+      --muted: rgba(52, 31, 28, 0.76);
+      --accent: #8a5648;
+      --accent-soft: rgba(138, 86, 72, 0.12);
+      --line: rgba(138, 86, 72, 0.18);
+      --badge-bg: rgba(138, 86, 72, 0.1);
+      --badge-text: #6e4036;
+    }
+
+    #s6 {
+      --bg-start: #20395b;
+      --bg-end: #5f7c8e;
+      --panel: rgba(245, 240, 231, 0.92);
+      --panel-strong: rgba(255, 251, 245, 0.96);
+      --text: #1b2936;
+      --muted: rgba(27, 41, 54, 0.76);
+      --accent: #315c74;
+      --accent-soft: rgba(49, 92, 116, 0.12);
+      --line: rgba(49, 92, 116, 0.16);
+      --badge-bg: rgba(49, 92, 116, 0.1);
+      --badge-text: #274a5d;
+    }
+
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 120;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    #progress-fill {
+      display: block;
+      width: 16.66%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--earth));
+      transition: width 280ms ease;
+    }
+
+    #counter,
+    #fullscreen-toggle,
+    #nav-prev,
+    #nav-next,
+    #dots {
+      z-index: 120;
+      backdrop-filter: blur(10px);
+    }
+
+    #counter {
+      position: fixed;
+      top: 14px;
+      right: 18px;
+      padding: 0.44rem 0.74rem;
+      border-radius: 999px;
+      background: rgba(245, 239, 227, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      color: rgba(24, 39, 33, 0.84);
+      font-size: 0.73rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+
+    #fullscreen-toggle {
+      position: fixed;
+      top: 14px;
+      left: 18px;
+      min-width: 46px;
+      height: 40px;
+      padding: 0 0.78rem;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 999px;
+      background: rgba(245, 239, 227, 0.78);
+      color: rgba(24, 39, 33, 0.88);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 800;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    #fullscreen-toggle:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    #fullscreen-toggle.is-active {
+      background: rgba(24, 39, 33, 0.92);
+      color: #fff;
+      border-color: rgba(24, 39, 33, 0.92);
+    }
+
+    #nav-prev,
+    #nav-next {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      border-radius: 50%;
+      background: rgba(245, 239, 227, 0.8);
+      color: #17322d;
+      font-size: 1.08rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms ease, opacity 180ms ease, background 180ms ease;
+    }
+
+    #nav-prev { left: 14px; }
+    #nav-next { right: 14px; }
+
+    #nav-prev:hover,
+    #nav-next:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    #nav-prev:disabled,
+    #nav-next:disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    #dots {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.52rem;
+      padding: 0.5rem 0.72rem;
+      border-radius: 999px;
+      background: rgba(244, 238, 224, 0.82);
+      border: 1px solid rgba(73, 68, 50, 0.18);
+      box-shadow: 0 10px 28px rgba(34, 30, 20, 0.16);
+    }
+
+    .dot {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .dot::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(62, 73, 65, 0.34);
+      background: rgba(113, 124, 114, 0.26);
+      transform: translate(-50%, -50%);
+      transition: width 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .dot.active::before {
+      width: 28px;
+      background: #2f6b58;
+      border-color: #2f6b58;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .slide.is-active .panel > * {
+      animation: reveal-up 600ms ease both;
+    }
+
+    .slide.is-active .panel > *:nth-child(1) { animation-delay: 80ms; }
+    .slide.is-active .panel > *:nth-child(2) { animation-delay: 150ms; }
+    .slide.is-active .panel > *:nth-child(3) { animation-delay: 220ms; }
+    .slide.is-active .panel > *:nth-child(4) { animation-delay: 290ms; }
+
+    @keyframes reveal-up {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1140px) {
+      .hero-grid,
+      .closing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .factors-grid,
+      .summary-grid,
+      .signal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .slide-shell {
+        padding: 1.2rem 1rem 4.4rem;
+        align-items: start;
+      }
+
+      .panel {
+        padding: 1rem;
+        border-radius: 24px;
+      }
+
+      .title {
+        font-size: clamp(1.7rem, 7vw, 2.3rem);
+      }
+
+      #counter {
+        top: 10px;
+        right: 12px;
+      }
+
+      #fullscreen-toggle {
+        top: 10px;
+        left: 12px;
+        min-width: 42px;
+        height: 36px;
+        padding: 0 0.7rem;
+      }
+
+      #nav-prev,
+      #nav-next {
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
+      }
+
+      #nav-prev { left: 8px; }
+      #nav-next { right: 8px; }
+
+      #dots {
+        bottom: 10px;
+      }
+
+      .dot {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress" aria-hidden="true"><span id="progress-fill"></span></div>
+  <button id="fullscreen-toggle" type="button" aria-label="Entrar en pantalla completa" title="Pantalla completa">⛶</button>
+  <button id="nav-prev" aria-label="Diapositiva anterior">←</button>
+  <button id="nav-next" aria-label="Diapositiva siguiente">→</button>
+  <div id="counter" aria-live="polite">01 / 06</div>
+  <div id="dots" role="navigation" aria-label="Navegación de diapositivas"></div>
+  <p class="sr-only" id="nav-help">Usa flechas izquierda y derecha para mover entre diapositivas.</p>
+
+  <div class="deck" id="deck" aria-describedby="nav-help">
+    <section class="slide is-active" id="s1">
+      <div class="slide-shell">
+        <article class="panel">
+          <div class="slide-head">
+            <p class="kicker">Primera pestaña del archivo · Factores FADO</p>
+            <div class="slide-head-row">
+              <h1 class="title">Matriz FADO del proyecto Territorio Creador</h1>
+              <span class="score-chip">Lectura rápida · balance favorable</span>
+            </div>
+            <p class="lead">La matriz muestra un proyecto bien orientado en su enfoque y bien alineado con el territorio, pero todavía exigente en validación comunitaria, presupuesto y sostenibilidad operativa. En conjunto, pesan más las fortalezas y oportunidades que las debilidades y amenazas.</p>
+          </div>
+
+          <div class="hero-grid">
+            <section class="summary-card">
+              <div class="summary-grid">
+                <article class="score-block">
+                  <span class="score-label">Fortalezas</span>
+                  <strong class="score-value">2.075</strong>
+                  <p class="score-note">La base metodológica y la claridad de enfoque ya están bastante consolidadas.</p>
+                </article>
+                <article class="score-block">
+                  <span class="score-label">Oportunidades</span>
+                  <strong class="score-value">1.975</strong>
+                  <p class="score-note">El entorno institucional y cultural abre una ventana real para activar el proyecto.</p>
+                </article>
+                <article class="score-block">
+                  <span class="score-label">Debilidades</span>
+                  <strong class="score-value">1.610</strong>
+                  <p class="score-note">Los vacíos principales están en validación previa, recursos y equipo facilitador.</p>
+                </article>
+                <article class="score-block">
+                  <span class="score-label">Amenazas</span>
+                  <strong class="score-value">1.340</strong>
+                  <p class="score-note">Los riesgos externos se concentran en clima, logística y continuidad institucional.</p>
+                </article>
+              </div>
+
+              <div class="balance">
+                <div class="bar-row">
+                  <div class="bar-label"><span>Lectura favorable: Fortalezas + Oportunidades</span><strong>4.050</strong></div>
+                  <div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div>
+                </div>
+                <div class="bar-row">
+                  <div class="bar-label"><span>Lectura de riesgo: Debilidades + Amenazas</span><strong>2.950</strong></div>
+                  <div class="bar-track"><div class="bar-fill" style="width: 72.85%;"></div></div>
+                </div>
+              </div>
+            </section>
+
+            <aside class="signal-card">
+              <p class="kicker">Señales que más pesan</p>
+              <div class="signal-grid">
+                <article class="signal-pill is-f">
+                  <strong>Fortaleza</strong>
+                  <span>La metodología ya tiene forma propia: cartografía territorial y prototipado social.</span>
+                </article>
+                <article class="signal-pill is-o">
+                  <strong>Oportunidad</strong>
+                  <span>La IE y CULTURAMA ofrecen entrada pedagógica e institucional.</span>
+                </article>
+                <article class="signal-pill is-d">
+                  <strong>Debilidad</strong>
+                  <span>Aún falta validación directa con comunidad, familias y JAC.</span>
+                </article>
+                <article class="signal-pill is-a">
+                  <strong>Amenaza</strong>
+                  <span>Clima, movilidad y continuidad institucional pueden desordenar el proceso.</span>
+                </article>
+              </div>
+              <p class="quote-card">La matriz no dice que el proyecto sea débil: dice que está bien planteado, pero que debe entrar al territorio con alianzas formalizadas, un piloto realista y transferencia de capacidades.</p>
+              <p class="source-note">Fuente visualizada: primera pestaña del archivo <em>Matriz FADO Territorio Creador.xlsx</em>.</p>
+            </aside>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s2">
+      <div class="slide-shell">
+        <article class="panel">
+          <div class="slide-head">
+            <p class="kicker">Lectura externa favorable</p>
+            <div class="slide-head-row">
+              <h2 class="title">Oportunidades</h2>
+              <span class="score-chip">7 factores · puntaje parcial 1.975</span>
+            </div>
+            <p class="lead">El contexto no está en contra del proyecto: al contrario, ya existe una combinación muy potente entre escuela rural, institucionalidad cultural, cultura viva del territorio y herramientas accesibles para producir.</p>
+          </div>
+
+          <div class="factors-grid">
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">01</span>
+                <h3 class="factor-title">Institución educativa con PEI agroindustrial territorializado que puede integrar el laboratorio.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.10</span>
+                <span class="meta-pill">Calif. 4.5</span>
+                <span class="meta-pill">Pond. 0.45</span>
+              </div>
+              <p class="factor-note">La escuela ya trabaja desde una lógica productivo-pedagógica situada; eso facilita entrar en diálogo con procesos existentes.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">02</span>
+                <h3 class="factor-title">CULTURAMA como aliado estratégico con aval institucional y red cultural municipal.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.09</span>
+                <span class="meta-pill">Calif. 4.0</span>
+                <span class="meta-pill">Pond. 0.36</span>
+              </div>
+              <p class="factor-note">Aporta legitimidad, articulación con política pública y posibilidad de continuidad más allá del piloto.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">03</span>
+                <h3 class="factor-title">Plan Decenal de Cultura de Duitama alineado con descentralización y procesos rurales.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.08</span>
+                <span class="meta-pill">Calif. 4.0</span>
+                <span class="meta-pill">Pond. 0.32</span>
+              </div>
+              <p class="factor-note">El marco municipal favorece iniciativas culturales en veredas y mejora el respaldo político del proyecto.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">04</span>
+                <h3 class="factor-title">Cultura viva activa en la vereda: saberes agroproductivos, memoria oral y asociatividad.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.08</span>
+                <span class="meta-pill">Calif. 4.5</span>
+                <span class="meta-pill">Pond. 0.36</span>
+              </div>
+              <p class="factor-note">El territorio ya ofrece material simbólico abundante: feria, queso campesino y transmisión de saberes del campo.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">05</span>
+                <h3 class="factor-title">Valorización académica creciente de la investigación-creación como enfoque legítimo.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.07</span>
+                <span class="meta-pill">Calif. 3.5</span>
+                <span class="meta-pill">Pond. 0.245</span>
+              </div>
+              <p class="factor-note">La propuesta dialoga bien con la maestría y con marcos metodológicos ya reconocidos.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">06</span>
+                <h3 class="factor-title">Jóvenes con acceso a celulares y plataformas digitales para producción audiovisual básica.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.05</span>
+                <span class="meta-pill">Calif. 3.0</span>
+                <span class="meta-pill">Pond. 0.15</span>
+              </div>
+              <p class="factor-note">Esto reduce la barrera técnica del eje audiovisual y habilita ejercicios de bajo costo.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">07</span>
+                <h3 class="factor-title">Ecosistema regional de colectivos y espacios culturales en Boyacá.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.03</span>
+                <span class="meta-pill">Calif. 3.0</span>
+                <span class="meta-pill">Pond. 0.09</span>
+              </div>
+              <p class="factor-note">Hay referentes y posibles facilitadores cercanos que podrían nutrir el laboratorio sin importar modelos urbanos.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s3">
+      <div class="slide-shell">
+        <article class="panel">
+          <div class="slide-head">
+            <p class="kicker">Lectura interna favorable</p>
+            <div class="slide-head-row">
+              <h2 class="title">Fortalezas</h2>
+              <span class="score-chip">7 factores · puntaje parcial 2.075</span>
+            </div>
+            <p class="lead">La zona más sólida de la matriz está adentro del proyecto: el enfoque es claro, la metodología ya tiene estructura y la red de actores está bastante bien identificada para empezar a operar.</p>
+          </div>
+
+          <div class="factors-grid">
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">01</span>
+                <h3 class="factor-title">Metodología propia y coherente basada en cartografía territorial y prototipado social.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.09</span>
+                <span class="meta-pill">Calif. 4.5</span>
+                <span class="meta-pill">Pond. 0.405</span>
+              </div>
+              <p class="factor-note">La hoja de ruta ya es clara y está ajustada al contexto rural específico de El Carmen.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">02</span>
+                <h3 class="factor-title">Enfoque centrado en cultura viva: no lleva cultura desde afuera, activa la que ya existe.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.09</span>
+                <span class="meta-pill">Calif. 4.5</span>
+                <span class="meta-pill">Pond. 0.405</span>
+              </div>
+              <p class="factor-note">Eso diferencia el proyecto de intervenciones extractivas o paternalistas y fortalece su pertinencia territorial.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">03</span>
+                <h3 class="factor-title">Red de actores identificada: IE, docentes, JAC, familias, estudiantes y CULTURAMA.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.08</span>
+                <span class="meta-pill">Calif. 4.0</span>
+                <span class="meta-pill">Pond. 0.32</span>
+              </div>
+              <p class="factor-note">La propuesta no depende de un solo actor; ya existe una base para un proceso genuinamente participativo.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">04</span>
+                <h3 class="factor-title">Cuatro ejes de creación artística complementarios: plásticas, literatura, escénicas y audiovisual.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.07</span>
+                <span class="meta-pill">Calif. 4.0</span>
+                <span class="meta-pill">Pond. 0.28</span>
+              </div>
+              <p class="factor-note">La diversidad de lenguajes abre distintas puertas de entrada para estudiantes con intereses y sensibilidades diferentes.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">05</span>
+                <h3 class="factor-title">Pregunta de investigación clara y pertinente, abierta a procesos no cerrados de antemano.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.07</span>
+                <span class="meta-pill">Calif. 4.0</span>
+                <span class="meta-pill">Pond. 0.28</span>
+              </div>
+              <p class="factor-note">La pregunta orienta el proceso, pero no impone una obra final prefijada, lo que es coherente con el prototipado social.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">06</span>
+                <h3 class="factor-title">Proyección metodológica hacia otras instituciones y contextos rurales de la región.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.06</span>
+                <span class="meta-pill">Calif. 3.5</span>
+                <span class="meta-pill">Pond. 0.21</span>
+              </div>
+              <p class="factor-note">No se piensa como experiencia única, sino como un modelo adaptable con valor más allá del caso puntual.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">07</span>
+                <h3 class="factor-title">Articulación explícita con el Plan Decenal de Cultura de Duitama.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.05</span>
+                <span class="meta-pill">Calif. 3.5</span>
+                <span class="meta-pill">Pond. 0.175</span>
+              </div>
+              <p class="factor-note">La propuesta dialoga con marcos existentes y aumenta sus probabilidades de adopción institucional.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s4">
+      <div class="slide-shell">
+        <article class="panel">
+          <div class="slide-head">
+            <p class="kicker">Lectura interna crítica</p>
+            <div class="slide-head-row">
+              <h2 class="title">Debilidades</h2>
+              <span class="score-chip">6 factores · puntaje parcial 1.610</span>
+            </div>
+            <p class="lead">La matriz señala que el proyecto está más adelantado en concepto que en condiciones de implementación. Lo más sensible no es la idea, sino la forma en que se valida, se financia y se sostiene en el tiempo.</p>
+          </div>
+
+          <div class="factors-grid">
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">01</span>
+                <h3 class="factor-title">Ausencia de validación comunitaria directa previa con la vereda.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.10</span>
+                <span class="meta-pill">Calif. 4.0</span>
+                <span class="meta-pill">Pond. 0.40</span>
+              </div>
+              <p class="factor-note">Sigue siendo el principal riesgo de legitimidad: la formulación va más adelantada que el diálogo directo con familias y JAC.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">02</span>
+                <h3 class="factor-title">Dependencia de la disponibilidad institucional de la IE y de su calendario académico.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.09</span>
+                <span class="meta-pill">Calif. 3.5</span>
+                <span class="meta-pill">Pond. 0.315</span>
+              </div>
+              <p class="factor-note">Si la escuela no prioriza el proceso, el cronograma puede fragmentarse y perder continuidad pedagógica.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">03</span>
+                <h3 class="factor-title">No hay presupuesto propio confirmado para poner en marcha el laboratorio.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.08</span>
+                <span class="meta-pill">Calif. 4.0</span>
+                <span class="meta-pill">Pond. 0.32</span>
+              </div>
+              <p class="factor-note">La ejecución todavía depende de convocatorias, estímulos o apoyo externo, lo que deja incierto el arranque.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">04</span>
+                <h3 class="factor-title">Equipo facilitador reducido para diseño, acompañamiento, registro y evaluación.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.07</span>
+                <span class="meta-pill">Calif. 3.5</span>
+                <span class="meta-pill">Pond. 0.245</span>
+              </div>
+              <p class="factor-note">La carga operativa es alta y podría comprometer la calidad del proceso si no se amplía el equipo mínimo.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">05</span>
+                <h3 class="factor-title">Poca sistematización de experiencias comparables en el contexto boyacense.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.06</span>
+                <span class="meta-pill">Calif. 3.0</span>
+                <span class="meta-pill">Pond. 0.18</span>
+              </div>
+              <p class="factor-note">Hay referentes sólidos, pero faltan casos locales cercanos que funcionen como contraste metodológico inmediato.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">06</span>
+                <h3 class="factor-title">Riesgo de dependencia del facilitador externo si no se transfieren capacidades.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.05</span>
+                <span class="meta-pill">Calif. 3.0</span>
+                <span class="meta-pill">Pond. 0.15</span>
+              </div>
+              <p class="factor-note">La sostenibilidad exige diseñar desde el inicio una apropiación real por parte de docentes y líderes locales.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s5">
+      <div class="slide-shell">
+        <article class="panel">
+          <div class="slide-head">
+            <p class="kicker">Lectura externa crítica</p>
+            <div class="slide-head-row">
+              <h2 class="title">Amenazas</h2>
+              <span class="score-chip">6 factores · puntaje parcial 1.340</span>
+            </div>
+            <p class="lead">Las amenazas están menos en la pertinencia del proyecto y más en la fragilidad del contexto operativo: movilidad, clima, infraestructura, arraigo del proceso y estabilidad de los aliados.</p>
+          </div>
+
+          <div class="factors-grid">
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">01</span>
+                <h3 class="factor-title">Posible resistencia de la dirección educativa ante propuestas artísticas vistas como accesorias.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.10</span>
+                <span class="meta-pill">Calif. 3.5</span>
+                <span class="meta-pill">Pond. 0.35</span>
+              </div>
+              <p class="factor-note">Si el laboratorio no dialoga con el PEI desde el principio, puede quedar fuera de las prioridades institucionales.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">02</span>
+                <h3 class="factor-title">Vulnerabilidad climática y productiva que puede interrumpir cronogramas.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.08</span>
+                <span class="meta-pill">Calif. 3.0</span>
+                <span class="meta-pill">Pond. 0.24</span>
+              </div>
+              <p class="factor-note">Lluvias y afectaciones rurales deben entrar como variable de planificación, no como imprevisto marginal.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">03</span>
+                <h3 class="factor-title">Infraestructura cultural precaria y conectividad limitada en la zona rural.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.08</span>
+                <span class="meta-pill">Calif. 3.0</span>
+                <span class="meta-pill">Pond. 0.24</span>
+              </div>
+              <p class="factor-note">El proceso dependerá de espacios pensados para lo agroindustrial y no para prácticas artísticas continuadas.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">04</span>
+                <h3 class="factor-title">Baja tradición de procesos artísticos continuos en el territorio.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.07</span>
+                <span class="meta-pill">Calif. 3.0</span>
+                <span class="meta-pill">Pond. 0.21</span>
+              </div>
+              <p class="factor-note">Existe el riesgo de que la comunidad lo lea como un evento puntual y no como un proceso con permanencia.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">05</span>
+                <h3 class="factor-title">Dificultades de acceso geográfico y movilidad desde Duitama.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.07</span>
+                <span class="meta-pill">Calif. 2.5</span>
+                <span class="meta-pill">Pond. 0.175</span>
+              </div>
+              <p class="factor-note">La distancia y el estado de la vía afectan costos, frecuencia de visitas y regularidad del acompañamiento.</p>
+            </article>
+
+            <article class="factor-card">
+              <div class="factor-top">
+                <span class="factor-number">06</span>
+                <h3 class="factor-title">Cambios de directivos en la IE o en CULTURAMA durante el proceso.</h3>
+              </div>
+              <div class="meta-row">
+                <span class="meta-pill">Peso 0.05</span>
+                <span class="meta-pill">Calif. 2.5</span>
+                <span class="meta-pill">Pond. 0.125</span>
+              </div>
+              <p class="factor-note">La continuidad depende de dejar acuerdos formalizados y no solo de la voluntad de personas concretas.</p>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s6">
+      <div class="slide-shell">
+        <article class="panel">
+          <div class="slide-head">
+            <p class="kicker">Síntesis estratégica</p>
+            <div class="slide-head-row">
+              <h2 class="title">Qué conviene hacer con esta matriz</h2>
+              <span class="score-chip">Cierre · lectura aplicada</span>
+            </div>
+            <p class="lead">La matriz no pide replantear el proyecto desde cero. Pide tomar decisiones de entrada para que una propuesta fuerte en idea y pertinencia no se debilite al momento de implementarse en territorio.</p>
+          </div>
+
+          <div class="closing-grid">
+            <section class="closing-card">
+              <p class="kicker">Cuatro movimientos prioritarios</p>
+              <ul class="priority-list">
+                <li class="priority-item">
+                  <strong>Validar primero</strong>
+                  <span>Hacer una devolución temprana con estudiantes, familias y JAC antes de presentar la propuesta como cerrada.</span>
+                </li>
+                <li class="priority-item">
+                  <strong>Formalizar alianzas</strong>
+                  <span>Dejar compromisos por escrito con IE y CULTURAMA para proteger el proceso ante cambios directivos.</span>
+                </li>
+                <li class="priority-item">
+                  <strong>Diseñar un piloto austero</strong>
+                  <span>Arrancar con un formato liviano en logística, usando recursos del colegio y dispositivos que ya existen.</span>
+                </li>
+                <li class="priority-item">
+                  <strong>Transferir capacidades</strong>
+                  <span>Incorporar desde el inicio una estrategia para que docentes y actores locales puedan sostener parte del método.</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="closing-card">
+              <p class="kicker">Lectura final</p>
+              <p class="quote-card">Territorio Creador tiene mejores condiciones para crecer que para detenerse. Su reto no es justificar por qué existe, sino demostrar que puede instalarse en El Carmen como un proceso viable, acompañado y sostenible.</p>
+              <div class="balance">
+                <div class="bar-row">
+                  <div class="bar-label"><span>Base conceptual y metodológica</span><strong>Alta</strong></div>
+                  <div class="bar-track"><div class="bar-fill" style="width: 92%;"></div></div>
+                </div>
+                <div class="bar-row">
+                  <div class="bar-label"><span>Condiciones de implementación hoy</span><strong>Media</strong></div>
+                  <div class="bar-track"><div class="bar-fill" style="width: 68%;"></div></div>
+                </div>
+                <div class="bar-row">
+                  <div class="bar-label"><span>Potencial de continuidad territorial</span><strong>Alto si se formaliza</strong></div>
+                  <div class="bar-track"><div class="bar-fill" style="width: 82%;"></div></div>
+                </div>
+              </div>
+              <p class="source-note">Esta presentación reorganiza visualmente la primera pestaña del Excel para lectura oral, pantalla y discusión académica. Si quieres, el siguiente paso puede ser hacer una versión más corta para exponerla en 2 o 3 minutos.</p>
+            </section>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsHost = document.getElementById("dots");
+      const counter = document.getElementById("counter");
+      const fullscreenButton = document.getElementById("fullscreen-toggle");
+      const prevButton = document.getElementById("nav-prev");
+      const nextButton = document.getElementById("nav-next");
+      const progressFill = document.getElementById("progress-fill");
+      const deck = document.getElementById("deck");
+      const total = slides.length;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const transitionMs = reducedMotion ? 0 : 620;
+      const remoteSession = params.get("session");
+      const remoteEnabled = Boolean(remoteSession) && window.location.protocol.startsWith("http");
+      let current = 0;
+      let animating = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let remotePollTimer = 0;
+      let remoteSyncInFlight = false;
+      let remoteQueuedIndex = null;
+      const dotButtons = [];
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function setSlideAccessibility(activeIndex) {
+        slides.forEach((slide, index) => {
+          const isActive = index === activeIndex;
+          slide.setAttribute("aria-hidden", String(!isActive));
+          if (isActive) {
+            slide.removeAttribute("inert");
+          } else {
+            slide.setAttribute("inert", "");
+          }
+        });
+      }
+
+      function updateUi() {
+        counter.textContent = `${pad(current + 1)} / ${pad(total)}`;
+        progressFill.style.width = `${((current + 1) / total) * 100}%`;
+        prevButton.disabled = current === 0;
+        nextButton.disabled = current === total - 1;
+        dotButtons.forEach((dot, index) => {
+          const active = index === current;
+          dot.classList.toggle("active", active);
+          if (active) {
+            dot.setAttribute("aria-current", "step");
+          } else {
+            dot.removeAttribute("aria-current");
+          }
+        });
+      }
+
+      function updateFullscreenUi() {
+        if (!fullscreenButton) {
+          return;
+        }
+
+        const active = Boolean(document.fullscreenElement);
+        fullscreenButton.classList.toggle("is-active", active);
+        fullscreenButton.setAttribute("aria-label", active ? "Salir de pantalla completa" : "Entrar en pantalla completa");
+        fullscreenButton.setAttribute("title", active ? "Salir de pantalla completa" : "Pantalla completa");
+      }
+
+      async function toggleFullscreen() {
+        if (!document.fullscreenEnabled) {
+          return;
+        }
+
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+        } catch (error) {
+          // Ignore browsers that block fullscreen without user gesture.
+        }
+      }
+
+      async function syncRemoteState(index) {
+        if (!remoteEnabled) {
+          return;
+        }
+
+        remoteQueuedIndex = index;
+        if (remoteSyncInFlight) {
+          return;
+        }
+
+        while (remoteQueuedIndex !== null) {
+          const nextIndex = remoteQueuedIndex;
+          remoteQueuedIndex = null;
+          remoteSyncInFlight = true;
+          try {
+            await fetch("/api/control", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                session: remoteSession,
+                action: "set",
+                index: nextIndex,
+                total
+              })
+            });
+          } catch (error) {
+            // The deck still works offline even if remote sync is unavailable.
+          } finally {
+            remoteSyncInFlight = false;
+          }
+        }
+      }
+
+      async function pollRemoteState() {
+        if (!remoteEnabled) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/state?session=${encodeURIComponent(remoteSession)}`, {
+            cache: "no-store"
+          });
+          if (!response.ok) {
+            return;
+          }
+
+          const state = await response.json();
+          if (typeof state.index === "number" && state.index !== current && !animating) {
+            goTo(state.index, { skipRemoteSync: true });
+          }
+        } catch (error) {
+          // Ignore transient local network errors.
+        }
+      }
+
+      function startRemotePolling() {
+        if (!remoteEnabled) {
+          return;
+        }
+
+        window.clearInterval(remotePollTimer);
+        pollRemoteState();
+        remotePollTimer = window.setInterval(pollRemoteState, 450);
+      }
+
+      function goTo(nextIndex, options = {}) {
+        const { skipRemoteSync = false } = options;
+        if (animating || nextIndex === current || nextIndex < 0 || nextIndex >= total) {
+          return;
+        }
+
+        animating = true;
+        const previousIndex = current;
+        const direction = nextIndex > current ? 1 : -1;
+        const previousSlide = slides[previousIndex];
+        const nextSlide = slides[nextIndex];
+
+        previousSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+        nextSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+
+        previousSlide.classList.remove("is-active");
+        previousSlide.classList.add(direction > 0 ? "is-exit-left" : "is-exit-right");
+
+        nextSlide.classList.add("is-active", direction > 0 ? "from-right" : "from-left");
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            nextSlide.classList.remove("from-right", "from-left");
+          });
+        });
+
+        current = nextIndex;
+        setSlideAccessibility(current);
+        updateUi();
+        if (!skipRemoteSync) {
+          syncRemoteState(current);
+        }
+
+        window.setTimeout(() => {
+          previousSlide.classList.remove("is-exit-left", "is-exit-right");
+          animating = false;
+        }, transitionMs + 32);
+      }
+
+      slides.forEach((slide, index) => {
+        slide.setAttribute("role", "group");
+        slide.setAttribute("aria-roledescription", "diapositiva");
+        slide.setAttribute("aria-label", `${index + 1} de ${total}`);
+        if (index !== 0) {
+          slide.classList.remove("is-active");
+        }
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = index === 0 ? "dot active" : "dot";
+        dot.setAttribute("aria-label", `Ir a diapositiva ${index + 1}`);
+        if (index === 0) {
+          dot.setAttribute("aria-current", "step");
+        }
+        dot.addEventListener("click", (event) => {
+          event.stopPropagation();
+          goTo(index);
+        });
+        dotsHost.appendChild(dot);
+        dotButtons.push(dot);
+      });
+
+      setSlideAccessibility(0);
+      updateUi();
+      updateFullscreenUi();
+      syncRemoteState(0);
+      startRemotePolling();
+
+      if (!document.fullscreenEnabled) {
+        fullscreenButton.hidden = true;
+      } else {
+        fullscreenButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          toggleFullscreen();
+        });
+        document.addEventListener("fullscreenchange", updateFullscreenUi);
+      }
+
+      prevButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current - 1);
+      });
+
+      nextButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current + 1);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const tag = event.target && event.target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || event.target.isContentEditable) {
+          return;
+        }
+
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          goTo(current + 1);
+          return;
+        }
+
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          goTo(current - 1);
+          return;
+        }
+
+        if (event.key === "Home") {
+          event.preventDefault();
+          goTo(0);
+          return;
+        }
+
+        if (event.key === "End") {
+          event.preventDefault();
+          goTo(total - 1);
+        }
+      });
+
+      deck.addEventListener("click", (event) => {
+        if (event.target.closest("button") || event.target.closest("[data-stop-nav]")) {
+          return;
+        }
+
+        const ratio = event.clientX / window.innerWidth;
+        if (ratio < 0.2) {
+          goTo(current - 1);
+          return;
+        }
+        if (ratio > 0.8) {
+          goTo(current + 1);
+        }
+      });
+
+      deck.addEventListener("touchstart", (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      }, { passive: true });
+
+      deck.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        if (Math.abs(dx) < 45 || Math.abs(dy) > 70) {
+          return;
+        }
+        goTo(dx < 0 ? current + 1 : current - 1);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
