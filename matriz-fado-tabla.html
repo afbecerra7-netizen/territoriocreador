@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Versión tabular de la primera pestaña de la Matriz FADO de Territorio Creador, con el lenguaje visual del proyecto.">
+  <title>Territorio Creador | Matriz FADO en Tabla</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f6f2e8;
+      --paper-strong: #efe6d5;
+      --ink: #12211e;
+      --ink-soft: rgba(18, 33, 30, 0.76);
+      --forest: #2c6b58;
+      --moss: #698d48;
+      --earth: #bf6d42;
+      --sun: #e2b34a;
+      --academic: #27516f;
+      --white: #ffffff;
+      --line: rgba(18, 33, 30, 0.12);
+      --shadow-soft: 0 18px 44px rgba(12, 24, 22, 0.16);
+      --shadow-card: 0 10px 26px rgba(12, 24, 22, 0.1);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Work Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.52), transparent 28%),
+        radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.26), transparent 24%),
+        linear-gradient(145deg, #dfe8e4 0%, #eef1eb 36%, #e9dfce 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .page {
+      width: min(1400px, calc(100vw - 2rem));
+      margin: 0 auto;
+      padding: 1.25rem 0 2rem;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 14px;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .brand-chip,
+    .toolbar {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.55rem 0.78rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: rgba(246, 242, 232, 0.78);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 28px rgba(12, 24, 22, 0.08);
+    }
+
+    .brand-chip {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--academic);
+    }
+
+    .toolbar {
+      padding: 0.38rem;
+    }
+
+    .tool-button {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.62rem 0.9rem;
+      font: inherit;
+      font-weight: 600;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .tool-button:hover {
+      background: rgba(255, 255, 255, 0.72);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      padding: clamp(1.4rem, 3vw, 2.2rem);
+      background:
+        radial-gradient(44rem 18rem at 110% 0%, rgba(255, 255, 255, 0.22), transparent 60%),
+        linear-gradient(135deg, #183c35 0%, #326658 56%, #6f8f4f 100%);
+      color: #f7f2e9;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 1rem;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 88px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(247, 242, 233, 0.82);
+    }
+
+    .kicker {
+      margin: 0 0 0.65rem;
+      font-size: 0.76rem;
+      line-height: 1;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: rgba(247, 242, 233, 0.78);
+    }
+
+    .hero-title {
+      margin: 0;
+      max-width: 14ch;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(2rem, 4.8vw, 4rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-copy {
+      margin: 0.9rem 0 0;
+      max-width: 70ch;
+      font-size: clamp(1rem, 1.6vw, 1.1rem);
+      line-height: 1.6;
+      color: rgba(247, 242, 233, 0.88);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+
+    .summary-card {
+      border-radius: var(--radius-lg);
+      padding: 1rem 1rem 0.95rem;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      box-shadow: var(--shadow-card);
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 0.78rem;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-card span {
+      display: block;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 0.45rem;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .summary-card.is-o strong,
+    .section-row.is-o .section-badge {
+      color: var(--academic);
+    }
+
+    .summary-card.is-a strong,
+    .section-row.is-a .section-badge {
+      color: #875042;
+    }
+
+    .summary-card.is-f strong,
+    .section-row.is-f .section-badge {
+      color: var(--forest);
+    }
+
+    .summary-card.is-d strong,
+    .section-row.is-d .section-badge {
+      color: #926226;
+    }
+
+    .table-shell {
+      border-radius: var(--radius-xl);
+      padding: 1rem;
+      background: rgba(246, 242, 232, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+      padding: 0 0.2rem;
+    }
+
+    .table-header h2 {
+      margin: 0;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+      line-height: 1.05;
+      color: var(--ink);
+    }
+
+    .table-header p {
+      margin: 0.45rem 0 0;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      max-width: 70ch;
+    }
+
+    .legend {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.9;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: calc(var(--radius-xl) - 6px);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(18, 33, 30, 0.08);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1120px;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      text-align: left;
+      padding: 1rem 0.9rem;
+      font-size: 0.8rem;
+      line-height: 1.2;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #f6f2e8;
+      background: linear-gradient(135deg, #203c37 0%, #2e6155 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    th:nth-child(2),
+    th:nth-child(3),
+    th:nth-child(4),
+    td.num {
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      vertical-align: top;
+      padding: 0.95rem 0.9rem;
+      border-bottom: 1px solid rgba(18, 33, 30, 0.08);
+      background: rgba(255, 255, 255, 0.86);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    tbody tr:hover td {
+      background: #fffdf7;
+    }
+
+    .factor-cell {
+      min-width: 320px;
+      font-weight: 600;
+      color: #182a25;
+    }
+
+    .comment-cell {
+      min-width: 360px;
+      color: var(--ink-soft);
+    }
+
+    .section-row td {
+      padding: 0.78rem 0.9rem;
+      border-bottom: 1px solid rgba(18, 33, 30, 0.1);
+      background: #f5efe3;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.82rem;
+      line-height: 1;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.65);
+    }
+
+    .section-row.is-o td {
+      background: linear-gradient(90deg, rgba(39, 81, 111, 0.12), rgba(255, 255, 255, 0.82));
+    }
+
+    .section-row.is-a td {
+      background: linear-gradient(90deg, rgba(143, 87, 72, 0.12), rgba(255, 255, 255, 0.82));
+    }
+
+    .section-row.is-f td {
+      background: linear-gradient(90deg, rgba(44, 107, 88, 0.12), rgba(255, 255, 255, 0.82));
+    }
+
+    .section-row.is-d td {
+      background: linear-gradient(90deg, rgba(226, 179, 74, 0.14), rgba(255, 255, 255, 0.82));
+    }
+
+    .subtotal-row td {
+      background: #f1ede3;
+      font-weight: 700;
+      color: #243531;
+    }
+
+    .subtotal-row td:first-child {
+      font-size: 0.88rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      margin-top: 0.9rem;
+      padding: 0 0.25rem;
+      color: var(--ink-soft);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1120px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .table-header {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100vw - 1rem, 1400px);
+        padding-top: 0.7rem;
+      }
+
+      .topbar {
+        top: 8px;
+      }
+
+      .brand-chip {
+        display: none;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero,
+      .table-shell {
+        border-radius: 24px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .topbar {
+        display: none;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero,
+      .table-shell {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand-chip">Territorio Creador · Matriz FADO</div>
+      <div class="toolbar">
+        <button class="tool-button" type="button" id="fullscreen-toggle">Pantalla completa</button>
+      </div>
+    </div>
+
+    <header class="hero">
+      <p class="kicker">Primera pestaña del archivo original</p>
+      <h1 class="hero-title">Matriz de Factores del proyecto Territorio Creador</h1>
+      <p class="hero-copy">Esta versión mantiene la estructura tabular del Excel, pero traducida al lenguaje visual de la presentación: fondos suaves, contrastes más limpios, jerarquía tipográfica clara y secciones FADO fáciles de identificar durante una exposición o una revisión académica.</p>
+    </header>
+
+    <section class="summary-grid" aria-label="Resumen de puntajes">
+      <article class="summary-card is-o">
+        <strong>Oportunidades</strong>
+        <span>1.975</span>
+        <p>Ventana institucional y territorial bastante favorable para activar el proyecto.</p>
+      </article>
+      <article class="summary-card is-a">
+        <strong>Amenazas</strong>
+        <span>1.340</span>
+        <p>Los riesgos principales están en movilidad, clima y continuidad de aliados.</p>
+      </article>
+      <article class="summary-card is-f">
+        <strong>Fortalezas</strong>
+        <span>2.075</span>
+        <p>La mayor solidez está en el enfoque metodológico y la pertinencia territorial.</p>
+      </article>
+      <article class="summary-card is-d">
+        <strong>Debilidades</strong>
+        <span>1.610</span>
+        <p>Falta validar más con comunidad y asegurar recursos y sostenibilidad.</p>
+      </article>
+    </section>
+
+    <section class="table-shell">
+      <div class="table-header">
+        <div>
+          <h2>Tabla completa</h2>
+          <p>Se conservan las columnas originales del Excel: factor, peso, calificación, calificación ponderada y comentarios. Las secciones y subtotales están respetados para que puedas leer la matriz tal cual.</p>
+        </div>
+        <div class="legend" aria-label="Leyenda de secciones">
+          <span class="legend-chip" style="color:#27516f;"><span class="legend-dot"></span>Oportunidades</span>
+          <span class="legend-chip" style="color:#875042;"><span class="legend-dot"></span>Amenazas</span>
+          <span class="legend-chip" style="color:#2c6b58;"><span class="legend-dot"></span>Fortalezas</span>
+          <span class="legend-chip" style="color:#926226;"><span class="legend-dot"></span>Debilidades</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table aria-label="Matriz FADO de Territorio Creador">
+          <thead>
+            <tr>
+              <th>Factor</th>
+              <th>Peso</th>
+              <th>Calificación</th>
+              <th>Cal. ponderada</th>
+              <th>Comentarios</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row is-o">
+              <td colspan="5"><span class="section-badge">Oportunidades</span></td>
+            </tr>
+            <tr>
+              <td class="factor-cell">1. Existencia de una institución educativa con PEI agroindustrial territorializado que puede integrar el laboratorio como experiencia pedagógica pertinente.</td>
+              <td class="num">0.10</td>
+              <td class="num">4.5</td>
+              <td class="num">0.45</td>
+              <td class="comment-cell">La IE Agroindustrial Francisco Medrano ya opera con enfoque productivo-pedagógico situado. Esto facilita que el laboratorio dialogue con procesos existentes en lugar de imponerse como intervención externa.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">2. Presencia de CULTURAMA como aliado estratégico con capacidad de aval institucional, articulación con política cultural municipal y acceso a redes de formación artística.</td>
+              <td class="num">0.09</td>
+              <td class="num">4.0</td>
+              <td class="num">0.36</td>
+              <td class="comment-cell">CULTURAMA actúa como puente entre el proyecto y la institucionalidad cultural de Duitama. Su aval fortalece la legitimidad del proceso y abre posibilidades de continuidad.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">3. Plan Decenal de Cultura de Duitama 2026–2035 que reconoce la descentralización cultural y los procesos comunitarios rurales como ejes estratégicos del municipio.</td>
+              <td class="num">0.08</td>
+              <td class="num">4.0</td>
+              <td class="num">0.32</td>
+              <td class="comment-cell">El marco normativo municipal favorece propuestas culturales en territorios rurales. El proyecto puede alinearse con este plan para obtener respaldo político y eventuales recursos locales.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">4. Contexto rural con cultura viva activa: saberes agroproductivos, memoria oral, prácticas comunitarias y asociatividad (Soprocarmen) que son insumo natural para la creación.</td>
+              <td class="num">0.08</td>
+              <td class="num">4.5</td>
+              <td class="num">0.36</td>
+              <td class="comment-cell">El territorio ya contiene material simbólico abundante. La vereda no parte de cero culturalmente: feria agroindustrial, producción de queso campesino, transmisión intergeneracional de saberes del campo.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">5. Creciente valoración académica y metodológica de la Investigación-Creación (I+C) como enfoque legítimo en programas de posgrado y entidades culturales.</td>
+              <td class="num">0.07</td>
+              <td class="num">3.5</td>
+              <td class="num">0.245</td>
+              <td class="comment-cell">El enfoque I+C del proyecto está alineado con tendencias académicas actuales, lo que facilita su articulación con la Maestría y le otorga rigor metodológico reconocido.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">6. Jóvenes rurales con acceso a dispositivos móviles y plataformas digitales que pueden usarse como herramientas de producción audiovisual de bajo costo.</td>
+              <td class="num">0.05</td>
+              <td class="num">3.0</td>
+              <td class="num">0.15</td>
+              <td class="comment-cell">Los smartphones permiten producir micro-relatos sin necesidad de equipos especializados. Esto reduce la barrera tecnológica del eje audiovisual del laboratorio.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">7. Ecosistema regional de colectivos y espacios culturales en Boyacá que puede proveer artistas facilitadores, referentes metodológicos y redes de circulación.</td>
+              <td class="num">0.03</td>
+              <td class="num">3.0</td>
+              <td class="num">0.09</td>
+              <td class="comment-cell">Colectivos de Aquitania, Tuta y otros municipios pueden aportar talento humano externo para los talleres del laboratorio o servir como referentes de experiencias similares.</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Suma parcial oportunidades</td>
+              <td class="num">0.50</td>
+              <td class="num"></td>
+              <td class="num">1.975</td>
+              <td></td>
+            </tr>
+
+            <tr class="section-row is-a">
+              <td colspan="5"><span class="section-badge">Amenazas</span></td>
+            </tr>
+            <tr>
+              <td class="factor-cell">1. Resistencia o desconfianza de la dirección educativa frente a propuestas artísticas percibidas como ajenas al enfoque técnico-productivo de la institución.</td>
+              <td class="num">0.10</td>
+              <td class="num">3.5</td>
+              <td class="num">0.35</td>
+              <td class="comment-cell">La IE tiene una identidad fuertemente agroindustrial. Una propuesta de artes puede ser vista como no prioritaria si no se articula bien con el PEI desde el inicio.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">2. Vulnerabilidad climática y productiva del territorio: lluvias, afectaciones en cultivos y dificultades de movilidad que pueden interrumpir el cronograma del laboratorio.</td>
+              <td class="num">0.08</td>
+              <td class="num">3.0</td>
+              <td class="num">0.24</td>
+              <td class="comment-cell">En mayo de 2025 se reportaron familias damnificadas y afectaciones en cultivos en veredas rurales de Duitama. La logística del proyecto debe contemplar esta variable.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">3. Infraestructura cultural precaria en la zona rural: sin espacios polivalentes, sin dotación artística y con conectividad limitada.</td>
+              <td class="num">0.08</td>
+              <td class="num">3.0</td>
+              <td class="num">0.24</td>
+              <td class="comment-cell">La vereda se encuentra en el km 31 vía Duitama-Charalá. No hay sala de arte ni teatro. El laboratorio depende de los espacios del colegio, que están diseñados para producción agroindustrial.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">4. Baja tradición de procesos artísticos continuos en el territorio: riesgo de que el laboratorio sea percibido como evento puntual y no como proceso sostenido.</td>
+              <td class="num">0.07</td>
+              <td class="num">3.0</td>
+              <td class="num">0.21</td>
+              <td class="comment-cell">Sin antecedentes de trabajo creativo continuado en la vereda, existe el riesgo de que el proceso no genere arraigo y que la comunidad no lo apropie más allá de las sesiones del laboratorio.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">5. Dificultades de acceso geográfico y movilidad: distancia desde Duitama, vías en mal estado en temporada de lluvias, dependencia de transporte intermunicipal.</td>
+              <td class="num">0.07</td>
+              <td class="num">2.5</td>
+              <td class="num">0.175</td>
+              <td class="comment-cell">El acceso al km 31 por la vía Charalá puede ser complejo en temporada invernal. Esto encarece la logística y limita la frecuencia de visitas al territorio.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">6. Rotación o cambio de directivos en la IE o en CULTURAMA que pueda afectar los compromisos institucionales adquiridos al inicio del proceso.</td>
+              <td class="num">0.05</td>
+              <td class="num">2.5</td>
+              <td class="num">0.125</td>
+              <td class="comment-cell">Cambios en la rectoría o en la dirección de CULTURAMA pueden interrumpir alianzas clave si los acuerdos no están formalizados en documentos institucionales.</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Suma parcial amenazas</td>
+              <td class="num">0.45</td>
+              <td class="num"></td>
+              <td class="num">1.34</td>
+              <td></td>
+            </tr>
+
+            <tr class="section-row is-f">
+              <td colspan="5"><span class="section-badge">Fortalezas</span></td>
+            </tr>
+            <tr>
+              <td class="factor-cell">1. Propuesta metodológica sólida y propia: Investigación-Creación basada en cartografía territorial y prototipado social, estructurada en dos fases articuladas.</td>
+              <td class="num">0.09</td>
+              <td class="num">4.5</td>
+              <td class="num">0.405</td>
+              <td class="comment-cell">El proyecto tiene una hoja de ruta clara, coherente con referentes teóricos y adaptada al contexto rural específico de El Carmen.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">2. Enfoque centrado en la cultura viva del territorio: no busca “llevar cultura desde afuera” sino activar mediaciones para que los jóvenes expresen lo que ya existe en la vereda.</td>
+              <td class="num">0.09</td>
+              <td class="num">4.5</td>
+              <td class="num">0.405</td>
+              <td class="comment-cell">Esta postura epistemológica diferencia el proyecto de intervenciones culturales extractivistas o paternalistas. Parte del reconocimiento de que El Carmen ya tiene cultura propia y activa.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">3. Red de actores territoriales identificada y en proceso de articulación: IE Francisco Medrano, docentes, JAC, familias, estudiantes y CULTURAMA.</td>
+              <td class="num">0.08</td>
+              <td class="num">4.0</td>
+              <td class="num">0.32</td>
+              <td class="comment-cell">El mapeo de actores es concreto y multidimensional. No solo incluye a la institución educativa sino a la comunidad más amplia, lo que da base para un proceso genuinamente participativo.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">4. Cuatro ejes de creación artística complementarios: artes plásticas, literatura, artes escénicas y audiovisual, que permiten diversidad de accesos expresivos.</td>
+              <td class="num">0.07</td>
+              <td class="num">4.0</td>
+              <td class="num">0.28</td>
+              <td class="comment-cell">La diversidad de lenguajes creativos hace que el laboratorio sea accesible para jóvenes con distintas sensibilidades e intereses, sin imponer un único modo de expresión.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">5. Pregunta de investigación clara y pertinente, que guía el proceso sin cerrarlo: orientada a propiciar herramientas expresivas, no a producir un resultado artístico predefinido.</td>
+              <td class="num">0.07</td>
+              <td class="num">4.0</td>
+              <td class="num">0.28</td>
+              <td class="comment-cell">La pregunta “cómo puede un laboratorio I+C propiciar herramientas...” abre el proceso en lugar de clausurarlo, lo que es coherente con la lógica del prototipado social.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">6. Proyección metodológica hacia otros contextos rurales: el modelo puede ser adaptado y transferido a otras instituciones educativas de Boyacá y la región.</td>
+              <td class="num">0.06</td>
+              <td class="num">3.5</td>
+              <td class="num">0.21</td>
+              <td class="comment-cell">El proyecto no se piensa como experiencia única sino como metodología replicable. Esto le da valor más allá de su ejecución específica en El Carmen.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">7. Articulación explícita con el Plan Decenal de Cultura de Duitama, lo que facilita legitimidad institucional y posibilidades de continuidad.</td>
+              <td class="num">0.05</td>
+              <td class="num">3.5</td>
+              <td class="num">0.175</td>
+              <td class="comment-cell">El proyecto busca dialogar con documentos institucionales existentes, no reemplazarlos. Esto aumenta las probabilidades de que la institución lo adopte más allá del período de desarrollo del proyecto.</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Suma parcial fortalezas</td>
+              <td class="num">0.51</td>
+              <td class="num"></td>
+              <td class="num">2.075</td>
+              <td></td>
+            </tr>
+
+            <tr class="section-row is-d">
+              <td colspan="5"><span class="section-badge">Debilidades</span></td>
+            </tr>
+            <tr>
+              <td class="factor-cell">1. Ausencia de validación comunitaria directa previa: el proyecto está formulado pero aún no ha tenido una fase de presentación y retroalimentación con la comunidad de El Carmen.</td>
+              <td class="num">0.10</td>
+              <td class="num">4.0</td>
+              <td class="num">0.40</td>
+              <td class="comment-cell">No se ha realizado aún ninguna visita de diagnóstico participativo a la vereda. Las alianzas son con la IE, no con la JAC ni con las familias directamente. Este es el principal riesgo de legitimidad.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">2. Dependencia de la disponibilidad institucional de la IE: tiempos escolares, calendario académico y prioridades pedagógicas pueden limitar el acceso al espacio y los estudiantes.</td>
+              <td class="num">0.09</td>
+              <td class="num">3.5</td>
+              <td class="num">0.315</td>
+              <td class="comment-cell">El laboratorio necesita tiempo escolar o extraescolar coordinado con docentes. Si la IE no prioriza el proceso, el cronograma puede fragmentarse y perder continuidad.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">3. Sin presupuesto propio confirmado: el proyecto depende de estímulos externos o financiación pública para su ejecución, lo que genera incertidumbre sobre el inicio.</td>
+              <td class="num">0.08</td>
+              <td class="num">4.0</td>
+              <td class="num">0.32</td>
+              <td class="comment-cell">No hay fuentes de financiación propias ni aliados que aporten recursos directos. La ejecución está supeditada a ganar una convocatoria o conseguir apoyo institucional externo.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">4. Equipo facilitador reducido: la carga de diseño, facilitación, documentación y evaluación del laboratorio puede ser excesiva para un equipo pequeño.</td>
+              <td class="num">0.07</td>
+              <td class="num">3.5</td>
+              <td class="num">0.245</td>
+              <td class="comment-cell">El proyecto requiere presencia constante en terreno, diseño de sesiones, registro y sistematización. Sin un equipo mínimo de al menos dos facilitadores, la calidad del proceso corre riesgo.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">5. Escasa sistematización de experiencias previas comparables en el contexto boyacense que sirvan como referente metodológico local directamente aplicable.</td>
+              <td class="num">0.06</td>
+              <td class="num">3.0</td>
+              <td class="num">0.18</td>
+              <td class="comment-cell">Los referentes teóricos son sólidos pero provienen principalmente del contexto académico y de experiencias internacionales. Falta documentación de casos similares en el contexto rural boyacense.</td>
+            </tr>
+            <tr>
+              <td class="factor-cell">6. Riesgo de dependencia del facilitador externo: si el proceso no genera capacidades propias en docentes y líderes comunitarios, el laboratorio puede no sostenerse sin intervención externa.</td>
+              <td class="num">0.05</td>
+              <td class="num">3.0</td>
+              <td class="num">0.15</td>
+              <td class="comment-cell">Si los docentes y la comunidad no internalizan la metodología, el proceso termina cuando termina la financiación. Hay que diseñar explícitamente la transferencia de capacidades desde el inicio.</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Suma parcial debilidades</td>
+              <td class="num">0.45</td>
+              <td class="num"></td>
+              <td class="num">1.61</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="footer-note">La estructura de esta página respeta la lógica del archivo original, pero mejora la jerarquía visual para lectura en pantalla, proyector o revisión académica. En móvil la tabla se desplaza horizontalmente para no deformar el contenido.</p>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const fullscreenButton = document.getElementById("fullscreen-toggle");
+
+      function updateLabel() {
+        if (!document.fullscreenEnabled) {
+          fullscreenButton.hidden = true;
+          return;
+        }
+
+        fullscreenButton.textContent = document.fullscreenElement
+          ? "Salir de pantalla completa"
+          : "Pantalla completa";
+      }
+
+      async function toggleFullscreen() {
+        if (!document.fullscreenEnabled) {
+          return;
+        }
+
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+        } catch (error) {
+          // Ignore browsers that require stricter user gestures.
+        }
+      }
+
+      updateLabel();
+      fullscreenButton.addEventListener("click", toggleFullscreen);
+      document.addEventListener("fullscreenchange", updateLabel);
+    })();
+  </script>
+</body>
+</html>
