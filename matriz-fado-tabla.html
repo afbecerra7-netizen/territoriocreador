@@ -59,17 +59,18 @@
 
     body::before {
       z-index: 0;
-      background: url("./assets/fotos/backgrounds/matriz-fado-bg.jpg") center center / cover no-repeat;
-      opacity: 0.16;
-      transform: scale(1.03);
+      background: url("./assets/fotos/backgrounds/matriz-fado-bg-fixed.jpg") center center / cover no-repeat;
+      opacity: 0.34;
+      transform: scale(1.04);
+      filter: saturate(0.92) contrast(1.04);
     }
 
     body::after {
       z-index: 1;
       background:
-        radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.58), transparent 28%),
-        radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.28), transparent 24%),
-        linear-gradient(145deg, rgba(223, 232, 228, 0.9) 0%, rgba(238, 241, 235, 0.92) 36%, rgba(233, 223, 206, 0.9) 100%);
+        radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.44), transparent 28%),
+        radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.18), transparent 24%),
+        linear-gradient(145deg, rgba(223, 232, 228, 0.72) 0%, rgba(238, 241, 235, 0.76) 36%, rgba(233, 223, 206, 0.72) 100%);
     }
 
     .page {
@@ -185,7 +186,7 @@
     .table-shell {
       border-radius: var(--radius-xl);
       padding: 1rem;
-      background: rgba(246, 242, 232, 0.78);
+      background: rgba(246, 242, 232, 0.54);
       border: 1px solid rgba(255, 255, 255, 0.62);
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow-soft);
@@ -230,7 +231,7 @@
     .table-wrap {
       overflow: auto;
       border-radius: calc(var(--radius-xl) - 6px);
-      background: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.46);
       border: 1px solid rgba(18, 33, 30, 0.08);
     }
 
@@ -269,7 +270,7 @@
       vertical-align: top;
       padding: 0.95rem 0.9rem;
       border-bottom: 1px solid rgba(18, 33, 30, 0.08);
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.62);
       font-size: 0.92rem;
       line-height: 1.5;
     }
@@ -292,7 +293,7 @@
     .section-row td {
       padding: 0.78rem 0.9rem;
       border-bottom: 1px solid rgba(18, 33, 30, 0.1);
-      background: #f5efe3;
+      background: rgba(245, 239, 227, 0.62);
     }
 
     .section-badge {
@@ -332,7 +333,7 @@
     }
 
     .subtotal-row td {
-      background: #f1ede3;
+      background: rgba(241, 237, 227, 0.66);
       font-weight: 700;
       color: #243531;
     }
