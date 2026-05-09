@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Presentación de avances de Territorio Creador: Laboratorio artístico de expresión cultural rural, mayo de 2026.">
+  <title>Territorio Creador | Laboratorio Artístico Rural</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f4ead8;
+      --paper-soft: #fbf6eb;
+      --ink: #172a25;
+      --muted: #52625c;
+      --forest: #245f4d;
+      --deep-forest: #123b33;
+      --clay: #bf6845;
+      --ochre: #d9a43b;
+      --chalk: #f8f4e9;
+      --sky: #cfe4df;
+      --blue: #244f6c;
+      --berry: #7e3f52;
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --shadow-soft: 0 24px 70px rgba(18, 42, 37, 0.22);
+      --shadow-card: 0 12px 30px rgba(18, 42, 37, 0.16);
+      --anim: 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Work Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 16% 12%, rgba(217, 164, 59, 0.28), transparent 28rem),
+        radial-gradient(circle at 92% 80%, rgba(36, 95, 77, 0.24), transparent 32rem),
+        linear-gradient(135deg, #f7efe1 0%, #e9eadf 45%, #d8e2d8 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(23, 42, 37, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 42, 37, 0.05) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at center, #000 0%, transparent 78%);
+      z-index: 0;
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+      transition: opacity var(--anim), transform var(--anim);
+      overflow: hidden;
+      --accent: var(--forest);
+      --accent-2: var(--ochre);
+      --panel: rgba(251, 246, 235, 0.86);
+      --panel-dark: rgba(18, 59, 51, 0.78);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(46rem 32rem at -12% 115%, rgba(191, 104, 69, 0.16), transparent 70%),
+        radial-gradient(42rem 28rem at 108% -18%, rgba(255, 255, 255, 0.4), transparent 72%);
+      pointer-events: none;
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.is-exit-left {
+      opacity: 0;
+      transform: translateX(-64px);
+      pointer-events: none;
+    }
+
+    .slide.is-exit-right {
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+    }
+
+    .slide.from-right { transform: translateX(64px); }
+    .slide.from-left { transform: translateX(-64px); }
+
+    .slide-inner {
+      position: relative;
+      z-index: 2;
+      min-height: 100%;
+      padding: clamp(2.2rem, 4vh, 3.5rem) clamp(3.4rem, 5vw, 5.6rem) clamp(4.4rem, 7vh, 5.8rem);
+      display: grid;
+      grid-template-columns: minmax(360px, 1.04fr) minmax(310px, 0.96fr);
+      gap: clamp(1.4rem, 3vw, 3.2rem);
+      align-items: center;
+    }
+
+    .slide-inner > * {
+      min-width: 0;
+    }
+
+    .slide-inner.full {
+      grid-template-columns: 1fr;
+      align-content: center;
+    }
+
+    .content-card {
+      position: relative;
+      min-width: 0;
+      display: grid;
+      gap: clamp(0.78rem, 1.7vh, 1.15rem);
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.25rem, 2.8vw, 2.15rem);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .content-card.dark {
+      background: var(--panel-dark);
+      color: var(--chalk);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .content-card::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 76px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      opacity: 0.92;
+    }
+
+    .kicker {
+      font-size: clamp(0.72rem, 1vw, 0.82rem);
+      line-height: 1;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .dark .kicker { color: #f0c86a; }
+
+    .slide-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(2rem, 4.3vw, 4rem);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+      color: inherit;
+    }
+
+    .slide-lead {
+      color: var(--muted);
+      font-size: clamp(1rem, 1.7vw, 1.2rem);
+      line-height: 1.55;
+    }
+
+    .dark .slide-lead { color: rgba(248, 244, 233, 0.84); }
+
+    .question {
+      border-left: 5px solid var(--accent-2);
+      padding: 0.7rem 0 0.7rem 1rem;
+      color: #203a35;
+      font-size: clamp(0.95rem, 1.45vw, 1.06rem);
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.38);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+
+    .dark .question {
+      color: #fff7e6;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .list,
+    .compact-list {
+      list-style: none;
+      display: grid;
+      gap: 0.62rem;
+    }
+
+    .list li,
+    .compact-list li,
+    .objective,
+    .finding,
+    .flow-card,
+    .stat {
+      min-width: 0;
+      background: rgba(255, 255, 255, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius-md);
+      padding: 0.78rem 0.9rem;
+      box-shadow: var(--shadow-card);
+      color: #203530;
+      line-height: 1.42;
+      overflow-wrap: break-word;
+    }
+
+    .dark .list li,
+    .dark .compact-list li,
+    .dark .objective,
+    .dark .finding,
+    .dark .flow-card,
+    .dark .stat {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: #f8f4e9;
+      box-shadow: none;
+    }
+
+    strong { color: var(--accent); }
+    .dark strong { color: #f0c86a; }
+
+    .compact-list li {
+      font-size: clamp(0.88rem, 1.28vw, 0.98rem);
+    }
+
+    .objectives {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .objective {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.8rem;
+      align-items: start;
+    }
+
+    .objective .tag {
+      width: 3.1rem;
+      height: 3.1rem;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--forest), var(--ochre));
+      color: #fff;
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 800;
+    }
+
+    .objective h3,
+    .finding h3,
+    .flow-card h3 {
+      font-size: clamp(0.96rem, 1.45vw, 1.08rem);
+      margin-bottom: 0.24rem;
+      color: inherit;
+    }
+
+    .objective p,
+    .finding p,
+    .flow-card p {
+      color: inherit;
+      opacity: 0.82;
+      font-size: clamp(0.84rem, 1.2vw, 0.96rem);
+      line-height: 1.42;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 0.5rem 0.82rem;
+      background: rgba(217, 164, 59, 0.17);
+      border: 1px solid rgba(217, 164, 59, 0.42);
+      color: #684511;
+      font-weight: 700;
+      font-size: clamp(0.76rem, 1.1vw, 0.86rem);
+    }
+
+    .dark .chip {
+      background: rgba(240, 200, 106, 0.15);
+      border-color: rgba(240, 200, 106, 0.38);
+      color: #fae4b0;
+    }
+
+    .quote {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.05rem, 2vw, 1.34rem);
+      line-height: 1.42;
+      color: inherit;
+      padding-left: 0.95rem;
+      border-left: 4px solid var(--accent-2);
+    }
+
+    .photo-panel {
+      position: relative;
+      min-width: 0;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      min-height: clamp(380px, 66vh, 620px);
+      background: #d6cfbd;
+      box-shadow: 0 12px 0 rgba(18, 42, 37, 0.12), var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+    }
+
+    .photo-panel img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(1.06) contrast(1.02);
+    }
+
+    .photo-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 48%, rgba(18, 42, 37, 0.72));
+      pointer-events: none;
+    }
+
+    .photo-caption {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 2;
+      color: #fff8e9;
+      font-weight: 700;
+      line-height: 1.35;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    .photo-grid {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      min-height: clamp(390px, 64vh, 620px);
+    }
+
+    .photo-grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .photo-tile {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      background: #d6cfbd;
+      min-height: 180px;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      box-shadow: var(--shadow-card);
+    }
+
+    .photo-tile.big { grid-column: span 2; }
+    .photo-tile.tall { grid-row: span 2; }
+
+    .photo-tile img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .photo-tile span {
+      position: absolute;
+      left: 0.7rem;
+      bottom: 0.7rem;
+      z-index: 2;
+      padding: 0.35rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(18, 42, 37, 0.72);
+      color: #fff7e6;
+      font-size: 0.76rem;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
+
+    .stats-grid,
+    .findings-grid,
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: "Fraunces", Georgia, serif;
+      color: inherit;
+      font-size: clamp(1.7rem, 3vw, 2.8rem);
+      line-height: 1;
+      margin-bottom: 0.28rem;
+    }
+
+    .stat span {
+      display: block;
+      opacity: 0.75;
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    .findings-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .finding {
+      min-height: 178px;
+      display: grid;
+      align-content: start;
+    }
+
+    .finding .num {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 2.1rem;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: 0.48rem;
+    }
+
+    .dark .finding .num { color: #f0c86a; }
+
+    .flow-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .flow-card h3 {
+      color: var(--accent);
+    }
+
+    .dark .flow-card h3 { color: #f0c86a; }
+
+    .split-note {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+
+    .timebar {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.45rem;
+      margin-top: 0.2rem;
+    }
+
+    .timebar span {
+      height: 0.7rem;
+      border-radius: 999px;
+      background: rgba(36, 95, 77, 0.2);
+    }
+
+    .timebar span:nth-child(-n+3) { background: var(--forest); }
+    .timebar span:nth-child(4) { background: var(--ochre); }
+    .timebar span:nth-child(n+5) { background: var(--clay); }
+
+    #s1 {
+      background:
+        linear-gradient(90deg, rgba(13, 42, 36, 0.78), rgba(13, 42, 36, 0.25)),
+        url("./assets/fotos/sanantonionorte/presentacion/piloto-grupo.jpg") center / cover no-repeat;
+      --accent: #f0c86a;
+      --accent-2: #f5efe2;
+      --panel: rgba(16, 47, 40, 0.72);
+    }
+
+    #s1 .slide-inner {
+      grid-template-columns: minmax(420px, 0.86fr) minmax(260px, 1.14fr);
+    }
+
+    #s1 .content-card {
+      color: #fff9ea;
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    #s1 .slide-lead { color: rgba(255, 249, 234, 0.86); }
+    #s1 .kicker { color: #f0c86a; }
+
+    #s2 { background: linear-gradient(135deg, #f5ead6 0%, #e8eee4 54%, #d7e2db 100%); }
+    #s3 { background: linear-gradient(135deg, #244f45 0%, #567d4a 100%); --accent: #f0c86a; --accent-2: #f5efe2; --panel: rgba(16, 47, 40, 0.78); }
+    #s4 { background: linear-gradient(135deg, #f2e6d0 0%, #f8f3e6 47%, #dfe8dc 100%); }
+    #s5 { background: linear-gradient(135deg, #3b4a35 0%, #6e6844 100%); --accent: #f0c86a; --accent-2: #f6efe1; --panel: rgba(22, 37, 32, 0.76); }
+    #s6 { background: linear-gradient(135deg, #e9d9bd 0%, #f8f2e7 50%, #cadfd6 100%); }
+    #s7 { background: linear-gradient(135deg, #29382f 0%, #5e6d4a 100%); --accent: #f0c86a; --accent-2: #f6efe1; --panel: rgba(15, 38, 32, 0.76); }
+    #s8 { background: linear-gradient(135deg, #f7e9d2 0%, #f9f5ea 52%, #d8e4dd 100%); }
+    #s9 { background: linear-gradient(135deg, #143c35 0%, #2f6455 52%, #745f39 100%); --accent: #f0c86a; --accent-2: #f6efe1; --panel: rgba(13, 36, 31, 0.76); }
+    #s10 { background: linear-gradient(135deg, #eef1e6 0%, #dce8df 50%, #f0dfc4 100%); }
+    #s11 { background: linear-gradient(135deg, #132f2b 0%, #255649 50%, #8b6b36 100%); --accent: #f0c86a; --accent-2: #f6efe1; --panel: rgba(13, 36, 31, 0.76); }
+
+    #s3 .content-card,
+    #s5 .content-card,
+    #s7 .content-card,
+    #s9 .content-card,
+    #s11 .content-card { color: #fff8e9; }
+
+    #s3 .slide-lead,
+    #s5 .slide-lead,
+    #s7 .slide-lead,
+    #s9 .slide-lead,
+    #s11 .slide-lead { color: rgba(255, 248, 233, 0.84); }
+
+    #s3 .list li,
+    #s5 .list li,
+    #s7 .list li,
+    #s9 .list li,
+    #s11 .list li,
+    #s3 .compact-list li,
+    #s5 .compact-list li,
+    #s7 .compact-list li,
+    #s9 .compact-list li,
+    #s11 .compact-list li {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: #fff8e9;
+      box-shadow: none;
+    }
+
+    #s7 .slide-title { font-size: clamp(2rem, 5vw, 3.9rem); }
+    #s7 .photo-grid {
+      grid-template-columns: 1.1fr 0.9fr 0.9fr;
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      min-height: clamp(330px, 48vh, 460px);
+    }
+    #s7 .photo-tile { min-height: 0; }
+    #s8 .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #s8 .photo-tile { min-height: 300px; }
+    #s9 .slide-inner.full .content-card { max-width: 1180px; justify-self: center; }
+    #s10 .slide-inner.full .content-card { max-width: 1180px; justify-self: center; }
+    #s11 .slide-inner.full .content-card { max-width: 980px; justify-self: center; text-align: center; }
+    #s11 .content-card::after { left: 50%; right: auto; transform: translateX(-50%); }
+
+    .slide.is-active .content-card > *,
+    .slide.is-active .photo-panel,
+    .slide.is-active .photo-grid > * {
+      animation: reveal-up 620ms ease both;
+    }
+
+    .slide.is-active .content-card > *:nth-child(1) { animation-delay: 80ms; }
+    .slide.is-active .content-card > *:nth-child(2) { animation-delay: 140ms; }
+    .slide.is-active .content-card > *:nth-child(3) { animation-delay: 200ms; }
+    .slide.is-active .content-card > *:nth-child(4) { animation-delay: 260ms; }
+    .slide.is-active .content-card > *:nth-child(5) { animation-delay: 320ms; }
+    .slide.is-active .content-card > *:nth-child(6) { animation-delay: 380ms; }
+    .slide.is-active .photo-panel { animation-delay: 160ms; }
+    .slide.is-active .photo-grid > *:nth-child(1) { animation-delay: 120ms; }
+    .slide.is-active .photo-grid > *:nth-child(2) { animation-delay: 190ms; }
+    .slide.is-active .photo-grid > *:nth-child(3) { animation-delay: 260ms; }
+    .slide.is-active .photo-grid > *:nth-child(4) { animation-delay: 330ms; }
+
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(22px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 120;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    #progress-fill {
+      display: block;
+      width: 9.09%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--ochre), var(--clay), var(--forest));
+      transition: width 280ms ease;
+    }
+
+    #counter,
+    #fullscreen-toggle,
+    #nav-prev,
+    #nav-next,
+    #dots {
+      position: fixed;
+      z-index: 120;
+      backdrop-filter: blur(12px);
+    }
+
+    #counter {
+      top: 14px;
+      right: 18px;
+      padding: 0.42rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: rgba(18, 42, 37, 0.9);
+      background: rgba(248, 244, 233, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+    }
+
+    #fullscreen-toggle {
+      top: 14px;
+      left: 18px;
+      min-width: 46px;
+      height: 40px;
+      padding: 0 0.78rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      background: rgba(248, 244, 233, 0.82);
+      color: rgba(18, 42, 37, 0.92);
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    #fullscreen-toggle:hover,
+    #nav-prev:hover,
+    #nav-next:hover { background: rgba(255, 255, 255, 0.96); }
+
+    #fullscreen-toggle.is-active {
+      background: rgba(18, 42, 37, 0.92);
+      color: #fff;
+    }
+
+    #nav-prev,
+    #nav-next {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      background: rgba(248, 244, 233, 0.82);
+      color: #17322d;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms ease, opacity 180ms ease, background 180ms ease;
+    }
+
+    #nav-prev { left: 14px; }
+    #nav-next { right: 14px; }
+    #nav-prev:hover, #nav-next:hover { transform: translateY(-50%) scale(1.05); }
+    #nav-prev:disabled, #nav-next:disabled { opacity: 0.35; pointer-events: none; }
+
+    #dots {
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.46rem;
+      padding: 0.48rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(244, 238, 224, 0.84);
+      border: 1px solid rgba(73, 68, 50, 0.18);
+      box-shadow: 0 10px 28px rgba(34, 30, 20, 0.16);
+    }
+
+    .dot {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .dot::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(62, 73, 65, 0.34);
+      background: rgba(113, 124, 114, 0.26);
+      transform: translate(-50%, -50%);
+      transition: width 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .dot.active::before {
+      width: 25px;
+      background: var(--forest);
+      border-color: var(--forest);
+    }
+
+    #nav-prev:focus-visible,
+    #nav-next:focus-visible,
+    #fullscreen-toggle:focus-visible,
+    .dot:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.95);
+      outline-offset: 2px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    @media (max-width: 1080px) {
+      .slide { overflow-y: auto; overflow-x: hidden; }
+      .slide-inner,
+      #s1 .slide-inner {
+        grid-template-columns: 1fr;
+        align-content: start;
+      }
+      .photo-panel { min-height: 360px; }
+      .stats-grid,
+      .findings-grid,
+      .flow-grid { grid-template-columns: 1fr; }
+      .split-note { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      body { overflow: hidden; }
+      .slide-inner {
+        padding: 1.3rem 1rem 4.6rem;
+        gap: 0.95rem;
+      }
+      .content-card { border-radius: 22px; padding: 1rem; }
+      .slide-title {
+        font-size: clamp(1.7rem, 9.4vw, 2.35rem);
+        letter-spacing: -0.025em;
+      }
+      .photo-panel { min-height: 300px; border-radius: 22px; }
+      .photo-grid,
+      .photo-grid.two,
+      #s7 .photo-grid,
+      #s8 .photo-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .photo-tile,
+      #s8 .photo-tile { min-height: 240px; }
+      .photo-tile.big,
+      .photo-tile.tall { grid-column: auto; grid-row: auto; }
+      .objective { grid-template-columns: 1fr; }
+      #counter { top: 10px; right: 12px; }
+      #fullscreen-toggle { top: 10px; left: 12px; min-width: 42px; height: 36px; }
+      #nav-prev, #nav-next { width: 40px; height: 40px; font-size: 0.95rem; }
+      #nav-prev { left: 8px; }
+      #nav-next { right: 8px; }
+      #dots { bottom: 10px; gap: 0.18rem; }
+      .dot { width: 28px; height: 32px; }
+      .dot.active::before { width: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress" aria-hidden="true"><span id="progress-fill"></span></div>
+  <button id="fullscreen-toggle" type="button" aria-label="Entrar en pantalla completa" title="Pantalla completa">⛶</button>
+  <button id="nav-prev" aria-label="Diapositiva anterior">←</button>
+  <button id="nav-next" aria-label="Diapositiva siguiente">→</button>
+  <div id="counter" aria-live="polite">01 / 07</div>
+  <div id="dots" role="navigation" aria-label="Navegación de diapositivas"></div>
+  <p class="sr-only" id="nav-help">Usa flechas izquierda y derecha para mover entre diapositivas.</p>
+
+  <div class="deck" id="deck" aria-describedby="nav-help">
+    <section class="slide is-active" id="s1">
+      <div class="slide-inner">
+        <article class="content-card dark">
+          <p class="kicker">Avance · Mayo 2026</p>
+          <h1 class="slide-title">Territorio Creador</h1>
+          <p class="slide-lead">Laboratorio artístico de expresión cultural rural</p>
+          <ul class="compact-list">
+            <li><strong>Andrés Felipe Becerra Pedraza</strong></li>
+            <li>Maestría en Industrias Creativas y Culturales</li>
+            <li>Universidad El Bosque</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s2">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">Lo que traigo hoy</p>
+          <h2 class="slide-title">Avance de esta semana</h2>
+          <p class="slide-lead">Esta semana se realizó un ejercicio piloto de la metodología I+C en la vereda San Antonio Norte, Duitama, en articulación con CULTURAMA.</p>
+          <ul class="list">
+            <li><strong>Primera validación empírica</strong> de la metodología en terreno.</li>
+            <li><strong>Articulación práctica con CULTURAMA,</strong> no solo institucional.</li>
+            <li><strong>Evidencia de transferibilidad</strong> del modelo a otros territorios.</li>
+          </ul>
+        </article>
+        <figure class="photo-panel">
+          <img src="./assets/fotos/sanantonionorte/presentacion/piloto-grupo.jpg" alt="Niños y niñas participando en el piloto de San Antonio Norte.">
+          <figcaption class="photo-caption">El piloto permitió pasar de la formulación conceptual a una prueba viva de la metodología.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide" id="s3">
+      <div class="slide-inner full">
+        <article class="content-card dark">
+          <p class="kicker">Datos del piloto</p>
+          <h2 class="slide-title">El piloto en cifras</h2>
+          <div class="stats-grid">
+            <div class="stat"><strong>8 mayo</strong><span>Fecha del ejercicio piloto, 2026.</span></div>
+            <div class="stat"><strong>San Antonio Norte</strong><span>Parque principal de la vereda, Duitama.</span></div>
+            <div class="stat"><strong>8</strong><span>Niños y niñas: 6 niñas y 2 niños.</span></div>
+            <div class="stat"><strong>8-16</strong><span>Rango de edad de los participantes.</span></div>
+            <div class="stat"><strong>2 h</strong><span>Duración total del ejercicio.</span></div>
+            <div class="stat"><strong>Tiza</strong><span>Único material usado para trabajar sobre el suelo.</span></div>
+          </div>
+          <p class="quote">Acompañamiento: gestora cultural de CULTURAMA + investigador.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s4">
+      <div class="slide-inner full">
+        <article class="content-card">
+          <p class="kicker">El piloto en imágenes</p>
+          <h2 class="slide-title">Cartografía sensible</h2>
+          <p class="slide-lead">La cartografía empezó por lo estructural: iglesia, parque y calles. Luego derivó hacia lo significativo: casas, vecinos, vacas, árboles, tiendas y un perro específico con nombre propio.</p>
+          <div class="photo-grid">
+            <figure class="photo-tile big tall"><img src="./assets/fotos/sanantonionorte/presentacion/cartografia-panorama.jpg" alt="Mapa amplio dibujado con tiza sobre el suelo."><span>Mapa en el piso</span></figure>
+            <figure class="photo-tile"><img src="./assets/fotos/sanantonionorte/presentacion/cartografia-detalle.jpg" alt="Detalle de dibujos en tiza sobre el territorio."><span>Casas y recorridos</span></figure>
+            <figure class="photo-tile"><img src="./assets/fotos/sanantonionorte/presentacion/cartografia-perro.jpg" alt="Perro sentado sobre el mapa de tiza."><span>Vínculos vivos</span></figure>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s5">
+      <div class="slide-inner">
+        <article class="content-card dark">
+          <p class="kicker">El piloto en imágenes</p>
+          <h2 class="slide-title">Registro de texturas con plastilina</h2>
+          <p class="slide-lead">Ejercicio complementario realizado por la gestora cultural de CULTURAMA con el mismo grupo.</p>
+          <ul class="list">
+            <li>Registro de texturas del entorno: árboles, paredes y superficies.</li>
+            <li>La plastilina funcionó como insumo para futuros ejercicios de grabado.</li>
+            <li><strong>Articula observación territorial y producción visual.</strong></li>
+          </ul>
+        </article>
+        <div class="photo-grid two">
+          <figure class="photo-tile"><img src="./assets/fotos/sanantonionorte/presentacion/texturas-01.jpg" alt="Niños registrando texturas sobre papel con plastilina."><span>Registro material</span></figure>
+          <figure class="photo-tile"><img src="./assets/fotos/sanantonionorte/presentacion/texturas-02.jpg" alt="Mesa de trabajo con plastilina y hojas de registro de texturas."><span>Exploración visual</span></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s6">
+      <div class="slide-inner full">
+        <article class="content-card">
+          <p class="kicker">Tres hallazgos del piloto</p>
+          <h2 class="slide-title">Lo que aprendimos</h2>
+          <div class="findings-grid">
+            <div class="finding">
+              <div class="num">01</div>
+              <h3>Referentes identitarios no oficiales</h3>
+              <p>Los niños mencionaron repetidamente la fábrica Toliboy como referente importante del territorio. La cultura no está solo en lo que las instituciones reconocen, sino en lo que las personas nombran cuando se abre el espacio.</p>
+            </div>
+            <div class="finding">
+              <div class="num">02</div>
+              <h3>Dimensión afectiva del territorio</h3>
+              <p>Dibujaron vecinos por su nombre e incluso a un perro específico. La cartografía registra vínculos vivos, no solo lugares.</p>
+            </div>
+            <div class="finding">
+              <div class="num">03</div>
+              <h3>Animal y vegetal como protagonista</h3>
+              <p>Vacas, árboles y animales del recorrido cotidiano muestran que el paisaje no es fondo del territorio: es centro.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="s7">
+      <div class="slide-inner full">
+        <article class="content-card dark">
+          <p class="kicker">Cierre</p>
+          <h2 class="slide-title">Lo que confirma el piloto</h2>
+          <p class="quote">El piloto confirmó empíricamente lo que el proyecto venía planteando teóricamente: la cultura viva del territorio aparece cuando se abre el espacio para que aparezca. No hay que llevarla. Hay que activarla.</p>
+          <ul class="list">
+            <li>Sistematización del piloto como capítulo de prototipado y validación.</li>
+            <li>Formalización de la articulación con CULTURAMA.</li>
+            <li>Primera visita a la JAC para presentar el proyecto.</li>
+          </ul>
+          <p class="slide-lead">Gracias.</p>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsHost = document.getElementById("dots");
+      const counter = document.getElementById("counter");
+      const fullscreenButton = document.getElementById("fullscreen-toggle");
+      const prevButton = document.getElementById("nav-prev");
+      const nextButton = document.getElementById("nav-next");
+      const progressFill = document.getElementById("progress-fill");
+      const deck = document.getElementById("deck");
+      const total = slides.length;
+      const requestedSlide = Number.parseInt(params.get("slide") || window.location.hash.replace("#s", ""), 10);
+      const initialIndex = Number.isFinite(requestedSlide) ? Math.min(Math.max(requestedSlide - 1, 0), total - 1) : 0;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const transitionMs = reducedMotion ? 0 : 620;
+      const remoteSession = params.get("session");
+      const remoteEnabled = Boolean(remoteSession) && window.location.protocol.startsWith("http");
+      let current = initialIndex;
+      let animating = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let remotePollTimer = 0;
+      let remoteSyncInFlight = false;
+      let remoteQueuedIndex = null;
+      const dotButtons = [];
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function setSlideAccessibility(activeIndex) {
+        slides.forEach((slide, index) => {
+          const isActive = index === activeIndex;
+          slide.setAttribute("aria-hidden", String(!isActive));
+          if (isActive) {
+            slide.removeAttribute("inert");
+          } else {
+            slide.setAttribute("inert", "");
+          }
+        });
+      }
+
+      function updateUi() {
+        counter.textContent = `${pad(current + 1)} / ${pad(total)}`;
+        progressFill.style.width = `${((current + 1) / total) * 100}%`;
+        prevButton.disabled = current === 0;
+        nextButton.disabled = current === total - 1;
+        dotButtons.forEach((dot, index) => {
+          const active = index === current;
+          dot.classList.toggle("active", active);
+          if (active) {
+            dot.setAttribute("aria-current", "step");
+          } else {
+            dot.removeAttribute("aria-current");
+          }
+        });
+      }
+
+      function updateFullscreenUi() {
+        if (!fullscreenButton) return;
+        const active = Boolean(document.fullscreenElement);
+        fullscreenButton.classList.toggle("is-active", active);
+        fullscreenButton.setAttribute("aria-label", active ? "Salir de pantalla completa" : "Entrar en pantalla completa");
+        fullscreenButton.setAttribute("title", active ? "Salir de pantalla completa" : "Pantalla completa");
+      }
+
+      async function toggleFullscreen() {
+        if (!document.fullscreenEnabled) return;
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+        } catch (error) {
+          // Some browsers block fullscreen without a direct user gesture.
+        }
+      }
+
+      async function syncRemoteState(index) {
+        if (!remoteEnabled) return;
+        remoteQueuedIndex = index;
+        if (remoteSyncInFlight) return;
+
+        while (remoteQueuedIndex !== null) {
+          const nextIndex = remoteQueuedIndex;
+          remoteQueuedIndex = null;
+          remoteSyncInFlight = true;
+          try {
+            await fetch("/api/control", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ session: remoteSession, action: "set", index: nextIndex, total })
+            });
+          } catch (error) {
+            // The deck still works offline when remote sync is unavailable.
+          } finally {
+            remoteSyncInFlight = false;
+          }
+        }
+      }
+
+      async function pollRemoteState() {
+        if (!remoteEnabled) return;
+        try {
+          const response = await fetch(`/api/state?session=${encodeURIComponent(remoteSession)}`, { cache: "no-store" });
+          if (!response.ok) return;
+          const state = await response.json();
+          if (typeof state.index === "number" && state.index !== current && !animating) {
+            goTo(state.index, { skipRemoteSync: true });
+          }
+        } catch (error) {
+          // Ignore transient local network errors.
+        }
+      }
+
+      function startRemotePolling() {
+        if (!remoteEnabled) return;
+        window.clearInterval(remotePollTimer);
+        pollRemoteState();
+        remotePollTimer = window.setInterval(pollRemoteState, 450);
+      }
+
+      function goTo(nextIndex, options = {}) {
+        const { skipRemoteSync = false } = options;
+        if (animating || nextIndex === current || nextIndex < 0 || nextIndex >= total) return;
+
+        animating = true;
+        const previousIndex = current;
+        const direction = nextIndex > current ? 1 : -1;
+        const previousSlide = slides[previousIndex];
+        const nextSlide = slides[nextIndex];
+
+        previousSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+        nextSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+        previousSlide.classList.remove("is-active");
+        previousSlide.classList.add(direction > 0 ? "is-exit-left" : "is-exit-right");
+        nextSlide.classList.add("is-active", direction > 0 ? "from-right" : "from-left");
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            nextSlide.classList.remove("from-right", "from-left");
+          });
+        });
+
+        current = nextIndex;
+        setSlideAccessibility(current);
+        updateUi();
+        if (!skipRemoteSync) syncRemoteState(current);
+
+        window.setTimeout(() => {
+          previousSlide.classList.remove("is-exit-left", "is-exit-right");
+          animating = false;
+        }, transitionMs + 32);
+      }
+
+      slides.forEach((slide, index) => {
+        slide.setAttribute("role", "group");
+        slide.setAttribute("aria-roledescription", "diapositiva");
+        slide.setAttribute("aria-label", `${index + 1} de ${total}`);
+        slide.classList.toggle("is-active", index === current);
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = index === current ? "dot active" : "dot";
+        dot.setAttribute("aria-label", `Ir a diapositiva ${index + 1}`);
+        if (index === current) dot.setAttribute("aria-current", "step");
+        dot.addEventListener("click", (event) => {
+          event.stopPropagation();
+          goTo(index);
+        });
+        dotsHost.appendChild(dot);
+        dotButtons.push(dot);
+      });
+
+      setSlideAccessibility(current);
+      updateUi();
+      updateFullscreenUi();
+      syncRemoteState(current);
+      startRemotePolling();
+
+      if (!document.fullscreenEnabled) {
+        fullscreenButton.hidden = true;
+      } else {
+        fullscreenButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          toggleFullscreen();
+        });
+        document.addEventListener("fullscreenchange", updateFullscreenUi);
+      }
+
+      prevButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current - 1);
+      });
+
+      nextButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current + 1);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const tag = event.target && event.target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || event.target.isContentEditable) return;
+
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          goTo(current + 1);
+          return;
+        }
+
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          goTo(current - 1);
+          return;
+        }
+
+        if (event.key === "Home") {
+          event.preventDefault();
+          goTo(0);
+          return;
+        }
+
+        if (event.key === "End") {
+          event.preventDefault();
+          goTo(total - 1);
+        }
+      });
+
+      deck.addEventListener("click", (event) => {
+        if (event.target.closest("button") || event.target.closest("[data-stop-nav]")) return;
+        const ratio = event.clientX / window.innerWidth;
+        if (ratio < 0.2) {
+          goTo(current - 1);
+          return;
+        }
+        if (ratio > 0.8) goTo(current + 1);
+      });
+
+      deck.addEventListener("touchstart", (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      }, { passive: true });
+
+      deck.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        if (Math.abs(dx) < 45 || Math.abs(dy) > 70) return;
+        goTo(dx < 0 ? current + 1 : current - 1);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
