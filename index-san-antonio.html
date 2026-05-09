@@ -121,8 +121,8 @@
     .slide-inner {
       position: relative;
       z-index: 2;
-      min-height: 100%;
-      padding: clamp(2.2rem, 4vh, 3.5rem) clamp(3.4rem, 5vw, 5.6rem) clamp(4.4rem, 7vh, 5.8rem);
+      height: 100%;
+      padding: clamp(1.9rem, 3.4vh, 3.1rem) clamp(3.2rem, 5vw, 5.4rem) clamp(4.1rem, 6.2vh, 5.3rem);
       display: grid;
       grid-template-columns: minmax(360px, 1.04fr) minmax(310px, 0.96fr);
       gap: clamp(1.4rem, 3vw, 3.2rem);
@@ -335,7 +335,7 @@
       min-width: 0;
       border-radius: var(--radius-xl);
       overflow: hidden;
-      min-height: clamp(380px, 66vh, 620px);
+      min-height: clamp(330px, 58vh, 560px);
       background: #d6cfbd;
       box-shadow: 0 12px 0 rgba(18, 42, 37, 0.12), var(--shadow-soft);
       border: 1px solid rgba(255, 255, 255, 0.55);
@@ -376,7 +376,7 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.8rem;
-      min-height: clamp(390px, 64vh, 620px);
+      min-height: clamp(320px, 54vh, 520px);
     }
 
     .photo-grid.two {
@@ -447,17 +447,22 @@
     }
 
     .finding {
-      min-height: 178px;
+      min-height: 190px;
       display: grid;
       align-content: start;
     }
 
     .finding .num {
       font-family: "Fraunces", Georgia, serif;
-      font-size: 2.1rem;
+      font-size: 2rem;
       line-height: 1;
       color: var(--accent);
-      margin-bottom: 0.48rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .finding h3 {
+      max-width: 14rem;
+      line-height: 1.18;
     }
 
     .dark .finding .num { color: #f0c86a; }
@@ -556,13 +561,34 @@
       box-shadow: none;
     }
 
-    #s7 .slide-title { font-size: clamp(2rem, 5vw, 3.9rem); }
-    #s7 .photo-grid {
+    #s4 .content-card {
+      gap: clamp(0.52rem, 1.2vh, 0.82rem);
+      padding-block: clamp(1.05rem, 2.1vw, 1.65rem);
+    }
+
+    #s4 .slide-title { font-size: clamp(1.86rem, 4.35vw, 3.35rem); }
+
+    #s4 .slide-lead {
+      font-size: clamp(0.94rem, 1.45vw, 1.08rem);
+      line-height: 1.45;
+    }
+
+    #s4 .photo-grid {
       grid-template-columns: 1.1fr 0.9fr 0.9fr;
       grid-template-rows: repeat(2, minmax(0, 1fr));
-      min-height: clamp(330px, 48vh, 460px);
+      height: clamp(300px, 40vh, 430px);
+      min-height: 0;
+      max-height: 430px;
     }
-    #s7 .photo-tile { min-height: 0; }
+    #s4 .photo-tile {
+      height: 100%;
+      min-height: 0;
+    }
+
+    #s4 .photo-tile img {
+      height: 100%;
+      min-height: 0;
+    }
     #s8 .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     #s8 .photo-tile { min-height: 300px; }
     #s9 .slide-inner.full .content-card { max-width: 1180px; justify-self: center; }
@@ -761,21 +787,51 @@
       .slide-inner {
         padding: 1.3rem 1rem 4.6rem;
         gap: 0.95rem;
+        width: 100vw;
+        max-width: 100vw;
+        grid-template-columns: minmax(0, 1fr) !important;
       }
-      .content-card { border-radius: 22px; padding: 1rem; }
+      .content-card {
+        width: calc(100vw - 3rem) !important;
+        max-width: calc(100vw - 3rem) !important;
+        justify-self: start;
+        border-radius: 22px;
+        padding: 1rem;
+      }
       .slide-title {
         font-size: clamp(1.7rem, 9.4vw, 2.35rem);
         letter-spacing: -0.025em;
+        max-width: 100%;
+        white-space: normal;
+        word-break: break-word;
       }
-      .photo-panel { min-height: 300px; border-radius: 22px; }
+      .slide-title,
+      .slide-lead,
+      .list li,
+      .photo-caption {
+        overflow-wrap: anywhere;
+      }
+      .photo-panel {
+        width: calc(100vw - 3rem) !important;
+        max-width: calc(100vw - 3rem) !important;
+        justify-self: start;
+        min-height: 300px;
+        border-radius: 22px;
+      }
       .photo-grid,
       .photo-grid.two,
+      #s4 .photo-grid,
       #s7 .photo-grid,
       #s8 .photo-grid {
-        grid-template-columns: 1fr;
+        width: calc(100vw - 3rem) !important;
+        max-width: calc(100vw - 3rem) !important;
+        justify-self: start;
+        grid-template-columns: minmax(0, 1fr) !important;
+        grid-template-rows: auto !important;
         min-height: auto;
       }
       .photo-tile,
+      #s4 .photo-tile,
       #s8 .photo-tile { min-height: 240px; }
       .photo-tile.big,
       .photo-tile.tall { grid-column: auto; grid-row: auto; }
@@ -836,7 +892,7 @@
           </ul>
         </article>
         <figure class="photo-panel">
-          <img src="./assets/fotos/sanantonionorte/presentacion/piloto-grupo.jpg" alt="Niños y niñas participando en el piloto de San Antonio Norte.">
+          <img src="./assets/fotos/sanantonionorte/presentacion/cartografia-tollyboy.jpg" alt="Detalle de la cartografía social con la fábrica Toliboy como referente territorial.">
           <figcaption class="photo-caption">El piloto permitió pasar de la formulación conceptual a una prueba viva de la metodología.</figcaption>
         </figure>
       </div>
@@ -864,7 +920,7 @@
       <div class="slide-inner full">
         <article class="content-card">
           <p class="kicker">El piloto en imágenes</p>
-          <h2 class="slide-title">Cartografía sensible</h2>
+          <h2 class="slide-title">Cartografía social</h2>
           <p class="slide-lead">La cartografía empezó por lo estructural: iglesia, parque y calles. Luego derivó hacia lo significativo: casas, vecinos, vacas, árboles, tiendas y un perro específico con nombre propio.</p>
           <div class="photo-grid">
             <figure class="photo-tile big tall"><img src="./assets/fotos/sanantonionorte/presentacion/cartografia-panorama.jpg" alt="Mapa amplio dibujado con tiza sobre el suelo."><span>Mapa en el piso</span></figure>
@@ -880,7 +936,6 @@
         <article class="content-card dark">
           <p class="kicker">El piloto en imágenes</p>
           <h2 class="slide-title">Registro de texturas con plastilina</h2>
-          <p class="slide-lead">Ejercicio complementario realizado por la gestora cultural de CULTURAMA con el mismo grupo.</p>
           <ul class="list">
             <li>Registro de texturas del entorno: árboles, paredes y superficies.</li>
             <li>La plastilina funcionó como insumo para futuros ejercicios de grabado.</li>
@@ -912,8 +967,8 @@
             </div>
             <div class="finding">
               <div class="num">03</div>
-              <h3>Animal y vegetal como protagonista</h3>
-              <p>Vacas, árboles y animales del recorrido cotidiano muestran que el paisaje no es fondo del territorio: es centro.</p>
+              <h3>Paisaje vivo como protagonista</h3>
+              <p>Vacas, árboles y animales del recorrido cotidiano muestran que el entorno no es fondo del territorio: es centro.</p>
             </div>
           </div>
         </article>
@@ -924,8 +979,8 @@
       <div class="slide-inner full">
         <article class="content-card dark">
           <p class="kicker">Cierre</p>
-          <h2 class="slide-title">Lo que confirma el piloto</h2>
-          <p class="quote">El piloto confirmó empíricamente lo que el proyecto venía planteando teóricamente: la cultura viva del territorio aparece cuando se abre el espacio para que aparezca. No hay que llevarla. Hay que activarla.</p>
+          <h2 class="slide-title">Lo que deja ver esta aproximación</h2>
+          <p class="quote">Esta primera aproximación permitió observar que, cuando se abre un espacio de creación sencillo y situado, aparecen relatos, vínculos y referentes del territorio que normalmente no entran en la programación cultural formal.</p>
           <ul class="list">
             <li>Sistematización del piloto como capítulo de prototipado y validación.</li>
             <li>Formalización de la articulación con CULTURAMA.</li>
