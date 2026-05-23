@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Desaprender · Territorio Creador: laboratorio artístico de expresión cultural rural en la vereda El Carmen, Duitama, Boyacá.">
+  <title>Desaprender · Territorio Creador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f6f2e8;
+      --paper-strong: #efe6d5;
+      --ink: #12211e;
+      --ink-soft: #2d4640;
+      --forest: #2c6b58;
+      --moss: #698d48;
+      --earth: #bf6d42;
+      --sun: #e2b34a;
+      --academic: #27516f;
+      --sky: #d6e7ee;
+      --white: #ffffff;
+      --radius-xl: 30px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-soft: 0 12px 40px rgba(12, 24, 22, 0.2);
+      --shadow-card: 0 8px 22px rgba(14, 25, 25, 0.18);
+      --anim: 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Work Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 20% 20%, #ffffff 0%, #eff2f2 35%, #dde4e3 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+      transition: opacity var(--anim), transform var(--anim);
+      overflow: hidden;
+      --panel-bg: rgba(246, 242, 232, 0.9);
+      --panel-ink: #12211e;
+      --panel-muted: rgba(18, 33, 30, 0.76);
+      --kicker: #244f6c;
+      --chip-bg: rgba(226, 179, 74, 0.22);
+      --chip-border: rgba(226, 179, 74, 0.5);
+      --chip-ink: #3f2f12;
+      --line-accent: #2c6b58;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(60rem 35rem at 110% -20%, rgba(255, 255, 255, 0.28), transparent 65%),
+        radial-gradient(48rem 36rem at -15% 105%, rgba(0, 0, 0, 0.14), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.is-exit-left {
+      opacity: 0;
+      transform: translateX(-64px);
+      pointer-events: none;
+    }
+
+    .slide.is-exit-right {
+      opacity: 0;
+      transform: translateX(64px);
+      pointer-events: none;
+    }
+
+    .slide.from-right { transform: translateX(64px); }
+    .slide.from-left { transform: translateX(-64px); }
+
+    .slide-inner {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      padding: clamp(2.6rem, 4vh, 3.8rem) clamp(3.6rem, 5vw, 5.8rem) clamp(4.4rem, 7vh, 5.8rem);
+      display: grid;
+      grid-template-columns: minmax(340px, 1.15fr) minmax(280px, 0.9fr);
+      gap: clamp(1.4rem, 3vw, 3.2rem);
+      align-items: center;
+    }
+
+    .content-card {
+      position: relative;
+      display: grid;
+      gap: clamp(0.72rem, 1.6vh, 1.1rem);
+      background: var(--panel-bg);
+      color: var(--panel-ink);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.3rem, 2.8vw, 2.1rem);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(8px);
+    }
+
+    .content-card::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 70px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--line-accent);
+      opacity: 0.85;
+    }
+
+    .kicker {
+      font-size: 0.75rem;
+      line-height: 1;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--kicker);
+      font-weight: 700;
+    }
+
+    .slide-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.95rem, 4vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--panel-ink);
+    }
+
+    .slide-lead {
+      font-size: clamp(1.01rem, 1.8vw, 1.18rem);
+      line-height: 1.55;
+      color: var(--panel-muted);
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.58rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--chip-border);
+      background: var(--chip-bg);
+      color: var(--chip-ink);
+      font-weight: 600;
+      font-size: 0.84rem;
+    }
+
+    .quote {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.08rem, 2.1vw, 1.3rem);
+      line-height: 1.45;
+      color: var(--panel-ink);
+      padding-left: 0.9rem;
+      border-left: 3px solid var(--line-accent);
+    }
+
+    .quote cite {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-family: "Work Sans", "Segoe UI", sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.62;
+    }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 0.62rem;
+    }
+
+    .list li {
+      background: rgba(255, 255, 255, 0.56);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius-md);
+      padding: 0.74rem 0.84rem;
+      color: var(--panel-ink);
+      font-size: clamp(0.92rem, 1.4vw, 1.01rem);
+      line-height: 1.42;
+      box-shadow: var(--shadow-card);
+    }
+
+    .list strong { color: var(--line-accent); }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.68rem;
+    }
+
+    .grid-cards .card {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 0.8rem 0.85rem;
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--panel-ink);
+      font-size: 0.92rem;
+      line-height: 1.38;
+    }
+
+    .steps {
+      list-style: none;
+      display: grid;
+      gap: 0.72rem;
+      counter-reset: steps;
+    }
+
+    .steps li {
+      counter-increment: steps;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: start;
+      gap: 0.85rem;
+      padding: 0.74rem 0.84rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      background: rgba(255, 255, 255, 0.47);
+      box-shadow: var(--shadow-card);
+      font-weight: 600;
+      color: var(--panel-ink);
+    }
+
+    .steps li::before {
+      content: counter(steps, decimal-leading-zero);
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.1rem;
+      color: var(--line-accent);
+      width: 2.1rem;
+      text-align: center;
+    }
+
+    .steps li > span { display: block; }
+
+    .steps li small {
+      display: block;
+      font-weight: 500;
+      font-size: 0.82rem;
+      opacity: 0.78;
+      margin-top: 0.18rem;
+    }
+
+    .art-wrap {
+      position: relative;
+      border-radius: var(--radius-xl);
+      border: 2px solid rgba(18, 33, 30, 0.14);
+      background: #f8f3e7;
+      box-shadow: 0 8px 0 rgba(18, 33, 30, 0.12);
+      padding: clamp(0.72rem, 1.4vw, 1rem);
+    }
+
+    .art {
+      display: block;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: calc(var(--radius-xl) - 8px);
+      overflow: hidden;
+      object-fit: cover;
+      object-position: center;
+      background: #f8f3e7;
+    }
+
+    /* ---------- Portada / Cierre (lead) ---------- */
+    .slide.cover .slide-inner {
+      grid-template-columns: 1fr;
+      place-items: center;
+      text-align: center;
+      padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 8vw, 7rem);
+    }
+
+    .slide.cover .content-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      max-width: 60rem;
+      justify-items: center;
+      gap: clamp(0.6rem, 1.6vh, 1.1rem);
+    }
+
+    .slide.cover .content-card::after { display: none; }
+
+    .cover-eyebrow {
+      font-family: "Fraunces", Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      opacity: 0.85;
+    }
+
+    .cover-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 8vw, 6.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+    }
+
+    .cover-sub {
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      line-height: 1.5;
+      opacity: 0.9;
+      max-width: 42rem;
+    }
+
+    .cover-credit {
+      margin-top: 0.4rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.42;
+    }
+
+    /* ---------- Slides a ancho completo (tabla / diagrama) ---------- */
+    .slide.wide .slide-inner {
+      grid-template-columns: 1fr;
+      align-items: center;
+    }
+
+    .slide.wide .content-card {
+      max-width: 66rem;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(0.86rem, 1.4vw, 1.04rem);
+    }
+
+    .matrix-table td {
+      padding: 0.72rem 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      vertical-align: top;
+      line-height: 1.4;
+    }
+
+    .matrix-table tr:last-child td { border-bottom: none; }
+
+    .matrix-table td:first-child {
+      font-weight: 700;
+      color: var(--line-accent);
+      white-space: nowrap;
+      padding-right: 1.4rem;
+    }
+
+    .hub-svg {
+      display: block;
+      width: 100%;
+      max-width: 58rem;
+      height: auto;
+      margin: 0.2rem auto 0;
+    }
+
+    .hub-svg .node-box {
+      fill: rgba(255, 255, 255, 0.05);
+      stroke: var(--chip-border);
+      stroke-width: 1.5;
+    }
+
+    .hub-svg .node-hub {
+      fill: var(--line-accent);
+      stroke: var(--line-accent);
+    }
+
+    .hub-svg .hub-glow {
+      fill: none;
+      stroke: var(--line-accent);
+      stroke-opacity: 0.3;
+      stroke-width: 1.5;
+    }
+
+    .hub-svg .n-title { fill: var(--panel-ink); font: 700 19px "Work Sans", sans-serif; }
+    .hub-svg .n-sub { fill: var(--panel-ink); opacity: 0.6; font: 500 14px "Work Sans", sans-serif; }
+    .hub-svg .hub-title { fill: #1b2740; font: 700 25px "Work Sans", sans-serif; letter-spacing: 0.5px; }
+    .hub-svg .hub-sub { fill: #1b2740; opacity: 0.82; font: 600 14px "Work Sans", sans-serif; }
+    .hub-svg .flow-cap { fill: var(--panel-ink); font: 500 16px "Work Sans", sans-serif; }
+    .hub-svg .flow-cap .k { fill: var(--line-accent); font-weight: 700; }
+    .hub-svg .flow-path { stroke: var(--line-accent); stroke-width: 2.2; fill: none; }
+
+    .replicate-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.45rem;
+      font-size: clamp(0.8rem, 1.2vw, 0.94rem);
+    }
+
+    .replicate-strip .repl-tag { font-weight: 700; color: var(--line-accent); }
+    .replicate-strip .repl-arrow { color: var(--line-accent); font-weight: 700; }
+
+    .replicate-strip .repl-source {
+      padding: 0.3rem 0.72rem;
+      border-radius: 999px;
+      border: 1px solid var(--line-accent);
+      color: var(--line-accent);
+      font-weight: 700;
+    }
+
+    .replicate-strip .repl-ghost {
+      padding: 0.3rem 0.72rem;
+      border-radius: 999px;
+      border: 1px dashed var(--chip-border);
+      opacity: 0.72;
+    }
+
+    /* ---------- Temas por slide ---------- */
+    #s1 { background: linear-gradient(135deg, #122a25 0%, #1f4439 60%, #2c5a3f 100%); }
+    #s1, #s11 {
+      --panel-ink: #f6f2e8;
+      --line-accent: #e2b34a;
+    }
+
+    #s2 {
+      background: linear-gradient(125deg, #eee2c8 0%, #f5eddc 52%, #e0dcc8 100%);
+      --panel-bg: rgba(255, 255, 255, 0.64);
+      --panel-ink: #213431;
+      --panel-muted: rgba(33, 52, 49, 0.76);
+      --kicker: #7c4c2d;
+      --line-accent: #bf6d42;
+      --chip-bg: rgba(191, 109, 66, 0.13);
+      --chip-border: rgba(191, 109, 66, 0.45);
+      --chip-ink: #7c4c2d;
+    }
+
+    #s2 .content-card { gap: clamp(0.5rem, 1.1vh, 0.8rem); }
+    #s2 .slide-title { font-size: clamp(1.7rem, 3.4vw, 3rem); }
+    #s2 .quote { font-size: clamp(0.98rem, 1.7vw, 1.14rem); }
+
+    #s3 {
+      background: linear-gradient(135deg, #183c35 0%, #326658 56%, #6f8f4f 100%);
+      --panel-bg: rgba(247, 242, 233, 0.92);
+      --panel-ink: #152925;
+      --panel-muted: rgba(21, 41, 37, 0.8);
+      --kicker: #27516f;
+      --line-accent: #2c6b58;
+      --chip-bg: rgba(39, 81, 111, 0.15);
+      --chip-border: rgba(39, 81, 111, 0.45);
+      --chip-ink: #1f425a;
+    }
+
+    #s4 {
+      background: linear-gradient(140deg, #123538 0%, #1f4d54 48%, #2d6d63 100%);
+      --panel-bg: rgba(10, 31, 35, 0.7);
+      --panel-ink: #f3efe5;
+      --panel-muted: rgba(243, 239, 229, 0.82);
+      --kicker: #f0c86a;
+      --line-accent: #e2b34a;
+      --chip-bg: rgba(226, 179, 74, 0.17);
+      --chip-border: rgba(226, 179, 74, 0.42);
+      --chip-ink: #f6e7c5;
+    }
+
+    #s5 {
+      background: linear-gradient(135deg, #315d52 0%, #3e7962 55%, #567f59 100%);
+      --panel-bg: rgba(245, 248, 240, 0.94);
+      --panel-ink: #20342e;
+      --panel-muted: rgba(32, 52, 46, 0.78);
+      --kicker: #305f53;
+      --line-accent: #2f6b58;
+      --chip-bg: rgba(47, 107, 88, 0.15);
+      --chip-border: rgba(47, 107, 88, 0.38);
+      --chip-ink: #275347;
+    }
+
+    #s6, #s10 {
+      background: linear-gradient(138deg, #213958 0%, #2c5775 48%, #4a7884 100%);
+      --panel-bg: rgba(12, 27, 46, 0.72);
+      --panel-ink: #eef4f7;
+      --panel-muted: rgba(238, 244, 247, 0.84);
+      --kicker: #f5cb78;
+      --line-accent: #f5cb78;
+      --chip-bg: rgba(245, 203, 120, 0.15);
+      --chip-border: rgba(245, 203, 120, 0.4);
+      --chip-ink: #f7dfb0;
+    }
+
+    #s7 {
+      background: linear-gradient(140deg, #20342e 0%, #35544a 52%, #4a6856 100%);
+      --panel-bg: rgba(15, 30, 25, 0.7);
+      --panel-ink: #f5f2e9;
+      --panel-muted: rgba(245, 242, 233, 0.84);
+      --kicker: #f0ca82;
+      --line-accent: #f0ca82;
+      --chip-bg: rgba(240, 202, 130, 0.14);
+      --chip-border: rgba(240, 202, 130, 0.36);
+      --chip-ink: #f4dfb6;
+    }
+
+    #s8 {
+      background: linear-gradient(128deg, #f4d49a 0%, #e8c171 45%, #c18f4a 100%);
+      --panel-bg: rgba(24, 39, 42, 0.68);
+      --panel-ink: #f5f0e6;
+      --panel-muted: rgba(245, 240, 230, 0.82);
+      --kicker: #f2d498;
+      --line-accent: #f4c56c;
+      --chip-bg: rgba(244, 197, 108, 0.16);
+      --chip-border: rgba(244, 197, 108, 0.42);
+      --chip-ink: #f4dfb7;
+    }
+
+    #s9 {
+      background: linear-gradient(132deg, #7f3e34 0%, #a04e41 52%, #bf6d42 100%);
+      --panel-bg: rgba(255, 248, 240, 0.92);
+      --panel-ink: #3b211c;
+      --panel-muted: rgba(59, 33, 28, 0.77);
+      --kicker: #8f4f35;
+      --line-accent: #9d4f3c;
+      --chip-bg: rgba(157, 79, 60, 0.12);
+      --chip-border: rgba(157, 79, 60, 0.42);
+      --chip-ink: #7e3d2e;
+    }
+
+    #s11 { background: linear-gradient(135deg, #161616 0%, #1f2b26 60%, #14241f 100%); }
+
+    /* Cards sobre fondos oscuros */
+    #s4 .list li, #s7 .list li {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: none;
+      color: #f7f2e9;
+    }
+
+    #s10 .slide-title { font-size: clamp(1.55rem, 3vw, 2.6rem); }
+
+    /* Animaciones de entrada */
+    .slide.is-active .content-card > * { animation: reveal-up 600ms ease both; }
+    .slide.is-active .content-card > *:nth-child(1) { animation-delay: 90ms; }
+    .slide.is-active .content-card > *:nth-child(2) { animation-delay: 160ms; }
+    .slide.is-active .content-card > *:nth-child(3) { animation-delay: 230ms; }
+    .slide.is-active .content-card > *:nth-child(4) { animation-delay: 300ms; }
+    .slide.is-active .content-card > *:nth-child(5) { animation-delay: 370ms; }
+    .slide.is-active .content-card > *:nth-child(6) { animation-delay: 440ms; }
+    .slide.is-active .art-wrap { animation: reveal-scale 700ms ease both 140ms; }
+
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes reveal-scale {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 120;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    #progress-fill {
+      display: block;
+      width: 9%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--sun), var(--earth));
+      transition: width 280ms ease;
+    }
+
+    #counter {
+      position: fixed;
+      top: 14px;
+      right: 18px;
+      z-index: 120;
+      padding: 0.42rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(18, 33, 30, 0.82);
+      background: rgba(246, 242, 232, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      backdrop-filter: blur(8px);
+    }
+
+    #fullscreen-toggle {
+      position: fixed;
+      top: 14px;
+      left: 18px;
+      z-index: 120;
+      min-width: 46px;
+      height: 40px;
+      padding: 0 0.78rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      background: rgba(246, 242, 232, 0.75);
+      color: rgba(18, 33, 30, 0.88);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    #fullscreen-toggle:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.93);
+    }
+
+    #fullscreen-toggle.is-active {
+      background: rgba(23, 50, 45, 0.9);
+      color: #fff;
+      border-color: rgba(23, 50, 45, 0.9);
+    }
+
+    #nav-prev,
+    #nav-next {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      background: rgba(246, 242, 232, 0.78);
+      color: #17322d;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 120;
+      transition: transform 180ms ease, opacity 180ms ease, background 180ms ease;
+      backdrop-filter: blur(10px);
+    }
+
+    #nav-prev { left: 14px; }
+    #nav-next { right: 14px; }
+
+    #nav-prev:hover,
+    #nav-next:hover {
+      background: rgba(255, 255, 255, 0.93);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    #nav-prev:disabled,
+    #nav-next:disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    #nav-prev:focus-visible,
+    #nav-next:focus-visible,
+    #fullscreen-toggle:focus-visible,
+    .dot:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.95);
+      outline-offset: 2px;
+    }
+
+    #dots {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.42rem;
+      z-index: 120;
+      padding: 0.5rem 0.72rem;
+      border-radius: 999px;
+      background: rgba(244, 238, 224, 0.82);
+      border: 1px solid rgba(73, 68, 50, 0.18);
+      box-shadow: 0 10px 28px rgba(34, 30, 20, 0.16);
+      backdrop-filter: blur(10px);
+    }
+
+    .dot {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .dot::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(62, 73, 65, 0.34);
+      background: rgba(113, 124, 114, 0.26);
+      transform: translate(-50%, -50%);
+      transition: width 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .dot.active::before {
+      width: 26px;
+      background: #2f6b58;
+      border-color: #2f6b58;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    @media (max-width: 1040px) {
+      .slide-inner { grid-template-columns: 1fr; align-content: center; }
+      .art-wrap { max-width: min(100%, 540px); }
+    }
+
+    @media (max-width: 760px) {
+      .slide {
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+      .slide-inner {
+        padding: 1.3rem 1rem 4.3rem;
+        gap: 0.84rem;
+        align-content: start;
+      }
+      .content-card { border-radius: 22px; padding: 1rem; }
+      .grid-cards { grid-template-columns: 1fr; }
+      .cover-title { font-size: clamp(2.4rem, 14vw, 4rem); }
+      #counter { top: 10px; right: 12px; }
+      #fullscreen-toggle { top: 10px; left: 12px; min-width: 42px; height: 36px; padding: 0 0.7rem; }
+      #nav-prev, #nav-next { width: 40px; height: 40px; font-size: 0.95rem; }
+      #nav-prev { left: 8px; }
+      #nav-next { right: 8px; }
+      #dots { bottom: 10px; }
+      .dot { width: 30px; height: 30px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress" aria-hidden="true"><span id="progress-fill"></span></div>
+  <button id="fullscreen-toggle" type="button" aria-label="Entrar en pantalla completa" title="Pantalla completa">⛶</button>
+  <button id="nav-prev" aria-label="Diapositiva anterior">←</button>
+  <button id="nav-next" aria-label="Diapositiva siguiente">→</button>
+  <div id="counter" aria-live="polite">01 / 11</div>
+  <div id="dots" role="navigation" aria-label="Navegación de diapositivas"></div>
+  <p class="sr-only" id="nav-help">Usa flechas izquierda y derecha para mover entre diapositivas.</p>
+
+  <div class="deck" id="deck" aria-describedby="nav-help">
+
+    <!-- 01 · Portada -->
+    <section class="slide cover is-active" id="s1">
+      <img class="slide-bg" src="./assets/fotos/slides/slide-06.jpg" alt="" aria-hidden="true" decoding="async"/>
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="cover-eyebrow">Desaprender.</p>
+          <h1 class="cover-title">Territorio Creador</h1>
+          <p class="cover-sub">Laboratorio artístico de expresión cultural rural.<br>Vereda El Carmen · Duitama · Boyacá</p>
+          <p class="cover-credit">Andrés Felipe Becerra Pedraza · MICC · Universidad El Bosque · 2026</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 02 · El punto de partida -->
+    <section class="slide" id="s2">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">01 · El punto de partida</p>
+          <h2 class="slide-title">Conocer la vereda, no llevar cultura</h2>
+          <p class="slide-lead">Este proyecto no llega a El Carmen a <em>llevar</em> arte. Empieza por <strong>leer lo que ya está ahí</strong>: las personas, sus prácticas, sus significados y los espacios que habitan.</p>
+          <blockquote class="quote">El arte como una forma de leer las relaciones de una comunidad —entre las personas y con su entorno— antes que como un producto: un <strong>diagnóstico</strong>, no una herramienta para resolver problemas.<cite>Crawshaw &amp; Gkartzios (2015)</cite></blockquote>
+          <ul class="list">
+            <li><strong>Leer antes de intervenir:</strong> personas · significados · prácticas · espacios (Liepins).</li>
+            <li>La creación parte de lo que la vereda <strong>ya sabe</strong>, no de talleres importados.</li>
+            <li><em>“To get to know the island you need to come here.”</em></li>
+          </ul>
+          <p class="meta-chip">Antes de crear, hay que conocer.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Paisaje de páramo y bosque altoandino en el entorno de la vereda El Carmen">
+          <img class="art" src="./assets/fotos/slides/slide-08.jpg" alt="" loading="eager" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 03 · El territorio -->
+    <section class="slide" id="s3">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">02 · El territorio</p>
+          <h2 class="slide-title">Vereda El Carmen, Duitama (Boyacá)</h2>
+          <ul class="list">
+            <li>Km 31 vía Duitama–Charalá · entorno del <strong>Páramo de La Rusia</strong>.</li>
+            <li>IE Agroindustrial Francisco Medrano: <strong>132 estudiantes</strong>, 10 docentes. Un docente de educación física cubre también el área de artes.</li>
+            <li>3 rutas de bus escolar · vía a medio pavimentar.</li>
+            <li>Producción local: lechería y queso campesino (Asoprocarmen).</li>
+          </ul>
+          <p class="quote"><strong>65,4 %</strong> de los jóvenes rurales (17–21 años) en Colombia no asiste a ninguna institución educativa. <em>DANE, ECV 2022.</em></p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Infraestructura escolar y mural de bienvenida en la institución educativa">
+          <img class="art" src="./assets/fotos/slides/slide-02.jpg" alt="" loading="lazy" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 04 · La pista -->
+    <section class="slide" id="s4">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">03 · La pista que reveló todo</p>
+          <h2 class="slide-title">Fiestas Patronales</h2>
+          <p class="slide-lead">Mercado ganadero · Eucaristía · Cabalgata · Procesión · Tejo · Verbena hasta el amanecer.</p>
+          <ul class="list">
+            <li><strong>Cero eventos</strong> donde los jóvenes ocupen un lugar protagónico.</li>
+            <li>Pero en la <strong>Feria Agroindustrial y Fashion Ecológico</strong> de la IE, sí.</li>
+          </ul>
+          <p class="quote">La pregunta no es si los jóvenes responden. Es qué pasa cuando se les abre el espacio.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Mural artístico dentro de la institución educativa">
+          <img class="art" src="./assets/fotos/slides/slide-03.jpg" alt="" loading="lazy" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 05 · El arte vivo -->
+    <section class="slide" id="s5">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">04 · El arte vivo que no había visto</p>
+          <h2 class="slide-title">La cultura está. Lo que no está son las mediaciones</h2>
+          <ul class="list">
+            <li><strong>Saberes agroproductivos</strong> transmitidos en casa.</li>
+            <li><strong>Memoria oral</strong> del trabajo del campo.</li>
+            <li><strong>Murales del colegio</strong> firmados por Sebastián Mendoza con Corpoboyacá.</li>
+            <li><strong>Intervención textil</strong> del Fashion Ecológico.</li>
+            <li><strong>Relación cotidiana</strong> con el páramo y con Parques Nacionales.</li>
+          </ul>
+          <p class="meta-chip">La cultura ya está; faltan los puentes para que circule.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Mural de fauna realizado dentro de la institución educativa">
+          <img class="art" src="./assets/fotos/slides/slide-05.jpg" alt="" loading="lazy" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 06 · Mapa de alianzas (1) — tabla a ancho completo -->
+    <section class="slide wide" id="s6">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">05 · Mapa de alianzas (1 de 2)</p>
+          <h2 class="slide-title">El tejido institucional</h2>
+          <table class="matrix-table">
+            <tbody>
+              <tr><td>Junta de Acción Comunal — El Carmen</td><td>ANCLA. Convoca, articula, sostiene.</td></tr>
+              <tr><td>IE Agroindustrial Francisco Medrano</td><td>ALIADA. Puerta de entrada, no rectora del proceso.</td></tr>
+              <tr><td>Parques Nacionales — Páramo de La Rusia</td><td>Aliado ambiental inesperado.</td></tr>
+              <tr><td>CULTURAMA — Duitama</td><td>NODO articulador rural–urbano. Plan Decenal 2026–2035.</td></tr>
+              <tr><td>Apto 101</td><td>RED de circulación urbana. 8 años de trayectoria.</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </section>
+
+    <!-- 07 · Mapa de alianzas (2) -->
+    <section class="slide" id="s7">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">06 · Mapa de alianzas (2 de 2)</p>
+          <h2 class="slide-title">Sabedoras, sabedores y artistas facilitadores</h2>
+          <p class="slide-lead">Las tejedoras, los queseros, las narradoras orales, los conocedores del páramo y los músicos campesinos. Los artistas de la región entran como facilitadores:</p>
+          <ul class="list">
+            <li><strong>Lorena López</strong> — Taller 1: Bufet creativo.</li>
+            <li><strong>Equipo de Apto 101</strong> — Taller 2: Criaturas del Carmen.</li>
+            <li><strong>Daniel Rincón Cruz</strong> — Taller 3: Memoria oral y escritura.</li>
+            <li><strong>Sin Permiso Films</strong> — Taller 4: Audiovisual con celular.</li>
+          </ul>
+          <p class="meta-chip">Diálogos intergeneracionales como dispositivo central.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Vegetación de páramo y frailejones">
+          <img class="art" src="./assets/fotos/slides/slide-07.jpg" alt="" loading="lazy" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 08 · Cómo se mueve el laboratorio -->
+    <section class="slide" id="s8">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">07 · Cómo se mueve el laboratorio</p>
+          <h2 class="slide-title">Tres movimientos · 10 meses · $24.480.000 COP</h2>
+          <ol class="steps">
+            <li><span>Cartografía sensible <small>(mes 1–1.5) — reconocer el territorio sin presuponer dónde está la cultura.</small></span></li>
+            <li><span>Talleres en cuatro lenguajes <small>(mes 2–6.5) — plástica, literatura, escénicas y audiovisual, facilitados por sabedoras, sabedores y artistas.</small></span></li>
+            <li><span>Apropiación sostenida <small>(mes 7–10) — muestra abierta, plan de continuidad con la JAC y seguimiento a 3 y 6 meses post-cierre.</small></span></li>
+          </ol>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Paisaje de páramo con neblina">
+          <img class="art" src="./assets/fotos/slides/slide-06.jpg" alt="" loading="lazy" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 09 · El piloto -->
+    <section class="slide" id="s9">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">08 · El piloto · San Antonio Norte</p>
+          <h2 class="slide-title">8 de mayo de 2026 · 8 niños y niñas · 2 horas · solo tiza</h2>
+          <p class="slide-lead">Tres hallazgos que ningún diagnóstico habría anticipado:</p>
+          <ul class="list">
+            <li><strong>Toliboy:</strong> referentes culturales que las instituciones no reconocen.</li>
+            <li><strong>Vecinos por nombre, un perro con nombre propio:</strong> la dimensión afectiva.</li>
+            <li><strong>Vacas, árboles, animales del recorrido:</strong> el paisaje no es fondo, es centro.</li>
+          </ul>
+          <p class="quote">La cultura viva del territorio aparece cuando se abre el espacio para que aparezca.</p>
+        </article>
+        <figure class="art-wrap" role="img" aria-label="Un perro sentado sobre la cartografía dibujada con tiza por los niños en el piloto de San Antonio Norte">
+          <img class="art" src="./assets/fotos/sanantonionorte/presentacion/cartografia-perro.jpg" alt="" loading="lazy" decoding="async"/>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 10 · Interconexión rural-urbana — diagrama a ancho completo -->
+    <section class="slide wide" id="s10">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">09 · Interconexión rural–urbana</p>
+          <h2 class="slide-title">CULTURAMA como nodo articulador</h2>
+          <svg class="hub-svg" viewBox="0 0 1000 300" role="img" aria-label="Diagrama: CULTURAMA es el nodo que articula el flujo recíproco entre la vereda El Carmen y el distrito creativo urbano de Duitama, y desde donde la metodología se replica a otras veredas.">
+            <defs>
+              <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M0,0 L10,5 L0,10 z" fill="#f5cb78"/>
+              </marker>
+            </defs>
+
+            <text class="flow-cap" x="500" y="40" text-anchor="middle"><tspan class="k">Flujo 1</tspan> · la colección territorial circula <tspan class="k">→</tspan></text>
+
+            <rect class="hub-glow" x="363" y="73" width="274" height="154" rx="22"/>
+
+            <rect class="node-box" x="20" y="95" width="270" height="110" rx="16"/>
+            <text class="n-title" x="155" y="146" text-anchor="middle">Vereda El Carmen</text>
+            <text class="n-sub" x="155" y="172" text-anchor="middle">rural · creación</text>
+
+            <rect class="node-hub" x="375" y="85" width="250" height="130" rx="18"/>
+            <text class="hub-title" x="500" y="144" text-anchor="middle">CULTURAMA</text>
+            <text class="hub-sub" x="500" y="172" text-anchor="middle">nodo articulador</text>
+
+            <rect class="node-box" x="710" y="95" width="270" height="110" rx="16"/>
+            <text class="n-title" x="845" y="146" text-anchor="middle">Distrito creativo urbano</text>
+            <text class="n-sub" x="845" y="172" text-anchor="middle">Duitama · Apto 101</text>
+
+            <line class="flow-path" x1="296" y1="135" x2="369" y2="135" marker-end="url(#ah)"/>
+            <line class="flow-path" x1="369" y1="170" x2="296" y2="170" marker-end="url(#ah)"/>
+            <line class="flow-path" x1="631" y1="135" x2="704" y2="135" marker-end="url(#ah)"/>
+            <line class="flow-path" x1="704" y1="170" x2="631" y2="170" marker-end="url(#ah)"/>
+
+            <text class="flow-cap" x="500" y="268" text-anchor="middle"><tspan class="k">←</tspan> <tspan class="k">Flujo 2</tspan> · residencias artísticas en El Carmen</text>
+          </svg>
+
+          <div class="replicate-strip">
+            <span class="repl-tag">Flujo 3 · Transferencia metodológica</span>
+            <span class="repl-source">CULTURAMA</span>
+            <span class="repl-arrow" aria-hidden="true">→</span>
+            <span class="repl-ghost">otra vereda</span>
+            <span class="repl-ghost">otra vereda</span>
+            <span class="repl-ghost">otra vereda</span>
+          </div>
+          <p class="meta-chip">El Carmen es el piloto. El modelo se replica.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 11 · Cierre -->
+    <section class="slide cover" id="s11">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="cover-eyebrow">10 · Cierre</p>
+          <p class="cover-sub">La cultura viva del territorio no hay que llevarla.</p>
+          <h2 class="cover-title">Hay que activarla.</h2>
+          <p class="cover-sub">Hay que desaprender lo que creíamos saber de ella.</p>
+          <p class="cover-credit">Gracias.</p>
+        </article>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsHost = document.getElementById("dots");
+      const counter = document.getElementById("counter");
+      const fullscreenButton = document.getElementById("fullscreen-toggle");
+      const prevButton = document.getElementById("nav-prev");
+      const nextButton = document.getElementById("nav-next");
+      const progressFill = document.getElementById("progress-fill");
+      const deck = document.getElementById("deck");
+      const total = slides.length;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const transitionMs = reducedMotion ? 0 : 620;
+      const remoteSession = params.get("session");
+      const remoteEnabled = Boolean(remoteSession) && window.location.protocol.startsWith("http");
+      let current = 0;
+      let animating = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let remotePollTimer = 0;
+      let remoteSyncInFlight = false;
+      let remoteQueuedIndex = null;
+      const dotButtons = [];
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function setSlideAccessibility(activeIndex) {
+        slides.forEach((slide, index) => {
+          const isActive = index === activeIndex;
+          slide.setAttribute("aria-hidden", String(!isActive));
+          if (isActive) {
+            slide.removeAttribute("inert");
+          } else {
+            slide.setAttribute("inert", "");
+          }
+        });
+      }
+
+      function updateUi() {
+        counter.textContent = `${pad(current + 1)} / ${pad(total)}`;
+        progressFill.style.width = `${((current + 1) / total) * 100}%`;
+        prevButton.disabled = current === 0;
+        nextButton.disabled = current === total - 1;
+        dotButtons.forEach((dot, index) => {
+          const active = index === current;
+          dot.classList.toggle("active", active);
+          if (active) {
+            dot.setAttribute("aria-current", "step");
+          } else {
+            dot.removeAttribute("aria-current");
+          }
+        });
+      }
+
+      function updateFullscreenUi() {
+        if (!fullscreenButton) {
+          return;
+        }
+        const active = Boolean(document.fullscreenElement);
+        fullscreenButton.classList.toggle("is-active", active);
+        fullscreenButton.setAttribute("aria-label", active ? "Salir de pantalla completa" : "Entrar en pantalla completa");
+        fullscreenButton.setAttribute("title", active ? "Salir de pantalla completa" : "Pantalla completa");
+      }
+
+      async function toggleFullscreen() {
+        if (!document.fullscreenEnabled) {
+          return;
+        }
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+        } catch (error) {
+          // Ignore browsers that block fullscreen without user gesture.
+        }
+      }
+
+      async function syncRemoteState(index) {
+        if (!remoteEnabled) {
+          return;
+        }
+        remoteQueuedIndex = index;
+        if (remoteSyncInFlight) {
+          return;
+        }
+        while (remoteQueuedIndex !== null) {
+          const nextIndex = remoteQueuedIndex;
+          remoteQueuedIndex = null;
+          remoteSyncInFlight = true;
+          try {
+            await fetch("/api/control", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ session: remoteSession, action: "set", index: nextIndex, total })
+            });
+          } catch (error) {
+            // The deck still works offline even if remote sync is unavailable.
+          } finally {
+            remoteSyncInFlight = false;
+          }
+        }
+      }
+
+      async function pollRemoteState() {
+        if (!remoteEnabled) {
+          return;
+        }
+        try {
+          const response = await fetch(`/api/state?session=${encodeURIComponent(remoteSession)}`, { cache: "no-store" });
+          if (!response.ok) {
+            return;
+          }
+          const state = await response.json();
+          if (typeof state.index === "number" && state.index !== current && !animating) {
+            goTo(state.index, { skipRemoteSync: true });
+          }
+        } catch (error) {
+          // Ignore transient local network errors.
+        }
+      }
+
+      function startRemotePolling() {
+        if (!remoteEnabled) {
+          return;
+        }
+        window.clearInterval(remotePollTimer);
+        pollRemoteState();
+        remotePollTimer = window.setInterval(pollRemoteState, 450);
+      }
+
+      function goTo(nextIndex, options = {}) {
+        const { skipRemoteSync = false } = options;
+        if (animating || nextIndex === current || nextIndex < 0 || nextIndex >= total) {
+          return;
+        }
+        animating = true;
+        const previousIndex = current;
+        const direction = nextIndex > current ? 1 : -1;
+        const previousSlide = slides[previousIndex];
+        const nextSlide = slides[nextIndex];
+
+        previousSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+        nextSlide.classList.remove("is-exit-left", "is-exit-right", "from-left", "from-right");
+
+        previousSlide.classList.remove("is-active");
+        previousSlide.classList.add(direction > 0 ? "is-exit-left" : "is-exit-right");
+
+        nextSlide.classList.add("is-active", direction > 0 ? "from-right" : "from-left");
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            nextSlide.classList.remove("from-right", "from-left");
+          });
+        });
+
+        current = nextIndex;
+        setSlideAccessibility(current);
+        updateUi();
+        if (!skipRemoteSync) {
+          syncRemoteState(current);
+        }
+
+        window.setTimeout(() => {
+          previousSlide.classList.remove("is-exit-left", "is-exit-right");
+          animating = false;
+        }, transitionMs + 32);
+      }
+
+      slides.forEach((slide, index) => {
+        slide.setAttribute("role", "group");
+        slide.setAttribute("aria-roledescription", "diapositiva");
+        slide.setAttribute("aria-label", `${index + 1} de ${total}`);
+        if (index !== 0) {
+          slide.classList.remove("is-active");
+        }
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = index === 0 ? "dot active" : "dot";
+        dot.setAttribute("aria-label", `Ir a diapositiva ${index + 1}`);
+        if (index === 0) {
+          dot.setAttribute("aria-current", "step");
+        }
+        dot.addEventListener("click", (event) => {
+          event.stopPropagation();
+          goTo(index);
+        });
+        dotsHost.appendChild(dot);
+        dotButtons.push(dot);
+      });
+
+      setSlideAccessibility(0);
+      updateUi();
+      updateFullscreenUi();
+      syncRemoteState(0);
+      startRemotePolling();
+
+      if (!document.fullscreenEnabled) {
+        fullscreenButton.hidden = true;
+      } else {
+        fullscreenButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          toggleFullscreen();
+        });
+        document.addEventListener("fullscreenchange", updateFullscreenUi);
+      }
+
+      prevButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current - 1);
+      });
+
+      nextButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(current + 1);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const tag = event.target && event.target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || event.target.isContentEditable) {
+          return;
+        }
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          goTo(current + 1);
+          return;
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          goTo(current - 1);
+          return;
+        }
+        if (event.key === "Home") {
+          event.preventDefault();
+          goTo(0);
+          return;
+        }
+        if (event.key === "End") {
+          event.preventDefault();
+          goTo(total - 1);
+        }
+      });
+
+      deck.addEventListener("click", (event) => {
+        if (event.target.closest("button") || event.target.closest("[data-stop-nav]")) {
+          return;
+        }
+        const ratio = event.clientX / window.innerWidth;
+        if (ratio < 0.2) {
+          goTo(current - 1);
+          return;
+        }
+        if (ratio > 0.8) {
+          goTo(current + 1);
+        }
+      });
+
+      deck.addEventListener("touchstart", (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      }, { passive: true });
+
+      deck.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        if (Math.abs(dx) < 45 || Math.abs(dy) > 70) {
+          return;
+        }
+        goTo(dx < 0 ? current + 1 : current - 1);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
