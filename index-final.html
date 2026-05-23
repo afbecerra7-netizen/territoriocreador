@@ -369,26 +369,43 @@
       width: 100%;
     }
 
-    .matrix-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: clamp(0.86rem, 1.4vw, 1.04rem);
+    .ally-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+      margin-top: 0.35rem;
     }
 
-    .matrix-table td {
-      padding: 0.72rem 0.9rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-      vertical-align: top;
-      line-height: 1.4;
+    .ally-card {
+      display: grid;
+      gap: 0.28rem;
+      align-content: start;
+      padding: 0.85rem 0.95rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
     }
 
-    .matrix-table tr:last-child td { border-bottom: none; }
-
-    .matrix-table td:first-child {
+    .ally-card .ally-role {
+      font-size: 0.68rem;
       font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--line-accent);
-      white-space: nowrap;
-      padding-right: 1.4rem;
+    }
+
+    .ally-card h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      font-weight: 700;
+      line-height: 1.12;
+      color: var(--panel-ink);
+    }
+
+    .ally-card p {
+      font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+      line-height: 1.35;
+      color: var(--panel-muted);
     }
 
     .flows3 {
@@ -853,7 +870,7 @@
           <p class="kicker">01 · El punto de partida</p>
           <h2 class="slide-title">Conocer la vereda, no llevar cultura</h2>
           <p class="slide-lead">Este proyecto no llega a El Carmen a <em>llevar</em> arte. Empieza por <strong>leer lo que ya está ahí</strong>: las personas, sus prácticas, sus significados y los espacios que habitan.</p>
-          <blockquote class="quote">El arte como una forma de leer las relaciones de una comunidad —entre las personas y con su entorno— antes que como un producto: un <strong>diagnóstico</strong>, no una herramienta para resolver problemas.<cite>— Crawshaw &amp; Gkartzios (2015)</cite></blockquote>
+          <blockquote class="quote">«El arte como una forma de leer las relaciones de una comunidad —entre las personas y con su entorno— antes que como un producto: un <strong>diagnóstico</strong>, no una herramienta para resolver problemas.» <cite>Crawshaw &amp; Gkartzios (2015)</cite></blockquote>
           <ul class="list">
             <li><strong>Leer antes de intervenir:</strong> personas · significados · prácticas · espacios (Liepins).</li>
             <li>La creación parte de lo que la vereda <strong>ya sabe</strong>, no de talleres importados.</li>
@@ -943,15 +960,33 @@
         <article class="content-card">
           <p class="kicker">06 · Mapa de alianzas (1 de 2)</p>
           <h2 class="slide-title">El tejido institucional</h2>
-          <table class="matrix-table">
-            <tbody>
-              <tr><td>Junta de Acción Comunal — El Carmen</td><td>ANCLA. Convoca, articula, sostiene.</td></tr>
-              <tr><td>IE Agroindustrial Francisco Medrano</td><td>ALIADA. Puerta de entrada, no rectora del proceso.</td></tr>
-              <tr><td>Parques Nacionales — Páramo de La Rusia</td><td>Aliado ambiental inesperado.</td></tr>
-              <tr><td>CULTURAMA — Duitama</td><td>NODO articulador rural–urbano. Plan Decenal 2026–2035.</td></tr>
-              <tr><td>Apto 101</td><td>RED de circulación urbana. 8 años de trayectoria.</td></tr>
-            </tbody>
-          </table>
+          <div class="ally-grid">
+            <div class="ally-card">
+              <span class="ally-role">Ancla territorial</span>
+              <h3>JAC — El Carmen</h3>
+              <p>Convoca, articula y sostiene el proceso.</p>
+            </div>
+            <div class="ally-card">
+              <span class="ally-role">Aliada pedagógica</span>
+              <h3>IE Agroindustrial Francisco Medrano</h3>
+              <p>Puerta de entrada, no rectora del proceso.</p>
+            </div>
+            <div class="ally-card">
+              <span class="ally-role">Aliado ambiental</span>
+              <h3>Parques Nacionales — La Rusia</h3>
+              <p>Educación ambiental en el páramo; aliado inesperado.</p>
+            </div>
+            <div class="ally-card">
+              <span class="ally-role">Nodo articulador</span>
+              <h3>CULTURAMA — Duitama</h3>
+              <p>Conecta lo rural y lo urbano. Plan Decenal 2026–2035.</p>
+            </div>
+            <div class="ally-card">
+              <span class="ally-role">Red de circulación</span>
+              <h3>Apto 101</h3>
+              <p>Circulación urbana; 8 años de trayectoria.</p>
+            </div>
+          </div>
         </article>
       </div>
     </section>
