@@ -561,6 +561,24 @@
 
     #s11 { background: linear-gradient(135deg, #161616 0%, #1f2b26 60%, #14241f 100%); }
 
+    #sq {
+      background: linear-gradient(135deg, #14241f 0%, #1b3a31 58%, #244a3f 100%);
+      --panel-bg: rgba(10, 22, 18, 0.5);
+      --panel-ink: #f3efe5;
+      --panel-muted: rgba(243, 239, 229, 0.84);
+      --kicker: #f0ca82;
+      --line-accent: #e2b34a;
+      --chip-bg: rgba(226, 179, 74, 0.16);
+      --chip-border: rgba(226, 179, 74, 0.42);
+      --chip-ink: #f6e7c5;
+    }
+
+    #sq .quote {
+      font-size: clamp(1.34rem, 3vw, 2.15rem);
+      line-height: 1.34;
+      border-left-width: 4px;
+    }
+
     /* Cards sobre fondos oscuros */
     #s4 .list li, #s7 .list li {
       background: rgba(255, 255, 255, 0.06);
@@ -795,7 +813,7 @@
   <button id="fullscreen-toggle" type="button" aria-label="Entrar en pantalla completa" title="Pantalla completa">⛶</button>
   <button id="nav-prev" aria-label="Diapositiva anterior">←</button>
   <button id="nav-next" aria-label="Diapositiva siguiente">→</button>
-  <div id="counter" aria-live="polite">01 / 11</div>
+  <div id="counter" aria-live="polite">01 / 12</div>
   <div id="dots" role="navigation" aria-label="Navegación de diapositivas"></div>
   <p class="sr-only" id="nav-help">Usa flechas izquierda y derecha para mover entre diapositivas.</p>
 
@@ -895,11 +913,21 @@
       </div>
     </section>
 
-    <!-- 06 · Mapa de alianzas (1) — tabla a ancho completo -->
+    <!-- 06 · Objetivo -->
+    <section class="slide wide" id="sq">
+      <div class="slide-inner">
+        <article class="content-card">
+          <p class="kicker">05 · Objetivo</p>
+          <blockquote class="quote">Poner en valor la cultura viva de El Carmen mediante un laboratorio comunitario de investigación-creación, donde los jóvenes la <strong>reconocen, narran y resignifican</strong> como agentes de su territorio.</blockquote>
+        </article>
+      </div>
+    </section>
+
+    <!-- 07 · Mapa de alianzas (1) — tabla a ancho completo -->
     <section class="slide wide" id="s6">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">05 · Mapa de alianzas (1 de 2)</p>
+          <p class="kicker">06 · Mapa de alianzas (1 de 2)</p>
           <h2 class="slide-title">El tejido institucional</h2>
           <table class="matrix-table">
             <tbody>
@@ -918,7 +946,7 @@
     <section class="slide" id="s7">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">06 · Mapa de alianzas (2 de 2)</p>
+          <p class="kicker">07 · Mapa de alianzas (2 de 2)</p>
           <h2 class="slide-title">Sabedoras, sabedores y artistas facilitadores</h2>
           <p class="slide-lead">Las tejedoras, los queseros, las narradoras orales, los conocedores del páramo y los músicos campesinos. Los artistas de la región entran como facilitadores:</p>
           <ul class="list">
@@ -939,7 +967,7 @@
     <section class="slide" id="s8">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">07 · Cómo se mueve el laboratorio</p>
+          <p class="kicker">08 · Cómo se mueve el laboratorio</p>
           <h2 class="slide-title">Tres movimientos · 10 meses · $24.480.000 COP</h2>
           <ol class="steps">
             <li><span>Cartografía sensible <small>(mes 1–1.5) — reconocer el territorio sin presuponer dónde está la cultura.</small></span></li>
@@ -957,7 +985,7 @@
     <section class="slide" id="s9">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">08 · El piloto · San Antonio Norte</p>
+          <p class="kicker">09 · El piloto · San Antonio Norte</p>
           <h2 class="slide-title">8 de mayo de 2026 · 8 niños y niñas · 2 horas · solo tiza</h2>
           <p class="slide-lead">Tres hallazgos que ningún diagnóstico habría anticipado:</p>
           <ul class="list">
@@ -977,7 +1005,7 @@
     <section class="slide wide" id="s10">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="kicker">09 · Interconexión rural–urbana</p>
+          <p class="kicker">10 · Interconexión rural–urbana</p>
           <h2 class="slide-title">CULTURAMA como nodo articulador</h2>
           <svg class="hub-svg" viewBox="0 0 1000 300" role="img" aria-label="Diagrama: CULTURAMA es el nodo que articula el flujo recíproco entre la vereda El Carmen y el distrito creativo urbano de Duitama, y desde donde la metodología se replica a otras veredas.">
             <defs>
@@ -1027,7 +1055,7 @@
     <section class="slide cover" id="s11">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="cover-eyebrow">10 · Cierre</p>
+          <p class="cover-eyebrow">11 · Cierre</p>
           <p class="cover-sub">La cultura viva del territorio no hay que llevarla.</p>
           <h2 class="cover-title">Hay que activarla.</h2>
           <p class="cover-sub">Hay que desaprender lo que creíamos saber de ella.</p>
