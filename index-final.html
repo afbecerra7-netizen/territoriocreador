@@ -190,7 +190,7 @@
 
     .quote cite {
       display: block;
-      margin-top: 0.5rem;
+      margin-top: 0.7rem;
       font-style: normal;
       font-family: "Work Sans", "Segoe UI", sans-serif;
       font-size: 0.76rem;
@@ -267,6 +267,7 @@
     }
 
     .steps li > span { display: block; }
+    .steps strong { color: var(--line-accent); }
 
     .steps li small {
       display: block;
@@ -390,66 +391,68 @@
       padding-right: 1.4rem;
     }
 
-    .hub-svg {
-      display: block;
-      width: 100%;
-      max-width: 58rem;
-      height: auto;
-      margin: 0.2rem auto 0;
+    .flows3 {
+      display: grid;
+      gap: clamp(0.7rem, 2.4vh, 1.25rem);
+      max-width: 60rem;
+      margin: 0.4rem auto 0;
     }
 
-    .hub-svg .node-box {
-      fill: rgba(255, 255, 255, 0.05);
-      stroke: var(--chip-border);
-      stroke-width: 1.5;
+    .flow-chain {
+      display: grid;
+      gap: 0.35rem;
+      padding: 0.7rem 0.95rem;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .hub-svg .node-hub {
-      fill: var(--line-accent);
-      stroke: var(--line-accent);
+    .flow-chain .fc-cap {
+      font-weight: 700;
+      color: var(--line-accent);
+      font-size: clamp(0.78rem, 1.1vw, 0.9rem);
     }
 
-    .hub-svg .hub-glow {
-      fill: none;
-      stroke: var(--line-accent);
-      stroke-opacity: 0.3;
-      stroke-width: 1.5;
-    }
-
-    .hub-svg .n-title { fill: var(--panel-ink); font: 700 19px "Work Sans", sans-serif; }
-    .hub-svg .n-sub { fill: var(--panel-ink); opacity: 0.6; font: 500 14px "Work Sans", sans-serif; }
-    .hub-svg .hub-title { fill: #1b2740; font: 700 25px "Work Sans", sans-serif; letter-spacing: 0.5px; }
-    .hub-svg .hub-sub { fill: #1b2740; opacity: 0.82; font: 600 14px "Work Sans", sans-serif; }
-    .hub-svg .flow-cap { fill: var(--panel-ink); font: 500 16px "Work Sans", sans-serif; }
-    .hub-svg .flow-cap .k { fill: var(--line-accent); font-weight: 700; }
-    .hub-svg .flow-path { stroke: var(--line-accent); stroke-width: 2.2; fill: none; }
-
-    .replicate-strip {
+    .flow-chain .fc-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 0.45rem;
-      font-size: clamp(0.8rem, 1.2vw, 0.94rem);
+      gap: 0.45rem;
     }
 
-    .replicate-strip .repl-tag { font-weight: 700; color: var(--line-accent); }
-    .replicate-strip .repl-arrow { color: var(--line-accent); font-weight: 700; }
-
-    .replicate-strip .repl-source {
-      padding: 0.3rem 0.72rem;
+    .fc-node {
+      padding: 0.5rem 0.95rem;
       border-radius: 999px;
-      border: 1px solid var(--line-accent);
+      border: 1px solid var(--chip-border);
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--panel-ink);
+      font-weight: 700;
+      font-size: clamp(0.86rem, 1.3vw, 1rem);
+    }
+
+    .fc-node.hub {
+      background: var(--line-accent);
+      border-color: var(--line-accent);
+      color: #1b2740;
+    }
+
+    .fc-node.mid {
+      background: transparent;
+      border-style: dashed;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+
+    .fc-node.ghost {
+      border-style: dashed;
+      opacity: 0.7;
+    }
+
+    .fc-arrow {
       color: var(--line-accent);
       font-weight: 700;
-    }
-
-    .replicate-strip .repl-ghost {
-      padding: 0.3rem 0.72rem;
-      border-radius: 999px;
-      border: 1px dashed var(--chip-border);
-      opacity: 0.72;
+      font-size: 1.15rem;
+      line-height: 1;
     }
 
     /* ---------- Temas por slide ---------- */
@@ -471,7 +474,7 @@
       --chip-ink: #7c4c2d;
     }
 
-    #s2 .content-card { gap: clamp(0.5rem, 1.1vh, 0.8rem); }
+    #s2 .content-card { gap: clamp(0.4rem, 0.95vh, 0.68rem); }
     #s2 .slide-title { font-size: clamp(1.7rem, 3.4vw, 3rem); }
     #s2 .quote { font-size: clamp(0.98rem, 1.7vw, 1.14rem); }
 
@@ -510,6 +513,10 @@
       --chip-border: rgba(47, 107, 88, 0.38);
       --chip-ink: #275347;
     }
+
+    #s5 .content-card { gap: clamp(0.42rem, 1vh, 0.68rem); }
+    #s5 .list li { padding: 0.58rem 0.8rem; }
+    #s5 .quote { font-size: clamp(1rem, 1.7vw, 1.16rem); }
 
     #s6, #s10 {
       background: linear-gradient(138deg, #213958 0%, #2c5775 48%, #4a7884 100%);
@@ -560,6 +567,13 @@
     }
 
     #s11 { background: linear-gradient(135deg, #161616 0%, #1f2b26 60%, #14241f 100%); }
+
+    #s11 .cierre-couplet {
+      font-size: clamp(1.7rem, 4.4vw, 3.1rem);
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+    }
+    #s11 .cierre-couplet span { color: var(--line-accent); }
 
     #sq {
       background: linear-gradient(135deg, #14241f 0%, #1b3a31 58%, #244a3f 100%);
@@ -839,7 +853,7 @@
           <p class="kicker">01 · El punto de partida</p>
           <h2 class="slide-title">Conocer la vereda, no llevar cultura</h2>
           <p class="slide-lead">Este proyecto no llega a El Carmen a <em>llevar</em> arte. Empieza por <strong>leer lo que ya está ahí</strong>: las personas, sus prácticas, sus significados y los espacios que habitan.</p>
-          <blockquote class="quote">El arte como una forma de leer las relaciones de una comunidad —entre las personas y con su entorno— antes que como un producto: un <strong>diagnóstico</strong>, no una herramienta para resolver problemas.<cite>Crawshaw &amp; Gkartzios (2015)</cite></blockquote>
+          <blockquote class="quote">El arte como una forma de leer las relaciones de una comunidad —entre las personas y con su entorno— antes que como un producto: un <strong>diagnóstico</strong>, no una herramienta para resolver problemas.<cite>— Crawshaw &amp; Gkartzios (2015)</cite></blockquote>
           <ul class="list">
             <li><strong>Leer antes de intervenir:</strong> personas · significados · prácticas · espacios (Liepins).</li>
             <li>La creación parte de lo que la vereda <strong>ya sabe</strong>, no de talleres importados.</li>
@@ -905,7 +919,7 @@
             <li><strong>Intervención textil</strong> del Fashion Ecológico.</li>
             <li><strong>Relación cotidiana</strong> con el páramo y con Parques Nacionales.</li>
           </ul>
-          <p class="meta-chip">La cultura ya está; faltan los puentes para que circule.</p>
+          <blockquote class="quote">En El Carmen la cultura existe, pero los jóvenes no siempre cuentan con espacios, lenguajes ni mediaciones para <strong>reconocerla, narrarla y resignificarla</strong>.</blockquote>
         </article>
         <figure class="art-wrap" role="img" aria-label="Mural de fauna realizado dentro de la institución educativa">
           <img class="art" src="./assets/fotos/slides/slide-05.jpg" alt="" loading="lazy" decoding="async"/>
@@ -970,10 +984,11 @@
           <p class="kicker">08 · Cómo se mueve el laboratorio</p>
           <h2 class="slide-title">Tres movimientos · 10 meses · $24.480.000 COP</h2>
           <ol class="steps">
-            <li><span>Cartografía sensible <small>(mes 1–1.5) — reconocer el territorio sin presuponer dónde está la cultura.</small></span></li>
-            <li><span>Talleres en cuatro lenguajes <small>(mes 2–6.5) — plástica, literatura, escénicas y audiovisual, facilitados por sabedoras, sabedores y artistas.</small></span></li>
-            <li><span>Apropiación sostenida <small>(mes 7–10) — muestra abierta, plan de continuidad con la JAC y seguimiento a 3 y 6 meses post-cierre.</small></span></li>
+            <li><span>Cartografía sensible · <strong>$6.230.000</strong> <small>Mes 1–1.5 · reconocer el territorio sin presuponer dónde está la cultura.</small></span></li>
+            <li><span>Talleres en cuatro lenguajes · <strong>$10.100.000</strong> <small>Mes 2–6.5 · plástica, literatura, escénicas y audiovisual.</small></span></li>
+            <li><span>Apropiación sostenida · <strong>$8.150.000</strong> <small>Mes 7–10 · muestra abierta, continuidad con la JAC y seguimiento.</small></span></li>
           </ol>
+          <p class="meta-chip">76% honorarios (investigador + artistas) · 24% recursos: materiales, transporte, registro audiovisual e impresión.</p>
         </article>
         <figure class="art-wrap" role="img" aria-label="Paisaje de páramo con neblina">
           <img class="art" src="./assets/fotos/slides/slide-06.jpg" alt="" loading="lazy" decoding="async"/>
@@ -1007,44 +1022,39 @@
         <article class="content-card">
           <p class="kicker">10 · Interconexión rural–urbana</p>
           <h2 class="slide-title">CULTURAMA como nodo articulador</h2>
-          <svg class="hub-svg" viewBox="0 0 1000 300" role="img" aria-label="Diagrama: CULTURAMA es el nodo que articula el flujo recíproco entre la vereda El Carmen y el distrito creativo urbano de Duitama, y desde donde la metodología se replica a otras veredas.">
-            <defs>
-              <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M0,0 L10,5 L0,10 z" fill="#f5cb78"/>
-              </marker>
-            </defs>
+          <div class="flows3">
+            <div class="flow-chain">
+              <span class="fc-cap">La colección territorial circula hacia la ciudad</span>
+              <div class="fc-row">
+                <span class="fc-node">Vereda El Carmen</span>
+                <span class="fc-arrow" aria-hidden="true">→</span>
+                <span class="fc-node hub">CULTURAMA</span>
+                <span class="fc-arrow" aria-hidden="true">→</span>
+                <span class="fc-node">Distrito urbano · Apto 101</span>
+              </div>
+            </div>
 
-            <text class="flow-cap" x="500" y="40" text-anchor="middle"><tspan class="k">Flujo 1</tspan> · la colección territorial circula <tspan class="k">→</tspan></text>
+            <div class="flow-chain">
+              <span class="fc-cap">El distrito vuelve a la vereda</span>
+              <div class="fc-row">
+                <span class="fc-node">Apto 101</span>
+                <span class="fc-arrow" aria-hidden="true">→</span>
+                <span class="fc-node mid">residencias artísticas</span>
+                <span class="fc-arrow" aria-hidden="true">→</span>
+                <span class="fc-node">El Carmen</span>
+              </div>
+            </div>
 
-            <rect class="hub-glow" x="363" y="73" width="274" height="154" rx="22"/>
-
-            <rect class="node-box" x="20" y="95" width="270" height="110" rx="16"/>
-            <text class="n-title" x="155" y="146" text-anchor="middle">Vereda El Carmen</text>
-            <text class="n-sub" x="155" y="172" text-anchor="middle">rural · creación</text>
-
-            <rect class="node-hub" x="375" y="85" width="250" height="130" rx="18"/>
-            <text class="hub-title" x="500" y="144" text-anchor="middle">CULTURAMA</text>
-            <text class="hub-sub" x="500" y="172" text-anchor="middle">nodo articulador</text>
-
-            <rect class="node-box" x="710" y="95" width="270" height="110" rx="16"/>
-            <text class="n-title" x="845" y="146" text-anchor="middle">Distrito creativo urbano</text>
-            <text class="n-sub" x="845" y="172" text-anchor="middle">Duitama · Apto 101</text>
-
-            <line class="flow-path" x1="296" y1="135" x2="369" y2="135" marker-end="url(#ah)"/>
-            <line class="flow-path" x1="369" y1="170" x2="296" y2="170" marker-end="url(#ah)"/>
-            <line class="flow-path" x1="631" y1="135" x2="704" y2="135" marker-end="url(#ah)"/>
-            <line class="flow-path" x1="704" y1="170" x2="631" y2="170" marker-end="url(#ah)"/>
-
-            <text class="flow-cap" x="500" y="268" text-anchor="middle"><tspan class="k">←</tspan> <tspan class="k">Flujo 2</tspan> · residencias artísticas en El Carmen</text>
-          </svg>
-
-          <div class="replicate-strip">
-            <span class="repl-tag">Flujo 3 · Transferencia metodológica</span>
-            <span class="repl-source">CULTURAMA</span>
-            <span class="repl-arrow" aria-hidden="true">→</span>
-            <span class="repl-ghost">otra vereda</span>
-            <span class="repl-ghost">otra vereda</span>
-            <span class="repl-ghost">otra vereda</span>
+            <div class="flow-chain">
+              <span class="fc-cap">Y el modelo se replica</span>
+              <div class="fc-row">
+                <span class="fc-node hub">CULTURAMA</span>
+                <span class="fc-arrow" aria-hidden="true">→</span>
+                <span class="fc-node mid">metodología abierta</span>
+                <span class="fc-arrow" aria-hidden="true">→</span>
+                <span class="fc-node ghost">otras veredas</span>
+              </div>
+            </div>
           </div>
           <p class="meta-chip">El Carmen es el piloto. El modelo se replica.</p>
         </article>
@@ -1055,10 +1065,8 @@
     <section class="slide cover" id="s11">
       <div class="slide-inner">
         <article class="content-card">
-          <p class="cover-eyebrow">11 · Cierre</p>
-          <p class="cover-sub">La cultura viva del territorio no hay que llevarla.</p>
-          <h2 class="cover-title">Hay que activarla.</h2>
-          <p class="cover-sub">Hay que desaprender lo que creíamos saber de ella.</p>
+          <p class="cover-eyebrow">Desaprender.</p>
+          <h2 class="cover-title cierre-couplet"><span>Desaprender</span> que la cultura se lleva.<br><span>Aprender</span> a verla donde ya está.</h2>
           <p class="cover-credit">Gracias.</p>
         </article>
       </div>
